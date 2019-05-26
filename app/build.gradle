@@ -67,5 +67,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    //implementation 'com.simplemobiletools:commons:5.10.8'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
 }
