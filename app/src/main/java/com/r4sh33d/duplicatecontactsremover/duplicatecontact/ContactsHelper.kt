@@ -6,8 +6,6 @@ import android.database.Cursor
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds
 import timber.log.Timber
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ContactsHelper(val context: Context) {
 
@@ -25,8 +23,6 @@ class ContactsHelper(val context: Context) {
         CommonDataKinds.StructuredName.MIDDLE_NAME,
         CommonDataKinds.StructuredName.FAMILY_NAME
     )
-
-
 
     private fun getDeviceContacts(): ArrayList<Contact> {
         val contacts = ArrayList<Contact>()
