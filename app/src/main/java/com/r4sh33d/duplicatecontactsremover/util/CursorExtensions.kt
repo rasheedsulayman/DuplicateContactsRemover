@@ -1,4 +1,4 @@
-package com.r4sh33d.duplicatecontactsremover.duplicatecontact
+package com.r4sh33d.duplicatecontactsremover.util
 
 import android.database.Cursor
 

@@ -1,4 +1,4 @@
-package com.r4sh33d.duplicatecontactsremover.duplicatecontact
+package com.r4sh33d.duplicatecontactsremover.model
 
 data class PhoneNumber(var value: String, var type: Int, var label: String, var normalizedNumber: String?){
     override fun toString(): String {

@@ -12,6 +12,6 @@
                 app:destination="@id/duplicateContactFixFragment"/>
     </fragment>
     <fragment android:id="@+id/duplicateContactFixFragment"
-              android:name="com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactFixFragment"
+              android:name="com.r4sh33d.duplicatecontactsremover.duplicatecontact.ContactSourcesFragment"
               android:label="Remove Duplicates" tools:layout="@layout/fragment_duplicate_contact_fix"/>
 </navigation>

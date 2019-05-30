@@ -1,10 +1,8 @@
-package com.r4sh33d.duplicatecontactsremover.duplicatecontact
+package com.r4sh33d.duplicatecontactsremover
 
 import android.app.Application
 import com.r4sh33d.duplicatecontactsremover.BuildConfig
 import timber.log.Timber
-
-
 
 class DuplicateContactsApplication : Application() {
 

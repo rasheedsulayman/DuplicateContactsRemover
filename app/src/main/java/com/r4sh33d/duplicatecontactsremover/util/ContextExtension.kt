@@ -1,4 +1,4 @@
-package com.r4sh33d.duplicatecontactsremover.duplicatecontact
+package com.r4sh33d.duplicatecontactsremover.util
 
 import android.Manifest
 import android.content.Context
@@ -53,4 +53,8 @@ fun Context.toast(msg: String, length: Int = Toast.LENGTH_SHORT) {
 }
 
 fun isOnMainThread() = Looper.myLooper() == Looper.getMainLooper()
+
+fun Context.hasContactPermissions() = hasPermission(PERMISSION_READ_CONTACTS) && hasPermission(
+    PERMISSION_WRITE_CONTACTS
+)
 

@@ -7,26 +7,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.r4sh33d.duplicatecontactsremover.R
+import com.r4sh33d.duplicatecontactsremover.databinding.FragmentContactSourcesBinding
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 
-class DuplicateContactFixFragment : Fragment() {
+class ContactSourcesFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_duplicate_contact_fix, container, false)
-    }
+        val binding = FragmentContactSourcesBinding.inflate(inflater)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding.setLifecycleOwner(this)
+
         val viewModelFactory = ContactsSourcesViewModelFactory(ContactsHelper(context!!))
 
-        // Get a reference to the ViewModel associated with this fragment.
         val sleepQualityViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(ContactSourcesViewModel::class.java)
+
+        binding.viewModel = sleepQualityViewModel
+
+
+        return binding.root
     }
+
 
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 
-class DuplicateContactsViewModelFactory(
+class ContactsSourcesViewModelFactory(
         private val contactsHelper: ContactsHelper
 ) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")

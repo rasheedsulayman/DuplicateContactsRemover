@@ -8,7 +8,9 @@ import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import kotlinx.coroutines.*
 import timber.log.Timber
 
-class DuplicateContactViewModel(val contactsHelper: ContactsHelper) : ViewModel() {
+enum class MarsApiStatus { LOADING, ERROR, DONE }
+
+class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() {
 
     private val _contactsList = MutableLiveData<List<Contact>>()
 

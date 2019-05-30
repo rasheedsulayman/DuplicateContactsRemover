@@ -13,8 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.r4sh33d.duplicatecontactsremover.duplicatecontact.PERMISSION_READ_CONTACTS
-import com.r4sh33d.duplicatecontactsremover.duplicatecontact.PERMISSION_WRITE_CONTACTS
+import com.r4sh33d.duplicatecontactsremover.util.PERMISSION_READ_CONTACTS
 import kotlinx.android.synthetic.main.fragment_landing_page.*
 
 class LandingPageFragment : Fragment() {
