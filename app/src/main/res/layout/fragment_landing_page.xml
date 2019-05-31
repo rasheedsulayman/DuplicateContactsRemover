@@ -19,5 +19,4 @@
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent" android:fontFamily="@font/lato_bold"/>
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

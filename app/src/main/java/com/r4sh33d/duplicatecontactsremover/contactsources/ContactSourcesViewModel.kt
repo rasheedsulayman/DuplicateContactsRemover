@@ -7,7 +7,7 @@ import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import kotlinx.coroutines.*
 
-enum class ContactAccountsLoadingStatus { LOADING, ERROR, DONE }
+enum class ContactAccountsLoadingStatus { LOADING, EMPTY, DONE }
 
 class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() {
 
@@ -34,7 +34,8 @@ class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() 
         coroutineScope.launch {
             _status.value = ContactAccountsLoadingStatus.LOADING
             _contactsAccountList.value = getContactsWithAccounts()
-            _status.value = ContactAccountsLoadingStatus.DONE
+            _status.value = if (contactsAccountList.value!!.isNotEmpty()) ContactAccountsLoadingStatus.DONE
+            else ContactAccountsLoadingStatus.EMPTY
         }
     }
 

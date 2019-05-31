@@ -1,10 +1,12 @@
+package com.r4sh33d.duplicatecontactsremover
+
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesAdapter
 import com.r4sh33d.duplicatecontactsremover.contactsources.ContactAccountsLoadingStatus
+import com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesAdapter
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 
 // -- ContactsAccounts Fragment
@@ -13,10 +15,10 @@ import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 fun bindStatus(statusTextView: TextView, status: ContactAccountsLoadingStatus?) {
     when (status) {
         ContactAccountsLoadingStatus.LOADING -> {
-            statusTextView.text = "Loading your accounts, Please wait"
+            statusTextView.text = "Loading all your contacts. Please wait while we group them in to their associated accounts."
         }
-        ContactAccountsLoadingStatus.ERROR -> {
-            statusTextView.text = "Empty Accounts"
+        ContactAccountsLoadingStatus.EMPTY -> {
+            statusTextView.text = "No Account found with more than one contacts found"
         }
         ContactAccountsLoadingStatus.DONE -> {
             statusTextView.visibility = View.GONE

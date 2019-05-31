@@ -56,10 +56,12 @@ class ContactsHelper(val context: Context) {
             cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, sortOrder)
             if (cursor?.moveToFirst() == true) {
                 do {
-
                     val accountName = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
                     val accountType = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
-                    val accountNameIdentifier = "$accountName:$accountType"
+                    var accountNameIdentifier = accountName
+                    if (accountType == TELEGRAM_PACKAGE) {
+                        accountNameIdentifier = context.getString(R.string.telegram)
+                    }
 
                     val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
                     val prefix = cursor.getStringValue(CommonDataKinds.StructuredName.PREFIX) ?: ""

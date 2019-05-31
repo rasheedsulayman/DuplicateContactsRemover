@@ -16,5 +16,5 @@
               android:label="Remove Duplicates" tools:layout="@layout/fragment_duplicate_contact_fix"/>
     <fragment android:id="@+id/contactSourcesFragment"
               android:name="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment"
-              android:label="fragment_duplicate_contact_fix" tools:layout="@layout/fragment_contact_sources"/>
+              android:label="Contact Sources" tools:layout="@layout/fragment_contact_sources"/>
 </navigation>

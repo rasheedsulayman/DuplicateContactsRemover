@@ -3,6 +3,7 @@ package com.r4sh33d.duplicatecontactsremover.contactsources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesAdapter.ContactSourceViewHolder
 import com.r4sh33d.duplicatecontactsremover.databinding.ItemContactSourceBinding
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
@@ -14,7 +15,9 @@ class ContactSourcesAdapter(
     RecyclerView.Adapter<ContactSourceViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactSourceViewHolder {
-        return ContactSourceViewHolder(ItemContactSourceBinding.inflate(LayoutInflater.from(parent.context)))
+        return ContactSourceViewHolder(ItemContactSourceBinding.bind(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_contact_source, parent,false)
+        ))
     }
 
     override fun getItemCount(): Int {
