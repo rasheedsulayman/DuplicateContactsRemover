@@ -1,5 +1,4 @@
-package com.r4sh33d.duplicatecontactsremover.duplicatecontact
-
+package com.r4sh33d.duplicatecontactsremover.contactsources
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.r4sh33d.duplicatecontactsremover.databinding.FragmentContactSourcesBinding
+import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 
 class ContactSourcesFragment : Fragment() {
@@ -27,9 +27,11 @@ class ContactSourcesFragment : Fragment() {
 
         binding.viewModel = sleepQualityViewModel
 
+        binding.contactSourcesRecyclerView.adapter = ContactSourcesAdapter(ArrayList()) { contactsAccount ->
+
+        }
 
         return binding.root
     }
-
 
 }

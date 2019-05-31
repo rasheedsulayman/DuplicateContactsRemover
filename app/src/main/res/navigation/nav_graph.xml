@@ -8,10 +8,13 @@
             android:id="@+id/landingPageFragment"
             android:name="com.r4sh33d.duplicatecontactsremover.LandingPageFragment"
             android:label="Duplicate Contacts">
-        <action android:id="@+id/action_landingPageFragment_to_duplicateContactFixFragment"
-                app:destination="@id/duplicateContactFixFragment"/>
+        <action android:id="@+id/action_landingPageFragment_to_contactSourcesFragment"
+                app:destination="@id/contactSourcesFragment"/>
     </fragment>
     <fragment android:id="@+id/duplicateContactFixFragment"
-              android:name="com.r4sh33d.duplicatecontactsremover.duplicatecontact.ContactSourcesFragment"
+              android:name="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment"
               android:label="Remove Duplicates" tools:layout="@layout/fragment_duplicate_contact_fix"/>
+    <fragment android:id="@+id/contactSourcesFragment"
+              android:name="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment"
+              android:label="fragment_duplicate_contact_fix" tools:layout="@layout/fragment_contact_sources"/>
 </navigation>

@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools">
     <data>
 
-        <variable name="account" type="com.r4sh33d.duplicatecontactsremover.model.Account"/>
+        <variable name="account" type="com.r4sh33d.duplicatecontactsremover.model.ContactsAccount"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +29,7 @@
                 app:layout_constraintVertical_chainStyle="packed"/>
 
         <TextView
-                android:text="@{account.displayName}"
+                android:text="@{@string/nameFormat(account.contacts.size())}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 tools:text="106 Contacts"
                 android:layout_width="wrap_content"
@@ -41,7 +41,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/arrowImageView" app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0" android:layout_marginBottom="16dp"/>
         <ImageView
-                android:text="@{@string/nameFormat(account.contacts.size())}"
                 android:layout_width="48dp"
                 android:layout_height="48dp" app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
                 android:id="@+id/arrowImageView" android:layout_marginTop="16dp"

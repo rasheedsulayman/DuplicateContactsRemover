@@ -1,5 +1,5 @@
 
-package com.r4sh33d.duplicatecontactsremover.duplicatecontact
+package com.r4sh33d.duplicatecontactsremover.contactsources
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

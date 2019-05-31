@@ -1,21 +1,27 @@
-package com.r4sh33d.duplicatecontactsremover.duplicatecontact
+package com.r4sh33d.duplicatecontactsremover.contactsources
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.r4sh33d.duplicatecontactsremover.model.Contact
+import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import kotlinx.coroutines.*
-import timber.log.Timber
 
-enum class MarsApiStatus { LOADING, ERROR, DONE }
+enum class ContactAccountsLoadingStatus { LOADING, ERROR, DONE }
 
 class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() {
 
-    private val _contactsList = MutableLiveData<List<Contact>>()
+    private val _status = MutableLiveData<ContactAccountsLoadingStatus>()
 
-    val contactsList: LiveData<List<Contact>>
-        get() = _contactsList
+    val status: LiveData<ContactAccountsLoadingStatus>
+        get() = _status
+
+
+    private val _contactsAccountList = MutableLiveData<List<ContactsAccount>>()
+
+    val contactsAccountList: LiveData<List<ContactsAccount>>
+        get() = _contactsAccountList
+
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -26,12 +32,13 @@ class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() 
 
     private fun getDuplicateContactsList() {
         coroutineScope.launch {
-            Timber.d("Enter Main scope with, executing on: %s", Thread.currentThread())
-            val contactsMap = getContactsWithAccounts()
+            _status.value = ContactAccountsLoadingStatus.LOADING
+            _contactsAccountList.value = getContactsWithAccounts()
+            _status.value = ContactAccountsLoadingStatus.DONE
         }
     }
 
-    suspend fun getContactsWithAccounts(): Map<String, ArrayList<Contact>> {
+    suspend fun getContactsWithAccounts(): List<ContactsAccount> {
         return withContext(Dispatchers.IO) {
             contactsHelper.getContactsWithAccounts()
         }
@@ -39,7 +46,6 @@ class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() 
 
     override fun onCleared() {
         super.onCleared()
-        Timber.d("Onclered called")
         viewModelJob.cancel()
     }
 }

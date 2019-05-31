@@ -1,30 +1,45 @@
 package com.r4sh33d.duplicatecontactsremover.contactsources
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesAdapter.ContactSourceViewHolder
-import com.r4sh33d.duplicatecontactsremover.model.Account
+import com.r4sh33d.duplicatecontactsremover.databinding.ItemContactSourceBinding
+import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 
-class ContactSourcesAdapter(var accounts: ArrayList<Account>, val clickListener: (Account) -> Unit) :
+class ContactSourcesAdapter(
+    var contactsAccounts: List<ContactsAccount>,
+    val accountClickListener: (ContactsAccount) -> Unit
+) :
     RecyclerView.Adapter<ContactSourceViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactSourceViewHolder {
+        return ContactSourceViewHolder(ItemContactSourceBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return contactsAccounts.size
     }
 
     override fun onBindViewHolder(holder: ContactSourceViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        holder.bind(contactsAccounts[position])
     }
 
-    class ContactSourceViewHolder(private var binding: GridViewItemBinding) :
+    fun updateData(contactsAccounts: List<ContactsAccount>) {
+        this.contactsAccounts = contactsAccounts
+        notifyDataSetChanged()
+    }
+
+    inner class ContactSourceViewHolder(private var binding: ItemContactSourceBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(marsProperty: MarsProperty) {
-            binding.property = marsProperty
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
+        init {
+            itemView.setOnClickListener {
+                accountClickListener(contactsAccounts[adapterPosition])
+            }
+        }
+
+        fun bind(contactsAccount: ContactsAccount) {
+            binding.account = contactsAccount
             binding.executePendingBindings()
         }
     }

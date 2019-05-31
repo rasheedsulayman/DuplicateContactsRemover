@@ -36,7 +36,7 @@ class LandingPageFragment : Fragment() {
     fun navigateToNextPage(){
         startButton.findNavController().navigate(
             LandingPageFragmentDirections
-                .actionLandingPageFragmentToDuplicateContactFixFragment()
+                .actionLandingPageFragmentToContactSourcesFragment()
         )
     }
 

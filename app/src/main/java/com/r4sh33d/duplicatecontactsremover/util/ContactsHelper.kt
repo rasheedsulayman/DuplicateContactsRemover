@@ -12,29 +12,23 @@ import android.provider.ContactsContract.CommonDataKinds
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.model.ContactSource
+import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 import com.r4sh33d.duplicatecontactsremover.model.PhoneNumber
 import timber.log.Timber
 import java.util.HashSet
 import java.util.LinkedHashSet
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.collections.List
-import kotlin.collections.arrayListOf
-import kotlin.collections.contains
-import kotlin.collections.filter
-import kotlin.collections.forEach
 import kotlin.collections.set
-import kotlin.collections.toMutableList
 
 class ContactsHelper(val context: Context) {
 
     private val BATCH_SIZE = 100
 
-
-    fun getContactsWithAccounts(): Map<String, ArrayList<Contact>> {
-        return  getDeviceContacts().filter {
+    fun getContactsWithAccounts(): List<ContactsAccount> {
+        return getDeviceContacts().filter {
             it.value.size > 1
-        }
+        }.map { ContactsAccount(it.key, it.value) }
     }
 
     private fun getContactProjection() = arrayOf(
@@ -46,10 +40,9 @@ class ContactsHelper(val context: Context) {
         CommonDataKinds.StructuredName.FAMILY_NAME,
         ContactsContract.RawContacts.ACCOUNT_NAME,
         ContactsContract.RawContacts.ACCOUNT_TYPE
-
     )
 
-    private fun getDeviceContacts():  HashMap<String, ArrayList<Contact>> {
+    private fun getDeviceContacts(): HashMap<String, ArrayList<Contact>> {
         var contactsMap = HashMap<String, ArrayList<Contact>>()
         val uri = ContactsContract.Data.CONTENT_URI
         val projection = getContactProjection()
