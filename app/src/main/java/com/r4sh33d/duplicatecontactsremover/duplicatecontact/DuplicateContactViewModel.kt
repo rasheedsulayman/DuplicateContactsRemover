@@ -1,5 +1,6 @@
 package com.r4sh33d.duplicatecontactsremover.duplicatecontact
 
+import android.util.SparseBooleanArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,10 +21,10 @@ class DuplicateContactViewModel(
     val status: LiveData<LoadingStatus>
         get() = _status
 
-    private val _duplicateContactList = MutableLiveData<List<Any>>()
+    private val _duplicateContactSearchResult = MutableLiveData<Pair<List<Any>, SparseBooleanArray>>()
 
-    val duplicateContactsList: LiveData<List<Any>>
-        get() = _duplicateContactList
+    val duplicateContactsSearchResults: LiveData<Pair<List<Any>, SparseBooleanArray>>
+        get() = _duplicateContactSearchResult
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -36,13 +37,13 @@ class DuplicateContactViewModel(
     private fun getDuplicateContactsList() {
         coroutineScope.launch {
             _status.value = LoadingStatus.LOADING
-            _duplicateContactList.value = getDuplicateContacts()
-            _status.value = if (duplicateContactsList.value!!.isNotEmpty()) LoadingStatus.DONE
+            _duplicateContactSearchResult.value = getDuplicateContacts()
+            _status.value = if (duplicateContactsSearchResults.value!!.first.isNotEmpty()) LoadingStatus.DONE
             else LoadingStatus.EMPTY
         }
     }
 
-    suspend fun getDuplicateContacts(): ArrayList<Any> {
+    suspend fun getDuplicateContacts(): Pair<ArrayList<Any>, SparseBooleanArray> {
         return withContext(Dispatchers.Default) {
             contactsHelper.getDuplicateContactsWithLabels(contactsAccount, duplicateCriteria)
         }

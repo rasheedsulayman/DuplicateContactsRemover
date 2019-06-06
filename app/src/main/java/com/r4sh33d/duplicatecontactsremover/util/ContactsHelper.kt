@@ -12,6 +12,7 @@ import android.provider.ContactsContract.CommonDataKinds
 import android.telephony.PhoneNumberUtils
 import android.text.TextUtils
 import android.util.SparseArray
+import android.util.SparseBooleanArray
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.model.ContactSource
@@ -319,13 +320,13 @@ class ContactsHelper(val context: Context) {
     fun getDuplicateContactsWithLabels(
         contactsAccount: ContactsAccount,
         duplicateCriteria: DuplicateCriteria
-    ): ArrayList<Any> {
+    ): Pair<ArrayList<Any>, SparseBooleanArray> {
         val duplicateMap = HashMap<String, HashSet<Contact>>()
         val contactsListCopy = contactsAccount.contacts.toList()
 
         for (item in contactsAccount.contacts) {
-            if (item.isChecked) {
-                Timber.d("Checked ---- About to continue")
+            if (item.isMarked) {
+                Timber.d("marked ---- About to continue")
                 continue
             }
 
@@ -338,27 +339,32 @@ class ContactsHelper(val context: Context) {
 
             if (!duplicateMap.containsKey(duplicationString)) {
                 duplicateMap[duplicationString] = HashSet<Contact>().apply {
+                    item.isChecked = true
                     add(item)
                 }
             }
 
             for (contact in contactsListCopy) {
                 if (item.isDuplicateOf(contact, duplicateCriteria)) {
-                    contact.isChecked = true
+                    contact.isMarked = true
                     duplicateMap[duplicationString]!!.add(contact)
                 }
             }
         }
 
         val listToReturn = ArrayList<Any>()
+        val sparseBooleanArray = SparseBooleanArray()
         var count = 1
         duplicateMap.values.filter {
             it.size > 1
-        }.forEach {
-            listToReturn.add("Group ${count++}")
-            listToReturn.addAll(it)
+        }.forEachIndexed { index, hashSet ->
+            listToReturn.add("Group ${index + 1}")
+            listToReturn.addAll(hashSet)
         }
-        return listToReturn
+        listToReturn.forEachIndexed { index, any ->
+            sparseBooleanArray.put(index, if (any is Contact) any.isChecked else false)
+        }
+        return Pair(listToReturn, sparseBooleanArray)
     }
 
 }

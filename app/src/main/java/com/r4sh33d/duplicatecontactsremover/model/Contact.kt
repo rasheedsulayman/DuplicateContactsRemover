@@ -16,6 +16,7 @@ data class Contact(
     var phoneNumbers: List<PhoneNumber>,
     var accountName: String,
     var accountType: String,
+    var isMarked: Boolean = false,
     var isChecked: Boolean = false
 ) : Parcelable {
 

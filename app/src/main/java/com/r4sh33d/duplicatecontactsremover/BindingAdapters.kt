@@ -1,5 +1,6 @@
 package com.r4sh33d.duplicatecontactsremover
 
+import android.util.SparseBooleanArray
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -77,10 +78,11 @@ fun bindDuplicatesLoadingStatus(statusProgressBar: ProgressBar, status: LoadingS
 }
 
 @BindingAdapter("duplicateContactList")
-fun bindDuplicateContactsRecyclerView(recyclerView: RecyclerView, data: List<Any>?) {
-    data?.let {
+fun bindDuplicateContactsRecyclerView(recyclerView: RecyclerView, pair: Pair<List<Any>, SparseBooleanArray>?) {
+    pair?.let {
         val adapter = recyclerView.adapter as DuplicateContactsAdapter
-        adapter.updateData(data)
+        adapter.updateCheckedPositionMarker(pair.second)
+        adapter.submitList(pair.first)
     }
 }
 
