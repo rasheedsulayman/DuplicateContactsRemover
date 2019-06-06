@@ -9,11 +9,16 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds
+import android.telephony.PhoneNumberUtils
+import android.text.TextUtils
+import android.util.SparseArray
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.model.ContactSource
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 import com.r4sh33d.duplicatecontactsremover.model.PhoneNumber
+import com.r4sh33d.duplicatecontactsremover.times
+import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.*
 import timber.log.Timber
 import java.util.HashSet
 import java.util.LinkedHashSet
@@ -22,19 +27,11 @@ import kotlin.collections.HashMap
 import kotlin.collections.set
 
 class ContactsHelper(val context: Context) {
-
+    private var displayContactSources = ArrayList<String>()
     private val BATCH_SIZE = 100
-
-    fun getContactsWithAccounts(): List<ContactsAccount> {
-        return getDeviceContacts().filter {
-            it.value.size > 1
-        }.map { ContactsAccount(it.key, it.value) }
-    }
-
-    private fun getContactProjection() = arrayOf(
+    private val contactsProjection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
         ContactsContract.Data.RAW_CONTACT_ID,
-        CommonDataKinds.StructuredName.PREFIX,
         CommonDataKinds.StructuredName.GIVEN_NAME,
         CommonDataKinds.StructuredName.MIDDLE_NAME,
         CommonDataKinds.StructuredName.FAMILY_NAME,
@@ -42,44 +39,46 @@ class ContactsHelper(val context: Context) {
         ContactsContract.RawContacts.ACCOUNT_TYPE
     )
 
-    private fun getDeviceContacts(): HashMap<String, ArrayList<Contact>> {
-        var contactsMap = HashMap<String, ArrayList<Contact>>()
+    fun getContactsWithAccounts(duplicateCriteria: DuplicateCriteria): List<ContactsAccount> {
+        displayContactSources = getDeviceContactSources().map { it.name }.toMutableList() as ArrayList
+        return getDeviceContacts(duplicateCriteria).map { ContactsAccount(it.key, it.value) }
+    }
+
+    private fun getDeviceContacts(duplicateCriteria: DuplicateCriteria): HashMap<String, ArrayList<Contact>> {
+        val devicePhoneNumbers = getPhoneNumbers(null)
+        val contactsMap = HashMap<String, ArrayList<Contact>>()
         val uri = ContactsContract.Data.CONTENT_URI
-        val projection = getContactProjection()
         val selection = "${ContactsContract.Data.MIMETYPE} = ?"
         val selectionArgs = arrayOf(CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
         val sortOrder = null
-
         var cursor: Cursor? = null
-
         try {
-            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, sortOrder)
+            cursor = context.contentResolver.query(uri, contactsProjection, selection, selectionArgs, sortOrder)
             if (cursor?.moveToFirst() == true) {
-                do {
-                    val accountName = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
-                    val accountType = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
-                    var accountNameIdentifier = accountName
-                    if (accountType == TELEGRAM_PACKAGE) {
-                        accountNameIdentifier = context.getString(R.string.telegram)
-                    }
-
+                loop@ do {
                     val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
-                    val prefix = cursor.getStringValue(CommonDataKinds.StructuredName.PREFIX) ?: ""
+                    val contactNumbers = devicePhoneNumbers.get(id)
                     val firstName = cursor.getStringValue(CommonDataKinds.StructuredName.GIVEN_NAME) ?: ""
                     val middleName = cursor.getStringValue(CommonDataKinds.StructuredName.MIDDLE_NAME) ?: ""
                     val surname = cursor.getStringValue(CommonDataKinds.StructuredName.FAMILY_NAME) ?: ""
+
+                    when (duplicateCriteria) {
+                        PHONE_NUMBER -> if (contactNumbers == null) continue@loop
+                        NAME -> if ("$firstName $middleName $surname".isBlank()) continue@loop
+                    }
+
+                    val accountName = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
+                    val accountType = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
+                    val accountNameIdentifier = "$accountName${ContactsAccount.ACCOUNT_KEY_SEPARATOR}$accountType"
                     val contactId = cursor.getIntValue(ContactsContract.Data.CONTACT_ID)
-                    val numbers = getPhoneNumbers(id)
 
                     val contact = Contact(
                         id,
-                        prefix,
                         firstName,
                         surname,
                         middleName,
-                        "",
                         contactId,
-                        numbers,
+                        contactNumbers,
                         accountName,
                         accountType
                     )
@@ -100,8 +99,9 @@ class ContactsHelper(val context: Context) {
         return contactsMap
     }
 
-    private fun getPhoneNumbers(contactId: Int): ArrayList<PhoneNumber> {
-        var phoneNumbers = ArrayList<PhoneNumber>()
+
+    private fun getPhoneNumbers(contactId: Int? = null): SparseArray<ArrayList<PhoneNumber>> {
+        val phoneNumbers = SparseArray<ArrayList<PhoneNumber>>()
         val uri = CommonDataKinds.Phone.CONTENT_URI
         val projection = arrayOf(
             ContactsContract.Data.RAW_CONTACT_ID,
@@ -110,9 +110,8 @@ class ContactsHelper(val context: Context) {
             CommonDataKinds.Phone.TYPE,
             CommonDataKinds.Phone.LABEL
         )
-
-        val selection = "${ContactsContract.Data.RAW_CONTACT_ID} = ?"
-        val selectionArgs = arrayOf(contactId.toString())
+        val selection = if (contactId == null) getSourcesSelection() else "${ContactsContract.Data.RAW_CONTACT_ID} = ?"
+        val selectionArgs = if (contactId == null) getSourcesSelectionArgs() else arrayOf(contactId.toString())
         var cursor: Cursor? = null
         try {
             cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
@@ -120,83 +119,83 @@ class ContactsHelper(val context: Context) {
                 do {
                     val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
                     val number = cursor.getStringValue(CommonDataKinds.Phone.NUMBER) ?: continue
-                    val normalizedNumber = cursor.getStringValue(CommonDataKinds.Phone.NORMALIZED_NUMBER) ?: null
+                    val normalizedNumber =
+                        cursor.getStringValue(CommonDataKinds.Phone.NORMALIZED_NUMBER)
+                            ?: PhoneNumberUtils.normalizeNumber(number)
+
                     val type = cursor.getIntValue(CommonDataKinds.Phone.TYPE)
                     val label = cursor.getStringValue(CommonDataKinds.Phone.LABEL) ?: ""
-                    val phoneNumber = PhoneNumber(
-                        number,
-                        type,
-                        label,
-                        normalizedNumber
-                    )
-                    phoneNumbers.add(phoneNumber)
+
+                    if (phoneNumbers[id] == null) {
+                        phoneNumbers.put(id, ArrayList())
+                    }
+
+                    val phoneNumber = PhoneNumber(number, type, label, normalizedNumber)
+                    phoneNumbers[id].add(phoneNumber)
                 } while (cursor.moveToNext())
             }
         } catch (e: Exception) {
-            Timber.e(e)
             context.showErrorToast(e)
         } finally {
             cursor?.close()
         }
+
         return phoneNumbers
     }
 
+    private fun getQuestionMarks() = "?,".times(displayContactSources.filter { it.isNotEmpty() }.size).trimEnd(',')
 
-    fun getContactWithId(id: Int, isLocalPrivate: Boolean): Contact? {
-        if (id == 0) {
-            return null
+    private fun getSourcesSelection(
+        addMimeType: Boolean = false,
+        addContactId: Boolean = false,
+        useRawContactId: Boolean = true
+    ): String {
+        val strings = ArrayList<String>()
+        if (addMimeType) {
+            strings.add("${ContactsContract.Data.MIMETYPE} = ?")
         }
-        val selection = "${ContactsContract.Data.MIMETYPE} = ? AND ${ContactsContract.Data.RAW_CONTACT_ID} = ?"
-        val selectionArgs = arrayOf(CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, id.toString())
-        return parseContactCursor(selection, selectionArgs)
-    }
 
-    fun getContactWithLookupKey(key: String): Contact? {
-        val selection = "${ContactsContract.Data.MIMETYPE} = ? AND ${ContactsContract.Data.LOOKUP_KEY} = ?"
-        val selectionArgs = arrayOf(CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, key)
-        return parseContactCursor(selection, selectionArgs)
-    }
-
-    private fun parseContactCursor(selection: String, selectionArgs: Array<String>): Contact? {
-        val uri = ContactsContract.Data.CONTENT_URI
-        val projection = getContactProjection()
-        var cursor: Cursor? = null
-        try {
-            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
-            if (cursor?.moveToFirst() == true) {
-                val accountName = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
-                val accountType = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
-                val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
-                val prefix = cursor.getStringValue(CommonDataKinds.StructuredName.PREFIX) ?: ""
-                val firstName = cursor.getStringValue(CommonDataKinds.StructuredName.GIVEN_NAME)
-                    ?: ""
-                val middleName = cursor.getStringValue(CommonDataKinds.StructuredName.MIDDLE_NAME)
-                    ?: ""
-                val surname = cursor.getStringValue(CommonDataKinds.StructuredName.FAMILY_NAME)
-                    ?: ""
-                val suffix = cursor.getStringValue(CommonDataKinds.StructuredName.SUFFIX) ?: ""
-                val number = getPhoneNumbers(id)
-                val contactId = cursor.getIntValue(ContactsContract.Data.CONTACT_ID)
-                return Contact(
-                    id, prefix, firstName, surname, middleName, suffix, contactId, number,
-                    accountName, accountType
-                )
+        if (addContactId) {
+            strings.add("${if (useRawContactId) ContactsContract.Data.RAW_CONTACT_ID else ContactsContract.Data.CONTACT_ID} = ?")
+        } else {
+            // sometimes local device storage has null account_name, handle it properly
+            val accountnameString = StringBuilder()
+            if (displayContactSources.contains("")) {
+                accountnameString.append("(")
             }
-        } finally {
-            cursor?.close()
+            accountnameString.append("${ContactsContract.RawContacts.ACCOUNT_NAME} IN (${getQuestionMarks()})")
+            if (displayContactSources.contains("")) {
+                accountnameString.append(" OR ${ContactsContract.RawContacts.ACCOUNT_NAME} IS NULL)")
+            }
+            strings.add(accountnameString.toString())
         }
-        return null
+
+        return TextUtils.join(" AND ", strings)
+    }
+
+    private fun getSourcesSelectionArgs(mimetype: String? = null, contactId: Int? = null): Array<String> {
+        val args = ArrayList<String>()
+
+        if (mimetype != null) {
+            args.add(mimetype)
+        }
+
+        if (contactId != null) {
+            args.add(contactId.toString())
+        } else {
+            args.addAll(displayContactSources.filter { it.isNotEmpty() })
+        }
+        return args.toTypedArray()
     }
 
 
     private fun getRealContactId(id: Long): Int {
         val uri = ContactsContract.Data.CONTENT_URI
-        val projection = getContactProjection()
         val selection = "${ContactsContract.Data.MIMETYPE} = ? AND ${ContactsContract.Data.RAW_CONTACT_ID} = ?"
         val selectionArgs = arrayOf(CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, id.toString())
         var cursor: Cursor? = null
         try {
-            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            cursor = context.contentResolver.query(uri, contactsProjection, selection, selectionArgs, null)
             if (cursor?.moveToFirst() == true) {
                 return cursor.getIntValue(ContactsContract.Data.CONTACT_ID)
             }
@@ -259,15 +258,10 @@ class ContactsHelper(val context: Context) {
         }
     }
 
-    fun Context.getAllContactSources(): List<ContactSource> {
-        val sources = ContactsHelper(this).getDeviceContactSources()
-        return sources.toMutableList()
-    }
-
-    fun getDeviceContactSources(): LinkedHashSet<ContactSource> {
+    fun getDeviceContactSources(): List<ContactSource> {
         val sources = LinkedHashSet<ContactSource>()
         if (!context.hasContactPermissions()) {
-            return sources
+            return ArrayList()
         }
 
         val accounts = AccountManager.get(context).accounts
@@ -279,8 +273,7 @@ class ContactsHelper(val context: Context) {
                 }
                 val contactSource = ContactSource(
                     it.name,
-                    it.type,
-                    publicName
+                    it.type
                 )
                 sources.add(contactSource)
             }
@@ -290,8 +283,7 @@ class ContactsHelper(val context: Context) {
             it.name.isNotEmpty() && it.type.isNotEmpty() && !accounts.contains(Account(it.name, it.type))
         }
         sources.addAll(contentResolverAccounts)
-
-        return sources
+        return sources.toMutableList()
     }
 
     private fun getContentResolverAccounts(): HashSet<ContactSource> {
@@ -317,15 +309,10 @@ class ContactsHelper(val context: Context) {
                 do {
                     val name = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
                     val type = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
-                    var publicName = name
-                    if (type == TELEGRAM_PACKAGE) {
-                        publicName += " (${context.getString(R.string.telegram)})"
-                    }
 
                     val source = ContactSource(
                         name,
-                        type,
-                        publicName
+                        type
                     )
                     sources.add(source)
                 } while (cursor.moveToNext())
@@ -335,4 +322,46 @@ class ContactsHelper(val context: Context) {
             cursor?.close()
         }
     }
+
+    //TODO this is very inefficient, find a better algorithm to get the duplicates
+    fun getDuplicateContactsWithLabels(contactsAccount: ContactsAccount, duplicateCriteria: DuplicateCriteria): ArrayList<Any> {
+        val duplicateMap = HashMap<String, HashSet<Contact>>()
+        val contactsListCopy = contactsAccount.contacts.toList()
+
+        for (item in contactsAccount.contacts) {
+            if (item.isChecked) {
+                Timber.d("Checked ---- About to continue")
+                continue
+            }
+
+            val duplicationString = item.getDuplicateCriteriaString(duplicateCriteria)
+
+            if (duplicationString.isBlank()) {
+                Timber.d("Duplication String is blank continue ------")
+                continue
+            }
+
+            if (!duplicateMap.containsKey(duplicationString)) {
+                duplicateMap[duplicationString] = HashSet<Contact>().apply {
+                    add(item)
+                }
+            }
+
+            for (contact in contactsListCopy) {
+                if (item.isDuplicateOf(contact, duplicateCriteria)) {
+                    contact.isChecked = true
+                    duplicateMap[duplicationString]!!.add(contact)
+                }
+            }
+        }
+
+        val listToReturn = ArrayList<Any>()
+        var count = 1
+        duplicateMap.values.forEach {
+            listToReturn.add("Group ${count++}")
+            listToReturn.addAll(it)
+        }
+        return listToReturn
+    }
+
 }

@@ -9,12 +9,26 @@
             android:name="com.r4sh33d.duplicatecontactsremover.LandingPageFragment"
             android:label="Duplicate Contacts">
         <action android:id="@+id/action_landingPageFragment_to_contactSourcesFragment"
-                app:destination="@id/contactSourcesFragment"/>
+                app:destination="@id/contactSourcesFragment"
+        />
+    </fragment>
+    <fragment tools:layout="@layout/fragment_contact_sources"
+              android:id="@+id/contactSourcesFragment"
+              android:name="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment"
+              android:label="Contact Sources">
+        <action android:id="@+id/action_contactSourcesFragment_to_duplicateContactFixFragment"
+                app:destination="@id/duplicateContactFixFragment"/>
+        <argument android:name="duplicateCriteria"
+                  app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria"/>
     </fragment>
     <fragment android:id="@+id/duplicateContactFixFragment"
-              android:name="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment"
-              android:label="Remove Duplicates" tools:layout="@layout/fragment_duplicate_contact_fix"/>
-    <fragment android:id="@+id/contactSourcesFragment"
-              android:name="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment"
-              android:label="Contact Sources" tools:layout="@layout/fragment_contact_sources"/>
+              tools:layout="@layout/fragment_duplicate_contact_fix"
+              android:name="com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactFixFragment"
+              android:label="Remove Duplicates">
+        <argument android:name="contactsAccount"
+                  app:argType="com.r4sh33d.duplicatecontactsremover.model.ContactsAccount"/>
+        <argument android:name="duplicateCriteria"
+                  app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria"
+                  android:defaultValue="PHONE_NUMBER"/>
+    </fragment>
 </navigation>

@@ -1,0 +1,15 @@
+<layout xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="groupLabel" type="String"/>
+    </data>
+
+    <TextView
+            android:text="@{groupLabel}"
+            android:layout_marginStart="16dp"
+            android:id="@+id/label_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead" android:textStyle="bold"
+            tools:text="Group 1"/>
+</layout>

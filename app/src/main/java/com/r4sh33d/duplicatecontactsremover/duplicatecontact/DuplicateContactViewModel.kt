@@ -1,43 +1,55 @@
-//package com.r4sh33d.duplicatecontactsremover.duplicatecontact
-//
-//import androidx.lifecycle.LiveData
-//import androidx.lifecycle.MutableLiveData
-//import androidx.lifecycle.ViewModel
-//import com.r4sh33d.duplicatecontactsremover.model.Contact
-//import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
-//import kotlinx.coroutines.*
-//import timber.log.Timber
-//
-//class DuplicateContactViewModel(val contactsHelper: ContactsHelper) : ViewModel() {
-//
-//    private val _contactsList = MutableLiveData<List<Contact>>()
-//
-//    val contactsList: LiveData<List<Contact>>
-//        get() = _contactsList
-//
-//    private var viewModelJob = Job()
-//    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-//
-//    init {
-//        getDuplicateContactsList()
-//    }
-//
-//    private fun getDuplicateContactsList() {
-//        coroutineScope.launch {
-//            Timber.d("Enter Main scope with, executing on: %s", Thread.currentThread())
-//            val contactsMap = getContactsWithAccounts()
-//        }
-//    }
-//
-//    suspend fun getContactsWithAccounts(): Map<String, ArrayList<Contact>> {
-//        return withContext(Dispatchers.IO) {
-//            contactsHelper.getContactsWithAccounts()
-//        }
-//    }
-//
-//    override fun onCleared() {
-//        super.onCleared()
-//        Timber.d("Onclered called")
-//        viewModelJob.cancel()
-//    }
-//}
+package com.r4sh33d.duplicatecontactsremover.duplicatecontact
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
+import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
+import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
+import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
+import kotlinx.coroutines.*
+
+class DuplicateContactViewModel(
+    private val contactsAccount: ContactsAccount,
+    val duplicateCriteria: DuplicateCriteria,
+    private val contactsHelper: ContactsHelper
+) : ViewModel() {
+
+    private val _status = MutableLiveData<LoadingStatus>()
+
+    val status: LiveData<LoadingStatus>
+        get() = _status
+
+    private val _duplicateContactList = MutableLiveData<List<Any>>()
+
+    val duplicateContactsList: LiveData<List<Any>>
+        get() = _duplicateContactList
+
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
+    init {
+        getDuplicateContactsList()
+    }
+
+
+    private fun getDuplicateContactsList() {
+        coroutineScope.launch {
+            _status.value = LoadingStatus.LOADING
+            _duplicateContactList.value = getDuplicateContacts()
+            _status.value = if (duplicateContactsList.value!!.isNotEmpty()) LoadingStatus.DONE
+            else LoadingStatus.EMPTY
+        }
+    }
+
+    suspend fun getDuplicateContacts(): ArrayList<Any> {
+        return withContext(Dispatchers.Default) {
+            contactsHelper.getDuplicateContactsWithLabels(contactsAccount, duplicateCriteria)
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+}

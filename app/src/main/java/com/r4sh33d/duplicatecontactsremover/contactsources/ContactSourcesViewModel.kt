@@ -5,15 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
+import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
+import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import kotlinx.coroutines.*
+import timber.log.Timber
 
-enum class ContactAccountsLoadingStatus { LOADING, EMPTY, DONE }
 
 class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() {
 
-    private val _status = MutableLiveData<ContactAccountsLoadingStatus>()
+    private val _navigateToSelectedContactsAccount = MutableLiveData<ContactsAccount>()
 
-    val status: LiveData<ContactAccountsLoadingStatus>
+    val navigateToSelectedContactsAccount: LiveData<ContactsAccount>
+        get() = _navigateToSelectedContactsAccount
+
+    private val _status = MutableLiveData<LoadingStatus>()
+
+    val status: LiveData<LoadingStatus>
         get() = _status
 
 
@@ -22,20 +29,19 @@ class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() 
     val contactsAccountList: LiveData<List<ContactsAccount>>
         get() = _contactsAccountList
 
-
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-        getDuplicateContactsList()
+       getContactsAccountsList()
     }
 
-    private fun getDuplicateContactsList() {
+    private fun getContactsAccountsList() {
         coroutineScope.launch {
-            _status.value = ContactAccountsLoadingStatus.LOADING
+            _status.value = LoadingStatus.LOADING
             _contactsAccountList.value = getContactsWithAccounts()
-            _status.value = if (contactsAccountList.value!!.isNotEmpty()) ContactAccountsLoadingStatus.DONE
-            else ContactAccountsLoadingStatus.EMPTY
+            _status.value = if (contactsAccountList.value!!.isNotEmpty()) LoadingStatus.DONE
+            else LoadingStatus.EMPTY
         }
     }
 
@@ -43,6 +49,14 @@ class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() 
         return withContext(Dispatchers.IO) {
             contactsHelper.getContactsWithAccounts()
         }
+    }
+
+    fun displayContactAccountDetails(contactsAccount: ContactsAccount) {
+        _navigateToSelectedContactsAccount.value = contactsAccount
+    }
+
+    fun displayContactAccountDetailsComplete() {
+        _navigateToSelectedContactsAccount.value = null
     }
 
     override fun onCleared() {

@@ -11,13 +11,14 @@ import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 class ContactSourcesAdapter(
     var contactsAccounts: List<ContactsAccount>,
     val accountClickListener: (ContactsAccount) -> Unit
-) :
-    RecyclerView.Adapter<ContactSourceViewHolder>() {
+) : RecyclerView.Adapter<ContactSourceViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactSourceViewHolder {
-        return ContactSourceViewHolder(ItemContactSourceBinding.bind(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_contact_source, parent,false)
-        ))
+        return ContactSourceViewHolder(
+            ItemContactSourceBinding.bind(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_contact_source, parent, false)
+            )
+        )
     }
 
     override fun getItemCount(): Int {
