@@ -17,7 +17,7 @@ fun bindAccountsLoadingStatus(statusTextView: TextView, status: LoadingStatus?) 
     when (status) {
         LoadingStatus.LOADING -> {
             statusTextView.text =
-                "Loading your contacts. Please wait while we group them in to their associated accounts."
+                "Loading your contacts with phone numbers. Please wait while we group them in to their associated accounts."
         }
         LoadingStatus.EMPTY -> {
             statusTextView.text = "No Account found with more than one contacts found"

@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.r4sh33d.duplicatecontactsremover.MainActivity
-import com.r4sh33d.duplicatecontactsremover.databinding.FragmentDuplicateContactFixBinding
+import com.r4sh33d.duplicatecontactsremover.databinding.FragmentDuplicateContactFixConstaraintLayoutBinding
+import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import kotlinx.android.synthetic.main.toolbar_layout.*
 
 class DuplicateContactFixFragment : Fragment() {
@@ -18,19 +18,16 @@ class DuplicateContactFixFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentDuplicateContactFixBinding.inflate(inflater)
+        val binding = FragmentDuplicateContactFixConstaraintLayoutBinding.inflate(inflater)
         binding.lifecycleOwner = this
-
+        binding.contactsListRecyclerView.adapter = DuplicateContactsAdapter()
         val fragmentArgs = DuplicateContactFixFragmentArgs.fromBundle(arguments!!)
-        val viewModelFactory = DuplicateContactsViewModelFactory(fragmentArgs.contactsAccount, fragmentArgs.duplicateCriteria)
+        val viewModelFactory = DuplicateContactsViewModelFactory(
+            fragmentArgs.contactsAccount,
+            fragmentArgs.duplicateCriteria, ContactsHelper(context!!)
+        )
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DuplicateContactViewModel::class.java)
         binding.viewModel = viewModel
-        binding.contactsListRecyclerView.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
         (activity as MainActivity).toolbarTitle.text = fragmentArgs.contactsAccount.getDisplayName()
         return binding.root
     }

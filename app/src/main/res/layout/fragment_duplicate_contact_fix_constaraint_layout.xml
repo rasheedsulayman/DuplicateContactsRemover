@@ -16,7 +16,8 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-                tools:listitem="@layout/item_contacts_list"
+                app:duplicateContactList="@{viewModel.duplicateContactsList}"
+                tools:listitem="@layout/item_contacts_list_constraint_layout"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -27,7 +28,7 @@
                 android:id="@+id/contactsListRecyclerView" app:layout_constraintTop_toTopOf="parent"/>
 
         <ProgressBar
-                android:visibility="gone"
+                app:duplicatesLoadingStatus="@{viewModel.status}"
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
@@ -43,7 +44,7 @@
                 app:layout_constraintVertical_chainStyle="packed" app:layout_constraintVertical_bias="0.38"/>
 
         <TextView
-                android:visibility="gone"
+                app:duplicatesLoadingStatus="@{viewModel.status}"
                 android:id="@+id/progressMessage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

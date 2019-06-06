@@ -25,8 +25,9 @@ data class Contact(
     val multiLinedPhoneNumbers: String
         get() {
             val phoneNumbersBuilder = StringBuilder()
-            phoneNumbers.forEach {
-                phoneNumbersBuilder.append("${it.value}\n")
+            phoneNumbers.forEachIndexed { index, phoneNumber ->
+                phoneNumbersBuilder.append(phoneNumber.value)
+                if (index != phoneNumbers.size - 1) phoneNumbersBuilder.append("\n")
             }
             return phoneNumbersBuilder.toString()
         }
@@ -42,7 +43,6 @@ data class Contact(
         }
         return phoneNumbersString
     }
-
 
     fun containEqualNames(contact: Contact): Boolean {
         val thisContactName = fullName

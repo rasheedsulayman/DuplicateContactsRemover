@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="viewModel"
+                type="com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactViewModel"/>
+    </data>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+                app:duplicateContactList="@{viewModel.duplicateContactsList}"
+                tools:listitem="@layout/item_contact_list"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+                android:id="@+id/contactsListRecyclerView" app:layout_constraintTop_toTopOf="parent"/>
+
+        <LinearLayout
+                android:layout_marginBottom="70dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_gravity="center"
+                android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+            <ProgressBar
+                    android:layout_gravity="center"
+                    app:duplicatesLoadingStatus="@{viewModel.status}"
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    tools:text="Loading Please wait"
+                    app:duplicatesLoadingStatus="@{viewModel.status}"
+                    android:id="@+id/progressMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-normal"
+                    android:gravity="center"
+                    android:textColor="?colorAccent"
+                    android:textSize="18sp"/>
+        </LinearLayout>
+    </FrameLayout>
+</layout>

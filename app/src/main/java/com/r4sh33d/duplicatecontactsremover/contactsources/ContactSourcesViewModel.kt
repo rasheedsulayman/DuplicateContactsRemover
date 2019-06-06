@@ -8,10 +8,10 @@ import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import kotlinx.coroutines.*
-import timber.log.Timber
 
 
-class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() {
+class ContactSourcesViewModel(val contactsHelper: ContactsHelper, val duplicateCriteria: DuplicateCriteria) :
+    ViewModel() {
 
     private val _navigateToSelectedContactsAccount = MutableLiveData<ContactsAccount>()
 
@@ -33,7 +33,7 @@ class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-       getContactsAccountsList()
+        getContactsAccountsList()
     }
 
     private fun getContactsAccountsList() {
@@ -47,7 +47,7 @@ class ContactSourcesViewModel(val contactsHelper: ContactsHelper) : ViewModel() 
 
     suspend fun getContactsWithAccounts(): List<ContactsAccount> {
         return withContext(Dispatchers.IO) {
-            contactsHelper.getContactsWithAccounts()
+            contactsHelper.getContactsWithAccounts(duplicateCriteria)
         }
     }
 

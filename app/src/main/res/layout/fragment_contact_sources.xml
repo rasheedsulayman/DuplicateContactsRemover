@@ -10,65 +10,69 @@
                 type="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesViewModel"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <TextView
-                android:textSize="18sp"
-                app:contactAccountsList="@{viewModel.contactsAccountList}"
-                android:textColor="@android:color/black"
-                android:text="Please select an account to remove duplicates"
-                android:gravity="center"
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent" android:layout_height="match_parent">
+
+            <TextView
+                    android:textSize="18sp"
+                    app:contactAccountsList="@{viewModel.contactsAccountList}"
+                    android:textColor="@android:color/black"
+                    android:text="Please select an account to remove duplicates"
+                    android:gravity="center"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/header_message"
+                    android:layout_marginTop="20dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="20dp"
+                    tools:listitem="@layout/item_contact_source_constraint_layout"
+                    app:contactAccountsList="@{viewModel.contactsAccountList}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/contactSourcesRecyclerView"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_marginBottom="70dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_gravity="center"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/header_message"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="20dp" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="20dp" android:layout_marginTop="20dp"/>
+                android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-                tools:listitem="@layout/item_contact_source"
-                app:contactAccountsList="@{viewModel.contactsAccountList}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/header_message" android:id="@+id/contactSourcesRecyclerView"/>
+            <ProgressBar
+                    app:accountsLoadingStatus="@{viewModel.status}"
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_gravity="center"/>
 
-        <ProgressBar
-                app:accountsLoadingStatus="@{viewModel.status}"
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintBottom_toTopOf="@+id/progressMessage"
-                app:layout_constraintVertical_chainStyle="packed" app:layout_constraintVertical_bias="0.38"/>
+            <TextView
+                    android:layout_marginTop="20dp"
+                    tools:text="Loading please wait"
+                    app:accountsLoadingStatus="@{viewModel.status}"
+                    android:id="@+id/progressMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-normal"
+                    android:gravity="center"
+                    android:textColor="?colorAccent"
+                    android:textSize="18sp"
+                    android:layout_gravity="center"/>
+        </LinearLayout>
 
-        <TextView
-                app:accountsLoadingStatus="@{viewModel.status}"
-                android:id="@+id/progressMessage"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:fontFamily="sans-serif-normal"
-                android:gravity="center"
-                android:textColor="?colorAccent"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="Loading, Please wait. We are currently fetching your contacts"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/progressBar"
-                android:layout_marginTop="16dp" android:layout_marginStart="30dp"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="16dp"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 </layout>

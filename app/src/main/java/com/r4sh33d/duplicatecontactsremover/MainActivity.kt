@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setUpNavigation()
     }
 
-    fun setUpNavigation() {
+    private fun setUpNavigation() {
         toolbar.overflowIcon = getDrawable(R.drawable.ic_more_vert_black_24dp)
         setSupportActionBar(toolbar)
         navController = findNavController(R.id.nav_host_fragment)

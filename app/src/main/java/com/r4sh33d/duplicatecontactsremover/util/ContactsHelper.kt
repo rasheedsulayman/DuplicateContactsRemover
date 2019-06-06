@@ -18,7 +18,8 @@ import com.r4sh33d.duplicatecontactsremover.model.ContactSource
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 import com.r4sh33d.duplicatecontactsremover.model.PhoneNumber
 import com.r4sh33d.duplicatecontactsremover.times
-import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.*
+import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.NAME
+import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.PHONE_NUMBER
 import timber.log.Timber
 import java.util.HashSet
 import java.util.LinkedHashSet
@@ -29,6 +30,7 @@ import kotlin.collections.set
 class ContactsHelper(val context: Context) {
     private var displayContactSources = ArrayList<String>()
     private val BATCH_SIZE = 100
+
     private val contactsProjection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
         ContactsContract.Data.RAW_CONTACT_ID,
@@ -57,7 +59,7 @@ class ContactsHelper(val context: Context) {
             if (cursor?.moveToFirst() == true) {
                 loop@ do {
                     val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
-                    val contactNumbers = devicePhoneNumbers.get(id)
+                    var contactNumbers = devicePhoneNumbers.get(id)
                     val firstName = cursor.getStringValue(CommonDataKinds.StructuredName.GIVEN_NAME) ?: ""
                     val middleName = cursor.getStringValue(CommonDataKinds.StructuredName.MIDDLE_NAME) ?: ""
                     val surname = cursor.getStringValue(CommonDataKinds.StructuredName.FAMILY_NAME) ?: ""
@@ -66,7 +68,7 @@ class ContactsHelper(val context: Context) {
                         PHONE_NUMBER -> if (contactNumbers == null) continue@loop
                         NAME -> if ("$firstName $middleName $surname".isBlank()) continue@loop
                     }
-
+                    contactNumbers = contactNumbers ?: ArrayList()
                     val accountName = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
                     val accountType = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
                     val accountNameIdentifier = "$accountName${ContactsAccount.ACCOUNT_KEY_SEPARATOR}$accountType"
@@ -92,7 +94,6 @@ class ContactsHelper(val context: Context) {
             }
         } catch (e: Exception) {
             Timber.e(e)
-            context.showErrorToast(e)
         } finally {
             cursor?.close()
         }
@@ -135,7 +136,6 @@ class ContactsHelper(val context: Context) {
                 } while (cursor.moveToNext())
             }
         } catch (e: Exception) {
-            context.showErrorToast(e)
         } finally {
             cursor?.close()
         }
@@ -249,21 +249,13 @@ class ContactsHelper(val context: Context) {
                     operations.clear()
                 }
             }
-
-            if (context.hasPermission(PERMISSION_WRITE_CONTACTS)) {
-                context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
-            }
+            context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
         } catch (e: Exception) {
-            context.showErrorToast(e)
         }
     }
 
     fun getDeviceContactSources(): List<ContactSource> {
         val sources = LinkedHashSet<ContactSource>()
-        if (!context.hasContactPermissions()) {
-            return ArrayList()
-        }
-
         val accounts = AccountManager.get(context).accounts
         accounts.forEach {
             if (ContentResolver.getIsSyncable(it, ContactsContract.AUTHORITY) == 1) {
@@ -324,7 +316,10 @@ class ContactsHelper(val context: Context) {
     }
 
     //TODO this is very inefficient, find a better algorithm to get the duplicates
-    fun getDuplicateContactsWithLabels(contactsAccount: ContactsAccount, duplicateCriteria: DuplicateCriteria): ArrayList<Any> {
+    fun getDuplicateContactsWithLabels(
+        contactsAccount: ContactsAccount,
+        duplicateCriteria: DuplicateCriteria
+    ): ArrayList<Any> {
         val duplicateMap = HashMap<String, HashSet<Contact>>()
         val contactsListCopy = contactsAccount.contacts.toList()
 
@@ -357,7 +352,9 @@ class ContactsHelper(val context: Context) {
 
         val listToReturn = ArrayList<Any>()
         var count = 1
-        duplicateMap.values.forEach {
+        duplicateMap.values.filter {
+            it.size > 1
+        }.forEach {
             listToReturn.add("Group ${count++}")
             listToReturn.addAll(it)
         }

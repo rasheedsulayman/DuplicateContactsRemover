@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.r4sh33d.duplicatecontactsremover.databinding.FragmentContactSourcesBinding
+import com.r4sh33d.duplicatecontactsremover.databinding.FragmentContactSourcesConstaraintLayoutBinding
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 
 class ContactSourcesFragment : Fragment() {
@@ -19,7 +19,7 @@ class ContactSourcesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = FragmentContactSourcesBinding.inflate(inflater)
+        val binding = FragmentContactSourcesConstaraintLayoutBinding.inflate(inflater)
 
         binding.lifecycleOwner = this
 
@@ -30,10 +30,9 @@ class ContactSourcesFragment : Fragment() {
             )
         )
 
-        val viewModelFactory = ContactsSourcesViewModelFactory(ContactsHelper(context!!))
-
+        val fragmentArgs = ContactSourcesFragmentArgs.fromBundle(arguments!!)
+        val viewModelFactory = ContactsSourcesViewModelFactory(ContactsHelper(context!!), fragmentArgs.duplicateCriteria)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(ContactSourcesViewModel::class.java)
-
         binding.viewModel = viewModel
 
         binding.contactSourcesRecyclerView.adapter = ContactSourcesAdapter(ArrayList()) {

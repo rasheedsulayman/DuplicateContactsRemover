@@ -3,13 +3,33 @@
         <variable name="groupLabel" type="String"/>
     </data>
 
-    <TextView
-            android:text="@{groupLabel}"
-            android:layout_marginStart="16dp"
-            android:id="@+id/label_text_view"
-            android:layout_width="wrap_content"
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead" android:textStyle="bold"
-            tools:text="Group 1"/>
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+        <TextView
+                android:textColor="?android:textColorSecondary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Group 1"
+                android:text="@{groupLabel}"
+                android:id="@+id/label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"/>
+
+        <View
+                android:background="@color/line_separator_color"
+                android:layout_width="0dp"
+                android:layout_height="0.5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"/>
+    </LinearLayout>
+
 </layout>

@@ -10,7 +10,7 @@
             android:label="Duplicate Contacts">
         <action android:id="@+id/action_landingPageFragment_to_contactSourcesFragment"
                 app:destination="@id/contactSourcesFragment"
-        />
+                app:launchSingleTop="false"/>
     </fragment>
     <fragment tools:layout="@layout/fragment_contact_sources"
               android:id="@+id/contactSourcesFragment"
@@ -22,7 +22,7 @@
                   app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria"/>
     </fragment>
     <fragment android:id="@+id/duplicateContactFixFragment"
-              tools:layout="@layout/fragment_duplicate_contact_fix"
+              tools:layout="@layout/fragment_duplicate_contact_fix_constaraint_layout"
               android:name="com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactFixFragment"
               android:label="Remove Duplicates">
         <argument android:name="contactsAccount"
