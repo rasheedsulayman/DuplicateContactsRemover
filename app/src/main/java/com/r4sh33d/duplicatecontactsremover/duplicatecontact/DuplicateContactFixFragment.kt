@@ -10,9 +10,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.databinding.FragmentDuplicateContactFixConstaraintLayoutBinding
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
-import kotlinx.android.synthetic.main.toolbar_layout.*
+import com.r4sh33d.duplicatecontactsremover.util.onScrollChanged
 
 class DuplicateContactFixFragment : Fragment() {
+
+    private val mainActivity: MainActivity
+        get() {
+            return activity as? MainActivity ?: throw IllegalStateException("Not attached!")
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +33,8 @@ class DuplicateContactFixFragment : Fragment() {
         )
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DuplicateContactViewModel::class.java)
         binding.viewModel = viewModel
-        (activity as MainActivity).toolbarTitle.text = fragmentArgs.contactsAccount.getDisplayName()
+        mainActivity.setUpToolBar(fragmentArgs.contactsAccount.getDisplayName())
+        binding.contactsListRecyclerView.onScrollChanged { mainActivity.invalidateToolbarElevation(it) }
         return binding.root
     }
 }

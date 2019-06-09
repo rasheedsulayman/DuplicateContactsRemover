@@ -101,7 +101,6 @@ class ContactsHelper(val context: Context) {
         return contactsMap
     }
 
-
     private fun getPhoneNumbers(contactId: Int? = null): SparseArray<ArrayList<PhoneNumber>> {
         val phoneNumbers = SparseArray<ArrayList<PhoneNumber>>()
         val uri = CommonDataKinds.Phone.CONTENT_URI
@@ -136,11 +135,10 @@ class ContactsHelper(val context: Context) {
                     phoneNumbers[id].add(phoneNumber)
                 } while (cursor.moveToNext())
             }
-        } catch (e: Exception) {
+        } catch (ignored: Exception) {
         } finally {
             cursor?.close()
         }
-
         return phoneNumbers
     }
 
@@ -203,10 +201,8 @@ class ContactsHelper(val context: Context) {
         } finally {
             cursor?.close()
         }
-
         return 0
     }
-
 
     fun getContactLookupKey(contactId: String): String {
         val uri = ContactsContract.Data.CONTENT_URI
@@ -238,9 +234,7 @@ class ContactsHelper(val context: Context) {
             val selection = "${ContactsContract.RawContacts._ID} = ?"
             contacts.forEach {
                 ContentProviderOperation.newDelete(ContactsContract.RawContacts.CONTENT_URI).apply {
-
                     val selectionArgs = arrayOf(it.id.toString())
-
                     withSelection(selection, selectionArgs)
                     operations.add(build())
                 }
@@ -316,55 +310,28 @@ class ContactsHelper(val context: Context) {
         }
     }
 
-    //TODO this is very inefficient, find a better algorithm to get the duplicates
     fun getDuplicateContactsWithLabels(
         contactsAccount: ContactsAccount,
         duplicateCriteria: DuplicateCriteria
     ): Pair<ArrayList<Any>, SparseBooleanArray> {
-        val duplicateMap = HashMap<String, HashSet<Contact>>()
-        val contactsListCopy = contactsAccount.contacts.toList()
-
-        for (item in contactsAccount.contacts) {
-            if (item.isMarked) {
-                Timber.d("marked ---- About to continue")
-                continue
-            }
-
-            val duplicationString = item.getDuplicateCriteriaString(duplicateCriteria)
-
-            if (duplicationString.isBlank()) {
-                Timber.d("Duplication String is blank continue ------")
-                continue
-            }
-
-            if (!duplicateMap.containsKey(duplicationString)) {
-                duplicateMap[duplicationString] = HashSet<Contact>().apply {
-                    item.isChecked = true
-                    add(item)
-                }
-            }
-
-            for (contact in contactsListCopy) {
-                if (item.isDuplicateOf(contact, duplicateCriteria)) {
-                    contact.isMarked = true
-                    duplicateMap[duplicationString]!!.add(contact)
-                }
-            }
-        }
-
         val listToReturn = ArrayList<Any>()
         val sparseBooleanArray = SparseBooleanArray()
-        var count = 1
-        duplicateMap.values.filter {
-            it.size > 1
-        }.forEachIndexed { index, hashSet ->
-            listToReturn.add("Group ${index + 1}")
-            listToReturn.addAll(hashSet)
+        //Group the contacts by duplication criteria
+        val contactsMap = contactsAccount.contacts.groupBy {
+            it.getDuplicateCriteriaString(duplicateCriteria)
+        }.filter {
+            it.value.size > 1
         }
+        //build the list to return
+        contactsMap.values.forEachIndexed { index, list ->
+            listToReturn.add("Group ${index + 1}")
+            list.first().isChecked = true
+            listToReturn.addAll(list)
+        }
+        // pre-select some of the contacts for deletion.
         listToReturn.forEachIndexed { index, any ->
             sparseBooleanArray.put(index, if (any is Contact) any.isChecked else false)
         }
         return Pair(listToReturn, sparseBooleanArray)
     }
-
 }

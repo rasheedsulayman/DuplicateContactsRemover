@@ -6,6 +6,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesAdapter
 import com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactsAdapter
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
@@ -74,6 +75,14 @@ fun bindDuplicatesLoadingStatus(statusProgressBar: ProgressBar, status: LoadingS
     when (status) {
         LoadingStatus.LOADING -> statusProgressBar.visibility = View.VISIBLE
         else -> statusProgressBar.visibility = View.GONE
+    }
+}
+
+@BindingAdapter("duplicatesLoadingStatus")
+fun bindDuplicatesLoadingStatus(button: MaterialButton, status: LoadingStatus?) {
+    when (status) {
+        LoadingStatus.DONE -> button.visibility = View.VISIBLE
+        else -> button.visibility = View.GONE
     }
 }
 

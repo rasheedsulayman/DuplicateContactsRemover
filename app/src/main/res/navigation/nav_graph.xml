@@ -29,6 +29,6 @@
                   app:argType="com.r4sh33d.duplicatecontactsremover.model.ContactsAccount"/>
         <argument android:name="duplicateCriteria"
                   app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria"
-                  android:defaultValue="PHONE_NUMBER"/>
+        />
     </fragment>
 </navigation>

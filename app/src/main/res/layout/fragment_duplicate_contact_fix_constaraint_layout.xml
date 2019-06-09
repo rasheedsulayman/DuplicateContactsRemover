@@ -16,6 +16,8 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
+                android:clipToPadding="false"
+                android:paddingBottom="100dp"
                 app:duplicateContactList="@{viewModel.duplicateContactsSearchResults}"
                 tools:listitem="@layout/item_contacts_list_constraint_layout"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -24,8 +26,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/contactsListRecyclerView" app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="8dp"/>
+                android:id="@+id/contactsListRecyclerView" app:layout_constraintTop_toTopOf="parent"/>
 
         <ProgressBar
                 app:duplicatesLoadingStatus="@{viewModel.status}"
@@ -54,11 +55,26 @@
                 android:textColor="?colorAccent"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="Loading, Please wait. We are currently fetching your contacts"
+                android:text="Loading, Please wait. We are currently fetching your contacts"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/progressBar"
                 android:layout_marginTop="16dp" android:layout_marginStart="30dp"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="16dp"/>
+
+        <com.google.android.material.button.MaterialButton
+                app:duplicatesLoadingStatus="@{viewModel.status}"
+                tools:visibility="visible"
+                android:visibility="gone"
+                android:id="@+id/removeDuplicates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Remove Duplicates"
+                app:cornerRadius="24dp"
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                android:layout_marginEnd="20dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="20dp" app:layout_constraintBottom_toBottomOf="parent"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

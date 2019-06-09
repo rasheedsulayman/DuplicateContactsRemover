@@ -33,7 +33,6 @@ class DuplicateContactViewModel(
         getDuplicateContactsList()
     }
 
-
     private fun getDuplicateContactsList() {
         coroutineScope.launch {
             _status.value = LoadingStatus.LOADING

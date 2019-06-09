@@ -9,10 +9,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.databinding.FragmentContactSourcesConstaraintLayoutBinding
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 
 class ContactSourcesFragment : Fragment() {
+
+    private val mainActivity: MainActivity
+        get() {
+            return activity as? MainActivity ?: throw IllegalStateException("Not attached!")
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +37,8 @@ class ContactSourcesFragment : Fragment() {
         )
 
         val fragmentArgs = ContactSourcesFragmentArgs.fromBundle(arguments!!)
-        val viewModelFactory = ContactsSourcesViewModelFactory(ContactsHelper(context!!), fragmentArgs.duplicateCriteria)
+        val viewModelFactory =
+            ContactsSourcesViewModelFactory(ContactsHelper(context!!), fragmentArgs.duplicateCriteria)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(ContactSourcesViewModel::class.java)
         binding.viewModel = viewModel
 
@@ -42,11 +49,20 @@ class ContactSourcesFragment : Fragment() {
         viewModel.navigateToSelectedContactsAccount.observe(this, Observer {
             if (null != it) {
                 this.findNavController().navigate(
-                    ContactSourcesFragmentDirections.actionContactSourcesFragmentToDuplicateContactFixFragment(it)
+                    ContactSourcesFragmentDirections.actionContactSourcesFragmentToDuplicateContactFixFragment(
+                        it,
+                        fragmentArgs.duplicateCriteria
+                    )
                 )
                 viewModel.displayContactAccountDetailsComplete()
             }
         })
+
+        mainActivity.run {
+            setUpToolBar("Contact Sources")
+            invalidateToolbarElevation(0)
+        }
+
         return binding.root
     }
 }
