@@ -5,7 +5,7 @@ import android.Manifest
 
 // apps with special handling
 const val TELEGRAM_PACKAGE = "org.telegram.messenger"
-
+const val CONTACTS_BACKUP_FILE_PREFIX = "duplicate_contacts_"
 val requiredPermissions = arrayOf(
     Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,
     Manifest.permission.WRITE_EXTERNAL_STORAGE

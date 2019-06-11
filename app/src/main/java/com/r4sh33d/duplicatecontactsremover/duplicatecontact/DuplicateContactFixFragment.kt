@@ -35,6 +35,9 @@ class DuplicateContactFixFragment : Fragment() {
         binding.viewModel = viewModel
         mainActivity.setUpToolBar(fragmentArgs.contactsAccount.getDisplayName())
         binding.contactsListRecyclerView.onScrollChanged { mainActivity.invalidateToolbarElevation(it) }
+        binding.removeDuplicates.setOnClickListener {
+
+        }
         return binding.root
     }
 }

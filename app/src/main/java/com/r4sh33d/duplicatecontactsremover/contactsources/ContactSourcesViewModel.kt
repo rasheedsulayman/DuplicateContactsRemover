@@ -9,7 +9,6 @@ import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import kotlinx.coroutines.*
 
-
 class ContactSourcesViewModel(val contactsHelper: ContactsHelper, val duplicateCriteria: DuplicateCriteria) :
     ViewModel() {
 
@@ -23,13 +22,13 @@ class ContactSourcesViewModel(val contactsHelper: ContactsHelper, val duplicateC
     val status: LiveData<LoadingStatus>
         get() = _status
 
-
     private val _contactsAccountList = MutableLiveData<List<ContactsAccount>>()
 
     val contactsAccountList: LiveData<List<ContactsAccount>>
         get() = _contactsAccountList
 
     private var viewModelJob = Job()
+
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {

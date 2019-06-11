@@ -328,7 +328,7 @@ class ContactsHelper(val context: Context) {
             list.first().isChecked = true
             listToReturn.addAll(list)
         }
-        // pre-select some of the contacts for deletion.
+        //pre-select some of the contacts for deletion.
         listToReturn.forEachIndexed { index, any ->
             sparseBooleanArray.put(index, if (any is Contact) any.isChecked else false)
         }
