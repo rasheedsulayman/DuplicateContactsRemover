@@ -57,5 +57,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     implementation 'com.afollestad.material-dialogs:core:3.0.0-rc1'
+    implementation 'joda-time:joda-time:2.10.1'
+    implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
 
 }

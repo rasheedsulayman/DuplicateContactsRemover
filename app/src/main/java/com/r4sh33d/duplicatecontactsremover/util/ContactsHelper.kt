@@ -14,10 +14,7 @@ import android.text.TextUtils
 import android.util.SparseArray
 import android.util.SparseBooleanArray
 import com.r4sh33d.duplicatecontactsremover.R
-import com.r4sh33d.duplicatecontactsremover.model.Contact
-import com.r4sh33d.duplicatecontactsremover.model.ContactSource
-import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
-import com.r4sh33d.duplicatecontactsremover.model.PhoneNumber
+import com.r4sh33d.duplicatecontactsremover.model.*
 import com.r4sh33d.duplicatecontactsremover.times
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.NAME
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.PHONE_NUMBER
@@ -35,9 +32,14 @@ class ContactsHelper(val context: Context) {
     private val contactsProjection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
         ContactsContract.Data.RAW_CONTACT_ID,
+        CommonDataKinds.StructuredName.PREFIX,
         CommonDataKinds.StructuredName.GIVEN_NAME,
         CommonDataKinds.StructuredName.MIDDLE_NAME,
         CommonDataKinds.StructuredName.FAMILY_NAME,
+        CommonDataKinds.StructuredName.SUFFIX,
+        CommonDataKinds.StructuredName.PHOTO_URI,
+        CommonDataKinds.StructuredName.PHOTO_THUMBNAIL_URI,
+        CommonDataKinds.StructuredName.STARRED,
         ContactsContract.RawContacts.ACCOUNT_NAME,
         ContactsContract.RawContacts.ACCOUNT_TYPE
     )
@@ -48,7 +50,17 @@ class ContactsHelper(val context: Context) {
     }
 
     private fun getDeviceContacts(duplicateCriteria: DuplicateCriteria): HashMap<String, ArrayList<Contact>> {
-        val devicePhoneNumbers = getPhoneNumbers(null)
+
+        val devicePhoneNumbers = getPhoneNumbers()
+        val nicknames = getNicknames()
+        val emails = getEmails()
+        val addresses = getAddresses()
+        val ims = getIMs()
+        val events = getEvents()
+        val notes = getNotes()
+        val organizations = getOrganizations()
+        val websites = getWebsites()
+
         val contactsMap = HashMap<String, ArrayList<Contact>>()
         val uri = ContactsContract.Data.CONTENT_URI
         val selection = "${ContactsContract.Data.MIMETYPE} = ?"
@@ -69,11 +81,26 @@ class ContactsHelper(val context: Context) {
                         PHONE_NUMBER -> if (contactNumbers == null) continue@loop
                         NAME -> if ("$firstName $middleName $surname".isBlank()) continue@loop
                     }
-                    contactNumbers = contactNumbers ?: ArrayList()
+
+                    val prefix = cursor.getStringValue(CommonDataKinds.StructuredName.PREFIX) ?: ""
+                    val suffix = cursor.getStringValue(CommonDataKinds.StructuredName.SUFFIX) ?: ""
                     val accountName = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
                     val accountType = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
                     val accountNameIdentifier = "$accountName${ContactsAccount.ACCOUNT_KEY_SEPARATOR}$accountType"
                     val contactId = cursor.getIntValue(ContactsContract.Data.CONTACT_ID)
+                    val photoUri = cursor.getStringValue(CommonDataKinds.StructuredName.PHOTO_URI) ?: ""
+                    val starred = cursor.getIntValue(CommonDataKinds.StructuredName.STARRED)
+                    val thumbnailUri = cursor.getStringValue(CommonDataKinds.StructuredName.PHOTO_THUMBNAIL_URI) ?: ""
+
+                    contactNumbers = contactNumbers ?: ArrayList()
+                    val contactNickName = nicknames.get(id)
+                    val contactEmails = emails.get(id)
+                    val contactAddresses = addresses.get(id)
+                    val contactIms = ims.get(id)
+                    val contactEvents = events.get(id)
+                    val contactNotes = notes.get(id)
+                    val contactOrganization = organizations.get(id)
+                    val contactWebsite = websites.get(id)
 
                     val contact = Contact(
                         id,
@@ -83,7 +110,14 @@ class ContactsHelper(val context: Context) {
                         contactId,
                         contactNumbers,
                         accountName,
-                        accountType
+                        accountType,
+                        contactNickName,
+                        photoUri,
+                        contactEmails,
+                        contactAddresses, contactEvents,
+                        starred, thumbnailUri, contactNotes,
+                        contactOrganization, contactWebsite,
+                        contactIms, prefix, suffix
                     )
 
                     if (!contactsMap.containsKey(accountNameIdentifier)) {
@@ -140,6 +174,295 @@ class ContactsHelper(val context: Context) {
             cursor?.close()
         }
         return phoneNumbers
+    }
+
+
+    private fun getNicknames(contactId: Int? = null): SparseArray<String> {
+        val nicknames = SparseArray<String>()
+        val uri = ContactsContract.Data.CONTENT_URI
+        val projection = arrayOf(
+            ContactsContract.Data.RAW_CONTACT_ID,
+            CommonDataKinds.Nickname.NAME
+        )
+
+        val selection = getSourcesSelection(true, contactId != null)
+        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Nickname.CONTENT_ITEM_TYPE, contactId)
+
+        var cursor: Cursor? = null
+        try {
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
+                    val nickname = cursor.getStringValue(CommonDataKinds.Nickname.NAME) ?: continue
+                    nicknames.put(id, nickname)
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            cursor?.close()
+        }
+
+        return nicknames
+    }
+
+    private fun getEmails(contactId: Int? = null): SparseArray<ArrayList<Email>> {
+        val emails = SparseArray<ArrayList<Email>>()
+        val uri = CommonDataKinds.Email.CONTENT_URI
+        val projection = arrayOf(
+            ContactsContract.Data.RAW_CONTACT_ID,
+            CommonDataKinds.Email.DATA,
+            CommonDataKinds.Email.TYPE,
+            CommonDataKinds.Email.LABEL
+        )
+
+        val selection = if (contactId == null) getSourcesSelection() else "${ContactsContract.Data.RAW_CONTACT_ID} = ?"
+        val selectionArgs = if (contactId == null) getSourcesSelectionArgs() else arrayOf(contactId.toString())
+
+        var cursor: Cursor? = null
+        try {
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
+                    val email = cursor.getStringValue(CommonDataKinds.Email.DATA) ?: continue
+                    val type = cursor.getIntValue(CommonDataKinds.Email.TYPE)
+                    val label = cursor.getStringValue(CommonDataKinds.Email.LABEL) ?: ""
+
+                    if (emails[id] == null) {
+                        emails.put(id, ArrayList())
+                    }
+
+                    emails[id]!!.add(Email(email, type, label))
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            cursor?.close()
+        }
+
+        return emails
+    }
+
+    private fun getAddresses(contactId: Int? = null): SparseArray<ArrayList<Address>> {
+        val addresses = SparseArray<ArrayList<Address>>()
+        val uri = CommonDataKinds.StructuredPostal.CONTENT_URI
+        val projection = arrayOf(
+            ContactsContract.Data.RAW_CONTACT_ID,
+            CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS,
+            CommonDataKinds.StructuredPostal.TYPE,
+            CommonDataKinds.StructuredPostal.LABEL
+        )
+
+        val selection = if (contactId == null) getSourcesSelection() else "${ContactsContract.Data.RAW_CONTACT_ID} = ?"
+        val selectionArgs = if (contactId == null) getSourcesSelectionArgs() else arrayOf(contactId.toString())
+
+        var cursor: Cursor? = null
+        try {
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
+                    val address = cursor.getStringValue(CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS)
+                        ?: continue
+                    val type = cursor.getIntValue(CommonDataKinds.StructuredPostal.TYPE)
+                    val label = cursor.getStringValue(CommonDataKinds.StructuredPostal.LABEL) ?: ""
+
+                    if (addresses[id] == null) {
+                        addresses.put(id, ArrayList())
+                    }
+
+                    addresses[id]!!.add(Address(address, type, label))
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            cursor?.close()
+        }
+
+        return addresses
+    }
+
+    private fun getIMs(contactId: Int? = null): SparseArray<ArrayList<IM>> {
+        val IMs = SparseArray<ArrayList<IM>>()
+        val uri = ContactsContract.Data.CONTENT_URI
+        val projection = arrayOf(
+            ContactsContract.Data.RAW_CONTACT_ID,
+            CommonDataKinds.Im.DATA,
+            CommonDataKinds.Im.PROTOCOL,
+            CommonDataKinds.Im.CUSTOM_PROTOCOL
+        )
+
+        val selection = getSourcesSelection(true, contactId != null)
+        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Im.CONTENT_ITEM_TYPE, contactId)
+
+        var cursor: Cursor? = null
+        try {
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
+                    val IM = cursor.getStringValue(CommonDataKinds.Im.DATA) ?: continue
+                    val type = cursor.getIntValue(CommonDataKinds.Im.PROTOCOL)
+                    val label = cursor.getStringValue(CommonDataKinds.Im.CUSTOM_PROTOCOL) ?: ""
+
+                    if (IMs[id] == null) {
+                        IMs.put(id, ArrayList())
+                    }
+
+                    IMs[id]!!.add(IM(IM, type, label))
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            cursor?.close()
+        }
+
+        return IMs
+    }
+
+    private fun getEvents(contactId: Int? = null): SparseArray<ArrayList<Event>> {
+        val events = SparseArray<ArrayList<Event>>()
+        val uri = ContactsContract.Data.CONTENT_URI
+        val projection = arrayOf(
+            ContactsContract.Data.RAW_CONTACT_ID,
+            CommonDataKinds.Event.START_DATE,
+            CommonDataKinds.Event.TYPE
+        )
+
+        val selection = getSourcesSelection(true, contactId != null)
+        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Event.CONTENT_ITEM_TYPE, contactId)
+
+        var cursor: Cursor? = null
+        try {
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
+                    val startDate = cursor.getStringValue(CommonDataKinds.Event.START_DATE)
+                        ?: continue
+                    val type = cursor.getIntValue(CommonDataKinds.Event.TYPE)
+
+                    if (events[id] == null) {
+                        events.put(id, ArrayList())
+                    }
+
+                    events[id]!!.add(Event(startDate, type))
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            cursor?.close()
+        }
+
+        return events
+    }
+
+    private fun getNotes(contactId: Int? = null): SparseArray<String> {
+        val notes = SparseArray<String>()
+        val uri = ContactsContract.Data.CONTENT_URI
+        val projection = arrayOf(
+            ContactsContract.Data.RAW_CONTACT_ID,
+            CommonDataKinds.Note.NOTE
+        )
+
+        val selection = getSourcesSelection(true, contactId != null)
+        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Note.CONTENT_ITEM_TYPE, contactId)
+
+        var cursor: Cursor? = null
+        try {
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
+                    val note = cursor.getStringValue(CommonDataKinds.Note.NOTE) ?: continue
+                    notes.put(id, note)
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            cursor?.close()
+        }
+
+        return notes
+    }
+
+    private fun getOrganizations(contactId: Int? = null): SparseArray<Organization> {
+        val organizations = SparseArray<Organization>()
+        val uri = ContactsContract.Data.CONTENT_URI
+        val projection = arrayOf(
+            ContactsContract.Data.RAW_CONTACT_ID,
+            CommonDataKinds.Organization.COMPANY,
+            CommonDataKinds.Organization.TITLE
+        )
+
+        val selection = getSourcesSelection(true, contactId != null)
+        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Organization.CONTENT_ITEM_TYPE, contactId)
+
+        var cursor: Cursor? = null
+        try {
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
+                    val company = cursor.getStringValue(CommonDataKinds.Organization.COMPANY) ?: ""
+                    val title = cursor.getStringValue(CommonDataKinds.Organization.TITLE) ?: ""
+                    if (company.isEmpty() && title.isEmpty()) {
+                        continue
+                    }
+
+                    val organization = Organization(company, title)
+                    organizations.put(id, organization)
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            cursor?.close()
+        }
+
+        return organizations
+    }
+
+    private fun getWebsites(contactId: Int? = null): SparseArray<ArrayList<String>> {
+        val websites = SparseArray<ArrayList<String>>()
+        val uri = ContactsContract.Data.CONTENT_URI
+        val projection = arrayOf(
+            ContactsContract.Data.RAW_CONTACT_ID,
+            CommonDataKinds.Website.URL
+        )
+
+        val selection = getSourcesSelection(true, contactId != null)
+        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Website.CONTENT_ITEM_TYPE, contactId)
+
+        var cursor: Cursor? = null
+        try {
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
+                    val url = cursor.getStringValue(CommonDataKinds.Website.URL) ?: continue
+
+                    if (websites[id] == null) {
+                        websites.put(id, ArrayList())
+                    }
+
+                    websites[id]!!.add(url)
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            cursor?.close()
+        }
+
+        return websites
     }
 
     private fun getQuestionMarks() = "?,".times(displayContactSources.filter { it.isNotEmpty() }.size).trimEnd(',')

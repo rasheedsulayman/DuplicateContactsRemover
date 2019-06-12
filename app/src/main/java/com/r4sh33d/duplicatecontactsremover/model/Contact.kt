@@ -8,16 +8,14 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Contact(
-    val id: Int,
-    val firstName: String,
-    val surname: String,
-    val middleName: String,
-    val contactId: Int,
-    var phoneNumbers: List<PhoneNumber>,
-    var accountName: String,
-    var accountType: String,
-    var isMarked: Boolean = false,
-    var isChecked: Boolean = false
+    val id: Int, val firstName: String, val surname: String, val middleName: String, val contactId: Int,
+    var phoneNumbers: List<PhoneNumber>, var accountName: String, var accountType: String,
+
+    var nickname: String?,
+    var photoUri: String, var emails: ArrayList<Email>?, var addresses: ArrayList<Address>?, var events: ArrayList<Event>?,
+    var starred: Int?, var thumbnailUri: String?, val notes: String?, val organization: Organization?,
+    var websites: ArrayList<String>?, var IMs: ArrayList<IM>?,  var prefix: String, var suffix: String,
+    var isMarked: Boolean = false, var isChecked: Boolean = false
 ) : Parcelable {
 
     val fullName: String
