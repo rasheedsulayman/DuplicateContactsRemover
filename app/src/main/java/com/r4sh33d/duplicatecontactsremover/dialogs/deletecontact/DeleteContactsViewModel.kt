@@ -1,20 +1,19 @@
-package com.r4sh33d.duplicatecontactsremover.dialog
+package com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.r4sh33d.duplicatecontactsremover.model.Contact
+import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus.*
-import com.r4sh33d.duplicatecontactsremover.util.VcfExporter
-import com.r4sh33d.duplicatecontactsremover.util.getBackupFile
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.util.*
 
-class ContactsBackupViewModel(val vcfExporter: VcfExporter, val contacts: ArrayList<Contact>
-) :
-    ViewModel() {
+class DeleteContactsViewModel(
+    private val contactsHelper: ContactsHelper, val contacts: ArrayList<Contact>
+) : ViewModel() {
 
     private val _status = MutableLiveData<LoadingStatus>()
 
@@ -30,18 +29,19 @@ class ContactsBackupViewModel(val vcfExporter: VcfExporter, val contacts: ArrayL
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+
     init {
         coroutineScope.launch {
-            backupAndContacts()
+            deleteContacts()
         }
     }
 
-    private suspend fun backupAndContacts() {
+    private suspend fun deleteContacts() {
         withContext(Dispatchers.IO) {
             try {
                 _status.value = LOADING
                 _progress.value = 0
-                vcfExporter.exportContacts(getBackupFile(), contacts) {
+                contactsHelper.deleteContacts(contacts) {
                     _progress.value = it
                     if (it == 100) {
                         _status.value = DONE

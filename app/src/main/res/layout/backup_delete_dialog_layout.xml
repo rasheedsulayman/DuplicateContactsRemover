@@ -7,10 +7,11 @@
                                                    android:layout_height="wrap_content">
 
     <ProgressBar
+            tools:progress="30"
+            android:progressDrawable="@drawable/progressbar_drawable"
             android:max="100"
             android:progress="0"
-            android:background="@color/colorAccent"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="0dp"
             android:layout_height="4dp"
             android:id="@+id/status_progress_bar"

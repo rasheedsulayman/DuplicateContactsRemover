@@ -27,6 +27,7 @@ fun bindAccountsLoadingStatus(statusTextView: TextView, status: LoadingStatus?) 
         LoadingStatus.DONE -> {
             statusTextView.visibility = View.GONE
         }
+        else -> {}
     }
 }
 
@@ -67,6 +68,7 @@ fun bindDuplicatesLoadingStatus(statusTextView: TextView, status: LoadingStatus?
         LoadingStatus.DONE -> {
             statusTextView.visibility = View.GONE
         }
+        else -> {}
     }
 }
 

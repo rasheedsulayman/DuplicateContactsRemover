@@ -15,7 +15,6 @@ import android.util.SparseArray
 import android.util.SparseBooleanArray
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.model.*
-import com.r4sh33d.duplicatecontactsremover.times
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.NAME
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.PHONE_NUMBER
 import timber.log.Timber
@@ -551,26 +550,26 @@ class ContactsHelper(val context: Context) {
         deleteContacts(arrayListOf(contact))
     }
 
-    fun deleteContacts(contacts: ArrayList<Contact>) {
-        try {
-            val operations = ArrayList<ContentProviderOperation>()
-            val selection = "${ContactsContract.RawContacts._ID} = ?"
-            contacts.forEach {
-                ContentProviderOperation.newDelete(ContactsContract.RawContacts.CONTENT_URI).apply {
-                    val selectionArgs = arrayOf(it.id.toString())
-                    withSelection(selection, selectionArgs)
-                    operations.add(build())
-                }
-
-                if (operations.size % BATCH_SIZE == 0) {
-                    context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
-                    operations.clear()
-                }
+    fun deleteContacts(contacts: ArrayList<Contact>, progressCallback: ((progress: Int) -> Unit)? = null) {
+        val operations = ArrayList<ContentProviderOperation>()
+        val selection = "${ContactsContract.RawContacts._ID} = ?"
+        contacts.forEachIndexed { index, contact ->
+            ContentProviderOperation.newDelete(ContactsContract.RawContacts.CONTENT_URI).apply {
+                val selectionArgs = arrayOf(contact.id.toString())
+                withSelection(selection, selectionArgs)
+                operations.add(build())
             }
-            context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
-        } catch (e: Exception) {
+
+            if (operations.size % BATCH_SIZE == 0) {
+                context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+                operations.clear()
+            }
+            val progress = (index / contacts.size) * 90
+            if (progressCallback != null) progressCallback(progress)
         }
+        context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
     }
+
 
     fun getDeviceContactSources(): List<ContactSource> {
         val sources = LinkedHashSet<ContactSource>()

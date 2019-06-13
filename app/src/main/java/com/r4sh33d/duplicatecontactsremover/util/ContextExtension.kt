@@ -16,5 +16,3 @@ fun Context.hasPermissions(permissionList: Set<String>): Boolean {
 
 fun Context.hasPermision(permission: String): Boolean =
     ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
-
-fun isOnMainThread() = Looper.myLooper() == Looper.getMainLooper()

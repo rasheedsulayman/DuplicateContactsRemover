@@ -48,7 +48,7 @@ fun getBackupFile(): File {
         }
     }
     val calender = Calendar.getInstance()
-    val dateFormat = SimpleDateFormat("hh_mm_ss", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("MM_d_hh_mm_ss", Locale.getDefault())
     val timeString = dateFormat.format(calender.time)
     return File(
         Environment.getExternalStorageDirectory(),

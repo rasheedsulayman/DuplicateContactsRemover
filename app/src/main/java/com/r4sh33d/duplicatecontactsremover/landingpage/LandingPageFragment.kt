@@ -1,4 +1,4 @@
-package com.r4sh33d.duplicatecontactsremover
+package com.r4sh33d.duplicatecontactsremover.landingpage
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,6 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
+import com.r4sh33d.duplicatecontactsremover.LandingPageFragmentDirections
+import com.r4sh33d.duplicatecontactsremover.MainActivity
+import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.util.*
 import kotlinx.android.synthetic.main.fragment_landing_page.*
 
@@ -36,11 +39,10 @@ class LandingPageFragment : Fragment() {
 
     private val onButtonOnClickListener = View.OnClickListener {
         it.findNavController().navigate(
-            LandingPageFragmentDirections
-                .actionLandingPageFragmentToContactSourcesFragment(
-                    if (it.id == R.id.findDuplicateNumbersButton)
-                        DuplicateCriteria.PHONE_NUMBER else DuplicateCriteria.NAME
-                )
+            LandingPageFragmentDirections.actionLandingPageFragmentToContactSourcesFragment(
+                if (it.id == R.id.findDuplicateNumbersButton)
+                    DuplicateCriteria.PHONE_NUMBER else DuplicateCriteria.NAME
+            )
         )
     }
 
@@ -84,7 +86,8 @@ class LandingPageFragment : Fragment() {
                                 mainActivity.finish()
                             }
                             negativeButton(R.string.cancel) {
-                                Toast.makeText(mainActivity, R.string.permission_denied, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(mainActivity,
+                                    R.string.permission_denied, Toast.LENGTH_SHORT).show()
                                 mainActivity.finish()
                             }
                         }

@@ -6,7 +6,7 @@
     <fragment
             tools:layout="@layout/fragment_landing_page"
             android:id="@+id/landingPageFragment"
-            android:name="com.r4sh33d.duplicatecontactsremover.LandingPageFragment"
+            android:name="com.r4sh33d.duplicatecontactsremover.landingpage.LandingPageFragment"
             android:label="Duplicate Contacts">
         <action android:id="@+id/action_landingPageFragment_to_contactSourcesFragment"
                 app:destination="@id/contactSourcesFragment"
@@ -30,5 +30,7 @@
         <argument android:name="duplicateCriteria"
                   app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria"
         />
+        <action android:id="@+id/action_duplicateContactFixFragment_to_landingPageFragment"
+                app:destination="@id/landingPageFragment" app:popUpTo="@+id/landingPageFragment"/>
     </fragment>
 </navigation>
