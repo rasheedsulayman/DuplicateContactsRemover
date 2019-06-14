@@ -98,4 +98,29 @@ data class Contact(
     override fun equals(other: Any?): Boolean {
         return this === other
     }
+
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + firstName.hashCode()
+        result = 31 * result + surname.hashCode()
+        result = 31 * result + middleName.hashCode()
+        result = 31 * result + contactId
+        result = 31 * result + phoneNumbers.hashCode()
+        result = 31 * result + accountName.hashCode()
+        result = 31 * result + accountType.hashCode()
+        result = 31 * result + (nickname?.hashCode() ?: 0)
+        result = 31 * result + photoUri.hashCode()
+        result = 31 * result + (emails?.hashCode() ?: 0)
+        result = 31 * result + (addresses?.hashCode() ?: 0)
+        result = 31 * result + (events?.hashCode() ?: 0)
+        result = 31 * result + (starred ?: 0)
+        result = 31 * result + (thumbnailUri?.hashCode() ?: 0)
+        result = 31 * result + (notes?.hashCode() ?: 0)
+        result = 31 * result + (organization?.hashCode() ?: 0)
+        result = 31 * result + (websites?.hashCode() ?: 0)
+        result = 31 * result + (IMs?.hashCode() ?: 0)
+        result = 31 * result + prefix.hashCode()
+        result = 31 * result + suffix.hashCode()
+        return result
+    }
 }

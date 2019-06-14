@@ -45,7 +45,7 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
         binding.viewModel = viewModel
         mainActivity.setUpToolBar(fragmentArgs.contactsAccount.getDisplayName())
         binding.contactsListRecyclerView.adapter = DuplicateContactsAdapter {
-            binding.removeDuplicates.text = "Remove ${it.size} contacts"
+            binding.removeDuplicates.text = "Remove ${it.size} contacts."
             contactsToDelete = it
         }
         binding.contactsListRecyclerView.onScrollChanged { mainActivity.invalidateToolbarElevation(it) }
@@ -59,7 +59,7 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
             MaterialDialog(mainActivity).show {
                 title(text = "Remove Contacts?")
                 message(
-                    text = "This operation will remove {${contactsToDelete.size} contacts from your phone. Don't worry, the contacts " +
+                    text = "This operation will remove ${contactsToDelete.size} contacts from your phone. Don't worry, the contacts " +
                             "will be backed up to your phone storage. In case you change your mind, you can restore backed up contacts with any " +
                             "contacts manager app"
                 )
@@ -87,7 +87,6 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
         dialog.dismiss()
         goToLandingPage()
     }
-
 
     private fun goToLandingPage() {
         findNavController().navigate(

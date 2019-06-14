@@ -126,6 +126,7 @@ class ContactsHelper(val context: Context) {
                     if (!contactsMap.containsKey(accountNameIdentifier)) {
                         contactsMap[accountNameIdentifier] = ArrayList()
                     }
+
                     contactsMap[accountNameIdentifier]!!.add(contact)
 
                 } while (cursor.moveToNext())
@@ -324,7 +325,6 @@ class ContactsHelper(val context: Context) {
         } finally {
             cursor?.close()
         }
-
         return IMs
     }
 
@@ -513,47 +513,6 @@ class ContactsHelper(val context: Context) {
         return args.toTypedArray()
     }
 
-
-    private fun getRealContactId(id: Long): Int {
-        val uri = ContactsContract.Data.CONTENT_URI
-        val selection = "${ContactsContract.Data.MIMETYPE} = ? AND ${ContactsContract.Data.RAW_CONTACT_ID} = ?"
-        val selectionArgs = arrayOf(CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, id.toString())
-        var cursor: Cursor? = null
-        try {
-            cursor = context.contentResolver.query(uri, contactsProjection, selection, selectionArgs, null)
-            if (cursor?.moveToFirst() == true) {
-                return cursor.getIntValue(ContactsContract.Data.CONTACT_ID)
-            }
-        } finally {
-            cursor?.close()
-        }
-        return 0
-    }
-
-    fun getContactLookupKey(contactId: String): String {
-        val uri = ContactsContract.Data.CONTENT_URI
-        val projection = arrayOf(ContactsContract.Data.CONTACT_ID, ContactsContract.Data.LOOKUP_KEY)
-        val selection = "${ContactsContract.Data.MIMETYPE} = ? AND ${ContactsContract.Data.RAW_CONTACT_ID} = ?"
-        val selectionArgs = arrayOf(CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, contactId)
-        var cursor: Cursor? = null
-        try {
-            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
-            if (cursor?.moveToFirst() == true) {
-                val id = cursor.getIntValue(ContactsContract.Data.CONTACT_ID)
-                val lookupKey = cursor.getStringValue(ContactsContract.Data.LOOKUP_KEY)
-                return "$lookupKey/$id"
-            }
-        } finally {
-            cursor?.close()
-        }
-        return ""
-    }
-
-
-    fun deleteContact(contact: Contact, progressCallback: ((progress: Int) -> Unit)) {
-        deleteContacts(arrayListOf(contact), progressCallback)
-    }
-
     fun deleteContacts(contacts: ArrayList<Contact>, progressCallback: ((progress: Int) -> Unit)) {
         val operations = ArrayList<ContentProviderOperation>()
         val selection = "${ContactsContract.RawContacts._ID} = ?"
@@ -647,15 +606,17 @@ class ContactsHelper(val context: Context) {
         val contactsMap = contactsAccount.contacts.groupBy {
             it.getDuplicateCriteriaString(duplicateCriteria)
         }.filter {
+            //If the contact size is less than one, there's no duplicate.
             it.value.size > 1
         }
-        //build the list to return
+        //Build the list to return
         contactsMap.values.forEachIndexed { index, list ->
+            //Add label
             listToReturn.add("Group ${index + 1}")
             list.first().isChecked = true
             listToReturn.addAll(list)
         }
-        //pre-select some of the contacts for deletion.
+        //Pre-select some of the contacts for deletion.
         listToReturn.forEachIndexed { index, any ->
             sparseBooleanArray.put(index, if (any is Contact) any.isChecked else false)
         }
