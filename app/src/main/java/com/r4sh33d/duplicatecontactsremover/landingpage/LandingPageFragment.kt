@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
-import com.r4sh33d.duplicatecontactsremover.LandingPageFragmentDirections
 import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.util.*
@@ -36,7 +35,6 @@ class LandingPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_landing_page, container, false)
 
-
     private val onButtonOnClickListener = View.OnClickListener {
         it.findNavController().navigate(
             LandingPageFragmentDirections.actionLandingPageFragmentToContactSourcesFragment(
@@ -45,7 +43,6 @@ class LandingPageFragment : Fragment() {
             )
         )
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

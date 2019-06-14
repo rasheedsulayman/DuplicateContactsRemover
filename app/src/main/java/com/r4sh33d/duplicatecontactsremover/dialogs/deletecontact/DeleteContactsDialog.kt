@@ -1,7 +1,6 @@
 package com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact
 
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -12,6 +11,7 @@ import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 
 class DeleteContactsDialog : BaseProgressDialog() {
+
     override fun getTitle(): String {
         return "Remove Duplicates"
     }
@@ -36,14 +36,13 @@ class DeleteContactsDialog : BaseProgressDialog() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun setUpDialogDetails() {
         val contacts = arguments!!.getParcelableArrayList<Contact>(CONTACTS_KEY)
         val backUpFileName = arguments!!.getString(BACKUP_FILE_NAME_KEY)
         val viewModelFactory = DeleteContactsViewModelFactory(ContactsHelper(context!!), contacts)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DeleteContactsViewModel::class.java)
         val callback = parentFragment as? DeleteContactsOperationsCallback
-            ?: throw IllegalArgumentException("Parent Fragment must implement BackupOperationsCallback")
+            ?: throw IllegalArgumentException("Parent Fragment must implement DeleteContactsDialog")
 
         viewModel.status.observe(this, Observer {
             when (it) {
@@ -51,7 +50,7 @@ class DeleteContactsDialog : BaseProgressDialog() {
                 LoadingStatus.DONE -> {
                     var successMessage = "Contacts successfully removed."
                     backUpFileName?.run {
-                        successMessage += "The deleted contacts can is backed up to the location: $this"
+                        successMessage += "The deleted contacts is backed up to the location: $this"
                     }
                     statusTextView.text = successMessage
                     finishButton.isEnabled = true

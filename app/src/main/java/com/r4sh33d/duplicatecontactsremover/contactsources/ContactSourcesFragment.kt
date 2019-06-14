@@ -25,11 +25,8 @@ class ContactSourcesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val binding = FragmentContactSourcesConstaraintLayoutBinding.inflate(inflater)
-
         binding.lifecycleOwner = this
-
         binding.contactSourcesRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
         val fragmentArgs = ContactSourcesFragmentArgs.fromBundle(arguments!!)
@@ -43,7 +40,7 @@ class ContactSourcesFragment : Fragment() {
         }
 
         viewModel.navigateToSelectedContactsAccount.observe(this, Observer {
-            if (null != it) {
+            if (it != null) {
                 this.findNavController().navigate(
                     ContactSourcesFragmentDirections.actionContactSourcesFragmentToDuplicateContactFixFragment(it,
                         fragmentArgs.duplicateCriteria

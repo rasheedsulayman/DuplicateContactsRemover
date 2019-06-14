@@ -20,7 +20,7 @@ abstract class BaseProgressDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         isCancelable = false
         val dialog = MaterialDialog(context!!)
-            .customView(R.layout.backup_delete_dialog_layout, noVerticalPadding = true, dialogWrapContent = true)
+            .customView(R.layout.progress_dialog_layout, noVerticalPadding = true, dialogWrapContent = true)
             .noAutoDismiss()
         val view = dialog.getCustomView()
         titleTextView = view.findViewById(R.id.title_textview)
@@ -28,8 +28,10 @@ abstract class BaseProgressDialog : DialogFragment() {
         statusTextView = view.findViewById(R.id.status_textview)
         progressBar = view.findViewById(R.id.status_progress_bar)
         finishButton = view.findViewById(R.id.finish_button)
+        setUpDialogDetails()
         return dialog
     }
 
     abstract fun getTitle(): String
+    abstract fun setUpDialogDetails()
 }

@@ -8,7 +8,10 @@ import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus.*
 import com.r4sh33d.duplicatecontactsremover.util.VcfExporter
 import com.r4sh33d.duplicatecontactsremover.util.getBackupFile
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -29,32 +32,30 @@ class ContactsBackupViewModel(
 
     private var viewModelJob = Job()
 
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
 
     var backupFile: File? = null
 
     init {
-        coroutineScope.launch {
-            backupAndContacts()
-        }
+        backupAndContacts()
     }
 
-    private suspend fun backupAndContacts() {
-        withContext(Dispatchers.IO) {
+    private  fun backupAndContacts() {
+        coroutineScope.launch {
             try {
-                _status.value = LOADING
-                _progress.value = 0
+                _status.postValue(LOADING)
+                _progress.postValue(0)
                 backupFile = getBackupFile()
                 vcfExporter.exportContacts(backupFile!!, contacts) {
-                    _progress.value = it
+                    _progress.postValue(it)
                     if (it == 100) {
-                        _status.value = DONE
+                        _status.postValue(DONE)
                     }
                 }
             } catch (e: Exception) {
                 Timber.e(e)
-                _progress.value = 0
-                _status.value = FAILED
+                _progress.postValue(0)
+                _status.postValue(FAILED)
             }
         }
     }

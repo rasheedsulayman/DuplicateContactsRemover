@@ -7,7 +7,10 @@ import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
@@ -27,29 +30,26 @@ class DeleteContactsViewModel(
 
     private var viewModelJob = Job()
 
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
 
     init {
-        coroutineScope.launch {
-            deleteContacts()
-        }
+        deleteContacts()
     }
 
-    private suspend fun deleteContacts() {
-        withContext(Dispatchers.IO) {
+    private fun deleteContacts() {
+        coroutineScope.launch {
             try {
-                _status.value = LOADING
-                _progress.value = 0
+                _status.postValue(LOADING)
+                _progress.postValue(0)
                 contactsHelper.deleteContacts(contacts) {
-                    _progress.value = it
+                    _progress.postValue(it)
                     if (it == 100) {
-                        _status.value = DONE
+                        _status.postValue(DONE)
                     }
                 }
             } catch (e: Exception) {
                 Timber.e(e)
-                _status.value = FAILED
+                _status.postValue(FAILED)
             }
         }
     }

@@ -54,7 +54,7 @@ fun bindAccountsRecyclerView(recyclerView: RecyclerView, data: List<ContactsAcco
 
 // -- End Contacts Accounts Fragment
 
-// -- Starts Duplicates Contacts Fragment
+// -- Start Duplicates Contacts Fragment
 
 @BindingAdapter("duplicatesLoadingStatus")
 fun bindDuplicatesLoadingStatus(statusTextView: TextView, status: LoadingStatus?) {

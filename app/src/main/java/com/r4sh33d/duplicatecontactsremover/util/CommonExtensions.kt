@@ -1,7 +1,10 @@
 package com.r4sh33d.duplicatecontactsremover.util
 
+import android.content.Context
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
+import androidx.core.content.ContextCompat
 import java.io.ByteArrayOutputStream
 
 fun Bitmap.getByteArray(): ByteArray {
@@ -27,5 +30,16 @@ fun Cursor.getStringValue(key: String) = getString(getColumnIndex(key))
 
 fun Cursor.getIntValue(key: String) = getInt(getColumnIndex(key))
 
+fun Context.hasPermissions(permissionList: Set<String>): Boolean {
+    for (permission in permissionList) {
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            return false
+        }
+    }
+    return true
+}
+
+fun Context.hasPermision(permission: String): Boolean =
+    ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
 

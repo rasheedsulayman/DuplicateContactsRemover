@@ -7,10 +7,8 @@ const val HANGOUTS = "Hangouts"
 const val QQ = "QQ"
 const val JABBER = "Jabber"
 
-// apps with special handling
 const val TELEGRAM_PACKAGE = "org.telegram.messenger"
 const val CONTACTS_BACKUP_FILE_PREFIX = "duplicate_contacts_"
-
 
 const val CELL = "CELL"
 const val WORK = "WORK"
@@ -23,8 +21,6 @@ const val WORK_FAX = "WORK;FAX"
 const val HOME_FAX = "HOME;FAX"
 const val PAGER = "PAGER"
 const val MOBILE = "MOBILE"
-
-
 
 val requiredPermissions = arrayOf(
     Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,

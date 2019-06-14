@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     fun setUpToolBar(toolbarTitle: String, isRootPage: Boolean = false) {
         supportActionBar!!.run {
             setDisplayHomeAsUpEnabled(!isRootPage)
-            setHomeAsUpIndicator(if (!isRootPage) R.drawable.ic_close_black_24dp else 0)
+            setHomeAsUpIndicator(if (!isRootPage) R.drawable.ic_arrow_back_black_24dp else 0)
             toolbarTitleTextView.text = toolbarTitle
         }
     }

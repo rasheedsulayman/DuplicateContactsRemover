@@ -12,11 +12,11 @@ import com.r4sh33d.duplicatecontactsremover.databinding.ItemContactGroupLabelBin
 import com.r4sh33d.duplicatecontactsremover.databinding.ItemContactListBinding
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 
-class DuplicateContactsAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
-    private val TYPE_LABEL = 1
-    private val TYPE_CONTACT = 2
+class DuplicateContactsAdapter(val contactsToRemoveCallback: (HashSet<Contact>) -> Unit /*TODO use to an observable pattern?*/) :
+    ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
+
     var checkedPositionMarker = SparseBooleanArray()
-    var contactToRemove = ArrayList<Contact>()
+    var contactToRemove = HashSet<Contact>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -35,6 +35,9 @@ class DuplicateContactsAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffC
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Any>() {
+        private const val TYPE_LABEL = 1
+        private const val TYPE_CONTACT = 2
+
         override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
             return oldItem === newItem
         }
@@ -42,7 +45,7 @@ class DuplicateContactsAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffC
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
             if (oldItem is Contact && newItem is Contact) return oldItem.id == newItem.id
-            if (oldItem is String && newItem is String) return oldItem.equals(newItem)
+            if (oldItem is String && newItem is String) return oldItem == newItem
             return false
         }
     }
@@ -53,7 +56,6 @@ class DuplicateContactsAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffC
             TYPE_CONTACT -> (holder as ContactViewHolder).bind(item as Contact)
             TYPE_LABEL -> (holder as LabelViewHolder).bind(item as String)
         }
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -73,6 +75,7 @@ class DuplicateContactsAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffC
                 checkedPositionMarker.put(adapterPosition, isChecked)
                 val contact = getItem(adapterPosition) as Contact
                 if (isChecked) contactToRemove.add(contact) else contactToRemove.remove(contact)
+                contactsToRemoveCallback(contactToRemove)
             }
         }
 

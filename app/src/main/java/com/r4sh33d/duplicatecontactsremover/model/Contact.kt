@@ -8,14 +8,28 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Contact(
-    val id: Int, val firstName: String, val surname: String, val middleName: String, val contactId: Int,
-    var phoneNumbers: List<PhoneNumber>, var accountName: String, var accountType: String,
-
+    val id: Int,
+    val firstName: String,
+    val surname: String,
+    val middleName: String,
+    val contactId: Int,
+    var phoneNumbers: List<PhoneNumber>,
+    var accountName: String,
+    var accountType: String,
     var nickname: String?,
-    var photoUri: String, var emails: ArrayList<Email>?, var addresses: ArrayList<Address>?, var events: ArrayList<Event>?,
-    var starred: Int?, var thumbnailUri: String?, val notes: String?, val organization: Organization?,
-    var websites: ArrayList<String>?, var IMs: ArrayList<IM>?,  var prefix: String, var suffix: String,
-    var isMarked: Boolean = false, var isChecked: Boolean = false
+    var photoUri: String,
+    var emails: ArrayList<Email>?,
+    var addresses: ArrayList<Address>?,
+    var events: ArrayList<Event>?,
+    var starred: Int?,
+    var thumbnailUri: String?,
+    val notes: String?,
+    val organization: Organization?,
+    var websites: ArrayList<String>?,
+    var IMs: ArrayList<IM>?,
+    var prefix: String,
+    var suffix: String,
+    var isChecked: Boolean = false
 ) : Parcelable {
 
     val fullName: String
@@ -34,7 +48,7 @@ data class Contact(
     val initials: String
         get() = fullName.substring(0, 1)
 
-    val normalizedNumberConcat: String
+    private val normalizedNumberConcat: String
         get() {
             var phoneNumbersString = ""
             phoneNumbers.forEach {
@@ -44,7 +58,7 @@ data class Contact(
             return phoneNumbersString
         }
 
-    fun containEqualNames(contact: Contact): Boolean {
+    private fun containEqualNames(contact: Contact): Boolean {
         val thisContactName = fullName
         val name = contact.fullName
         if (thisContactName.isBlank() || name.isBlank()) {
@@ -53,7 +67,7 @@ data class Contact(
         return thisContactName == name
     }
 
-    fun containEqualPhoneNumbers(contact: Contact): Boolean {
+    private fun containEqualPhoneNumbers(contact: Contact): Boolean {
         val thisNomalizedNumber = normalizedNumberConcat
         val normaLizedNumber = contact.normalizedNumberConcat
         if (thisNomalizedNumber.isBlank() || normaLizedNumber.isBlank()) {
@@ -69,6 +83,7 @@ data class Contact(
         }
     }
 
+
     fun getDuplicateCriteriaString(duplicateCriteria: DuplicateCriteria): String {
         return when (duplicateCriteria) {
             PHONE_NUMBER -> normalizedNumberConcat
@@ -80,4 +95,7 @@ data class Contact(
         return "\nContact(name: $firstName $surname, phoneNumbers: $phoneNumbers, contactID: $contactId , rawId: $id)"
     }
 
+    override fun equals(other: Any?): Boolean {
+        return this === other
+    }
 }

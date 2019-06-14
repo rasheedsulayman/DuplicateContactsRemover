@@ -1,7 +1,6 @@
 package com.r4sh33d.duplicatecontactsremover.dialogs.contactbackup
 
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,6 +12,7 @@ import com.r4sh33d.duplicatecontactsremover.util.VcfExporter
 import java.io.File
 
 class ContactBackupDialog : BaseProgressDialog() {
+
     override fun getTitle(): String {
         return "Contacts Backup"
     }
@@ -34,8 +34,7 @@ class ContactBackupDialog : BaseProgressDialog() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun setUpDialogDetails() {
         val contacts = arguments!!.getParcelableArrayList<Contact>(CONTACTS_KEY)
         val viewModelFactory = ContactsBackupViewModelFactory(VcfExporter(context!!), contacts)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(ContactsBackupViewModel::class.java)
@@ -48,11 +47,11 @@ class ContactBackupDialog : BaseProgressDialog() {
                 LoadingStatus.DONE -> {
                     statusTextView.text = "Contacts successfully backed up."
                     finishButton.isEnabled = true
-                    callback.onBackupFinished(this,viewModel.backupFile)
+                    callback.onBackupFinished(this, viewModel.backupFile)
                 }
                 LoadingStatus.FAILED -> {
                     statusTextView.text = "Contact backup failed."
-                    callback.onBackupFinished(this,viewModel.backupFile)
+                    callback.onBackupFinished(this, viewModel.backupFile)
                 }
                 else -> {/*Nothing.*/
                 }

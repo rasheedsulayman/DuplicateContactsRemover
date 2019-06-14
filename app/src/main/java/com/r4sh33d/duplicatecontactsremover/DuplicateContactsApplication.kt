@@ -12,5 +12,4 @@ class DuplicateContactsApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
     }
-
 }

@@ -9,7 +9,7 @@ import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import kotlinx.coroutines.*
 
-class ContactSourcesViewModel(val contactsHelper: ContactsHelper, val duplicateCriteria: DuplicateCriteria) :
+class ContactSourcesViewModel(private val contactsHelper: ContactsHelper, val duplicateCriteria: DuplicateCriteria) :
     ViewModel() {
 
     private val _navigateToSelectedContactsAccount = MutableLiveData<ContactsAccount>()

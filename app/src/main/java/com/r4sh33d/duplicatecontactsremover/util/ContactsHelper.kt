@@ -25,8 +25,12 @@ import kotlin.collections.HashMap
 import kotlin.collections.set
 
 class ContactsHelper(val context: Context) {
+
+    companion object {
+        private const val BATCH_SIZE = 100
+    }
+
     private var displayContactSources = ArrayList<String>()
-    private val BATCH_SIZE = 100
 
     private val contactsProjection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
@@ -546,11 +550,11 @@ class ContactsHelper(val context: Context) {
     }
 
 
-    fun deleteContact(contact: Contact) {
-        deleteContacts(arrayListOf(contact))
+    fun deleteContact(contact: Contact, progressCallback: ((progress: Int) -> Unit)) {
+        deleteContacts(arrayListOf(contact), progressCallback)
     }
 
-    fun deleteContacts(contacts: ArrayList<Contact>, progressCallback: ((progress: Int) -> Unit)? = null) {
+    fun deleteContacts(contacts: ArrayList<Contact>, progressCallback: ((progress: Int) -> Unit)) {
         val operations = ArrayList<ContentProviderOperation>()
         val selection = "${ContactsContract.RawContacts._ID} = ?"
         contacts.forEachIndexed { index, contact ->
@@ -565,9 +569,10 @@ class ContactsHelper(val context: Context) {
                 operations.clear()
             }
             val progress = (index / contacts.size) * 90
-            if (progressCallback != null) progressCallback(progress)
+            progressCallback(progress)
         }
         context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+        progressCallback(100)
     }
 
 
