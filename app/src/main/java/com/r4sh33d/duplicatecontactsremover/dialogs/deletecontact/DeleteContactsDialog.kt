@@ -48,7 +48,7 @@ class DeleteContactsDialog : BaseProgressDialog() {
             when (it) {
                 LoadingStatus.LOADING -> statusTextView.text = "Removing duplicate contacts, please wait. . ."
                 LoadingStatus.DONE -> {
-                    var successMessage = "Contacts successfully removed."
+                    var successMessage = "Contacts successfully removed. "
                     backUpFileName?.run {
                         successMessage += "The deleted contacts is backed up to the location: $this"
                     }

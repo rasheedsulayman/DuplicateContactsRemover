@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:tools="http://schemas.android.com/tools"
         xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="contact" type="com.r4sh33d.duplicatecontactsremover.model.Contact"/>
     </data>
     <LinearLayout
+            android:background="?android:attr/selectableItemBackground"
             android:paddingTop="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -46,18 +47,18 @@
                         tools:text="Ayobami Rasheed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/fullName" android:textSize="15sp"/>
+                        android:id="@+id/fullName" android:textSize="17sp"/>
                 <TextView
+                        android:lineSpacingMultiplier="1.1"
+                        android:layout_marginTop="4dp"
                         android:text="@{contact.multiLinedPhoneNumbers}"
                         android:textColor="?android:textColorPrimary"
                         tools:text="08127895655\n08165588923"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/phoneNumbers"/>
-
             </LinearLayout>
-
 
             <CheckBox
                     android:layout_gravity="center_vertical"
@@ -66,7 +67,6 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:id="@+id/checkBox"/>
-
 
         </LinearLayout>
 

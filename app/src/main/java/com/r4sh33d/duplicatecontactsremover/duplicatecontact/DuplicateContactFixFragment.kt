@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.r4sh33d.duplicatecontactsremover.DuplicateContactsViewModelFactory
 import com.r4sh33d.duplicatecontactsremover.MainActivity
+import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.databinding.FragmentDuplicateContactFixConstaraintLayoutBinding
 import com.r4sh33d.duplicatecontactsremover.dialogs.contactbackup.ContactBackupDialog
 import com.r4sh33d.duplicatecontactsremover.dialogs.contactbackup.ContactsBackupOperationsCallback
@@ -19,9 +20,9 @@ import com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact.DeleteContacts
 import com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact.DeleteContactsOperationsCallback
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
+import com.r4sh33d.duplicatecontactsremover.util.getQuantityString
 import com.r4sh33d.duplicatecontactsremover.util.onScrollChanged
 import java.io.File
-import kotlin.collections.ArrayList
 
 class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback, DeleteContactsOperationsCallback {
     private lateinit var contactsToDelete: HashSet<Contact>
@@ -45,9 +46,10 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
         binding.viewModel = viewModel
         mainActivity.setUpToolBar(fragmentArgs.contactsAccount.getDisplayName())
         binding.contactsListRecyclerView.adapter = DuplicateContactsAdapter {
-            binding.removeDuplicates.text = "Remove ${it.size} contacts."
+            binding.removeDuplicates.text = mainActivity.getQuantityString(R.plurals.remove_n_contacts, it.size)
             contactsToDelete = it
         }
+
         binding.contactsListRecyclerView.onScrollChanged { mainActivity.invalidateToolbarElevation(it) }
 
         binding.removeDuplicates.setOnClickListener {
@@ -62,7 +64,7 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
                     text = "This operation will remove ${contactsToDelete.size} contacts from your phone. Don't worry, the contacts " +
                             "will be backed up to your phone storage. In case you change your mind, you can restore backed up contacts with any " +
                             "contacts manager app"
-                )
+                ) { lineSpacing(1.2f) }
                 positiveButton(text = "Okay") {
                     ContactBackupDialog.show(this@DuplicateContactFixFragment, ArrayList(contactsToDelete))
                 }

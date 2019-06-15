@@ -3,14 +3,14 @@
   <string name="about">About</string>
   <string name="dismiss">Dismiss</string>
   <string name="about_body"><![CDATA[
-        A simple App to cleanup and remove duplicate contacts for your address book.
+        A simple App to cleanup and remove duplicate contacts from your address book.
         developed by <b>Rasheed Sulayman</b>.<br/>
         <a href=\'https://twitter.com/srasheed_\'>Twitter</a>&nbsp;&nbsp;
         <a href=\'https://github.com/r4sh33d\'>GitHub</a>&nbsp;&nbsp;
         <a href=\'https://www.linkedin.com/in/rasheed-sulayman\'>LinkedIn</a><br/><br/>
         This project is <a href=\'https://github.com/r4sh33d/DuplicateContactsRemover\'>open source</a>. Contributions are welcome.
         Check out my <a href="https://play.google.com/store/apps/dev?id=8761425764458284876">other apps</a>.
-        <br/>View the <a href=\'https://github.com/r4sh33d/DuplicateContactsRemover\'>Privacy Policy</a>.
+        <br/>View the <a href=\'https://github.com/r4sh33d/DuplicateContactsRemover/blob/master/privacy_policy.md'>Privacy Policy</a>.
   ]]></string>
 
 </resources>

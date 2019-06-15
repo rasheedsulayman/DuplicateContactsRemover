@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+            app:showAsAction="never"
+            android:id="@+id/menu_about"
+            android:title="@string/about" />
+    <item
+            app:showAsAction="never"
+            android:id="@+id/menu_feedback"
+            android:title="Send Feedback" />
+
+    <item
+            app:showAsAction="never"
+            android:id="@+id/menu_rate"
+            android:title="Rate Us" />
+
+    <item
+            app:showAsAction="never"
+            android:id="@+id/menu_licences"
+            android:title="Licences" />
+
+</menu>

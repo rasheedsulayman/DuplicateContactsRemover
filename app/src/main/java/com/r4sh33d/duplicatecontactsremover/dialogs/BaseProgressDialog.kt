@@ -15,16 +15,15 @@ abstract class BaseProgressDialog : DialogFragment() {
     protected lateinit var statusTextView: TextView
     protected lateinit var finishButton: MaterialButton
     protected lateinit var progressBar: ProgressBar
-    private lateinit var titleTextView: TextView
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         isCancelable = false
         val dialog = MaterialDialog(context!!)
             .customView(R.layout.progress_dialog_layout, noVerticalPadding = true, dialogWrapContent = true)
+            .title(text =  getTitle())
             .noAutoDismiss()
         val view = dialog.getCustomView()
-        titleTextView = view.findViewById(R.id.title_textview)
-        titleTextView.text = getTitle()
+
         statusTextView = view.findViewById(R.id.status_textview)
         progressBar = view.findViewById(R.id.status_progress_bar)
         finishButton = view.findViewById(R.id.finish_button)

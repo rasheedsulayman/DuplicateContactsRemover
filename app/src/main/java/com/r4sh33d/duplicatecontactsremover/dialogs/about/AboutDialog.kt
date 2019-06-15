@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.r4sh33d.duplicatecontactsremover.BuildConfig.VERSION_NAME
 import com.r4sh33d.duplicatecontactsremover.R
+import com.r4sh33d.duplicatecontactsremover.util.RealUrlLauncher
 
 class AboutDialog : DialogFragment() {
 
@@ -20,8 +21,8 @@ class AboutDialog : DialogFragment() {
         return MaterialDialog(context!!)
             .title(text = "Duplicate Contacts Remover v$VERSION_NAME")
             .message(res = R.string.about_body) {
-                html { urlLauncher.viewUrl(it) }
-                lineSpacing(1.5f)
+                html { RealUrlLauncher(activity!!).viewUrl(it) }
+                lineSpacing(1.4f)
             }
             .positiveButton(R.string.dismiss)
     }

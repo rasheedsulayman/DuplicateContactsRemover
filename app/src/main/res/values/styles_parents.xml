@@ -4,8 +4,14 @@
         <item name="colorPrimary">@color/colorPrimary_lightTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_lightTheme</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/lato</item>
+
         <item name="md_color_button_text">@color/colorAccent</item>
+        <item name="md_color_content">@android:color/black</item>
         <item name="md_corner_radius">16dp</item>
+        <item name="md_font_title">@font/lato_bold</item>
+        <item name="md_font_body">@font/lato</item>
+        <item name="md_font_button">@font/lato_bold</item>
     </style>
 
 </resources>

@@ -611,7 +611,7 @@ class ContactsHelper(val context: Context) {
         }
         //Build the list to return
         contactsMap.values.forEachIndexed { index, list ->
-            //Add label
+            //Add labels
             listToReturn.add("Group ${index + 1}")
             list.first().isChecked = true
             listToReturn.addAll(list)

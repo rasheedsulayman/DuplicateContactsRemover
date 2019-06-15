@@ -5,9 +5,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -17,10 +15,13 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
 import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.R
+import com.r4sh33d.duplicatecontactsremover.dialogs.about.AboutDialog
+import com.r4sh33d.duplicatecontactsremover.dialogs.licences.LicencesDialog
 import com.r4sh33d.duplicatecontactsremover.util.*
 import kotlinx.android.synthetic.main.fragment_landing_page.*
 
 class LandingPageFragment : Fragment() {
+    private lateinit var urlLauncher: RealUrlLauncher
 
     private val mainActivity: MainActivity
         get() {
@@ -46,8 +47,10 @@ class LandingPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         mainActivity.setUpToolBar("Duplicate Contacts", true)
         mainActivity.invalidateToolbarElevation(0)
+        urlLauncher = RealUrlLauncher(mainActivity)
         checkPermissions()
     }
 
@@ -83,8 +86,10 @@ class LandingPageFragment : Fragment() {
                                 mainActivity.finish()
                             }
                             negativeButton(R.string.cancel) {
-                                Toast.makeText(mainActivity,
-                                    R.string.permission_denied, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    mainActivity,
+                                    R.string.permission_denied, Toast.LENGTH_SHORT
+                                ).show()
                                 mainActivity.finish()
                             }
                         }
@@ -93,6 +98,21 @@ class LandingPageFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.landing_page_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            R.id.menu_about -> AboutDialog.show(this)
+            R.id.menu_licences -> LicencesDialog.show(this)
+            R.id.menu_rate -> urlLauncher.launchPlayStore()
+            R.id.menu_feedback -> urlLauncher.viewUrl("https://github.com/r4sh33d/DuplicateContactsRemover/issues/new/")
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun shouldShowPermissionExplanation(permissionString: String): Boolean =

@@ -72,8 +72,7 @@
                     android:layout_margin="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    android:id="@+id/arrowImageView" android:layout_marginTop="16dp"
-            />
+                    android:id="@+id/arrowImageView" android:layout_marginTop="16dp"/>
 
         </LinearLayout>
 

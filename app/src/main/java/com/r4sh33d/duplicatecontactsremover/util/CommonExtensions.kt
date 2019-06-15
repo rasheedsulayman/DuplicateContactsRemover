@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
+import androidx.annotation.PluralsRes
 import androidx.core.content.ContextCompat
 import java.io.ByteArrayOutputStream
 
@@ -42,4 +43,7 @@ fun Context.hasPermissions(permissionList: Set<String>): Boolean {
 fun Context.hasPermision(permission: String): Boolean =
     ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
+fun Context.getQuantityString(@PluralsRes plural: Int, quantity: Int): String {
+    return resources.getQuantityString(plural, quantity, quantity)
+}
 

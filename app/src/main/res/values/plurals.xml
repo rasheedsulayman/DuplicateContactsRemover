@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="remove_n_contacts">
+        <item quantity="one">Remove %d contact</item>
+        <item quantity="other">Remove %d contacts</item>
+    </plurals>
+
+</resources>

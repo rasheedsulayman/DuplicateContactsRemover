@@ -27,8 +27,6 @@ class ContactSourcesFragment : Fragment() {
     ): View? {
         val binding = FragmentContactSourcesConstaraintLayoutBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        binding.contactSourcesRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-
         val fragmentArgs = ContactSourcesFragmentArgs.fromBundle(arguments!!)
         val viewModelFactory =
             ContactsSourcesViewModelFactory(ContactsHelper(context!!), fragmentArgs.duplicateCriteria)
