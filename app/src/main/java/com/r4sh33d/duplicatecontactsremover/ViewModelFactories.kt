@@ -13,6 +13,7 @@ import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
 import com.r4sh33d.duplicatecontactsremover.util.VcfExporter
 
 
+/*
 class ContactsSourcesViewModelFactory(
     private val contactsHelper: ContactsHelper, private val duplicateCriteria: DuplicateCriteria
 ) : ViewModelProvider.Factory {
@@ -24,7 +25,6 @@ class ContactsSourcesViewModelFactory(
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-
 
 class ContactsBackupViewModelFactory(
     private val vcfExporter: VcfExporter, private val contacts: ArrayList<Contact>
@@ -69,3 +69,4 @@ class DuplicateContactsViewModelFactory(
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+*/

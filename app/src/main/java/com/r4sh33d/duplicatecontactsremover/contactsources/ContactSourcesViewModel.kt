@@ -8,8 +8,9 @@ import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class ContactSourcesViewModel(private val contactsHelper: ContactsHelper, val duplicateCriteria: DuplicateCriteria) :
+class ContactSourcesViewModel @Inject constructor(private val contactsHelper: ContactsHelper) :
     ViewModel() {
 
     private val _navigateToSelectedContactsAccount = MutableLiveData<ContactsAccount>()
@@ -31,20 +32,17 @@ class ContactSourcesViewModel(private val contactsHelper: ContactsHelper, val du
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    init {
-        getContactsAccountsList()
-    }
 
-    private fun getContactsAccountsList() {
+    private fun getContactsAccountsList(duplicateCriteria: DuplicateCriteria) {
         coroutineScope.launch {
             _status.value = LoadingStatus.LOADING
-            _contactsAccountList.value = getContactsWithAccounts()
+            _contactsAccountList.value = getContactsWithAccounts(duplicateCriteria)
             _status.value = if (contactsAccountList.value!!.isNotEmpty()) LoadingStatus.DONE
             else LoadingStatus.EMPTY
         }
     }
 
-    suspend fun getContactsWithAccounts(): List<ContactsAccount> {
+    suspend fun getContactsWithAccounts(duplicateCriteria: DuplicateCriteria): List<ContactsAccount> {
         return withContext(Dispatchers.IO) {
             contactsHelper.getContactsWithAccounts(duplicateCriteria)
         }

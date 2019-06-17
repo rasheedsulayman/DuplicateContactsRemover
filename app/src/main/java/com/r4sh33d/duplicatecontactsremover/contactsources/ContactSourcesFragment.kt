@@ -6,15 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import com.r4sh33d.duplicatecontactsremover.ContactsSourcesViewModelFactory
+import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApplication
 import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.databinding.FragmentContactSourcesConstaraintLayoutBinding
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
+import javax.inject.Inject
 
 class ContactSourcesFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val mainActivity: MainActivity
         get() {
@@ -25,11 +29,14 @@ class ContactSourcesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        (mainActivity.applicationContext as DuplicateContactsApplication).component.inject(this)
+
         val binding = FragmentContactSourcesConstaraintLayoutBinding.inflate(inflater)
         binding.lifecycleOwner = this
+
         val fragmentArgs = ContactSourcesFragmentArgs.fromBundle(arguments!!)
-        val viewModelFactory =
-            ContactsSourcesViewModelFactory(ContactsHelper(context!!), fragmentArgs.duplicateCriteria)
+
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(ContactSourcesViewModel::class.java)
         binding.viewModel = viewModel
 

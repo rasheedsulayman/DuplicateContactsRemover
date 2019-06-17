@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
-import com.r4sh33d.duplicatecontactsremover.DuplicateContactsViewModelFactory
+import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApplication
 import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.databinding.FragmentDuplicateContactFixConstaraintLayoutBinding
@@ -19,12 +20,15 @@ import com.r4sh33d.duplicatecontactsremover.dialogs.contactbackup.ContactsBackup
 import com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact.DeleteContactsDialog
 import com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact.DeleteContactsOperationsCallback
 import com.r4sh33d.duplicatecontactsremover.model.Contact
-import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.getQuantityString
 import com.r4sh33d.duplicatecontactsremover.util.onScrollChanged
 import java.io.File
+import javax.inject.Inject
 
 class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback, DeleteContactsOperationsCallback {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var contactsToDelete: HashSet<Contact>
     private val mainActivity: MainActivity
         get() {
@@ -37,11 +41,9 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
     ): View? {
         val binding = FragmentDuplicateContactFixConstaraintLayoutBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        (mainActivity.applicationContext as DuplicateContactsApplication).component.inject(this)
         val fragmentArgs = DuplicateContactFixFragmentArgs.fromBundle(arguments!!)
-        val viewModelFactory = DuplicateContactsViewModelFactory(
-            fragmentArgs.contactsAccount,
-            fragmentArgs.duplicateCriteria, ContactsHelper(context!!)
-        )
+
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DuplicateContactViewModel::class.java)
         binding.viewModel = viewModel
         mainActivity.setUpToolBar(fragmentArgs.contactsAccount.getDisplayName())

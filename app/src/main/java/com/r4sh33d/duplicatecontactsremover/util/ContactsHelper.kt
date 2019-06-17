@@ -20,11 +20,14 @@ import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.PHONE_NUMBER
 import timber.log.Timber
 import java.util.HashSet
 import java.util.LinkedHashSet
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.set
 
-class ContactsHelper(val context: Context) {
+@Singleton
+class ContactsHelper @Inject constructor(val context: Context) {
 
     companion object {
         private const val BATCH_SIZE = 100

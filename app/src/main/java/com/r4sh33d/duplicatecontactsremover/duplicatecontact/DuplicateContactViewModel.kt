@@ -9,10 +9,9 @@ import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class DuplicateContactViewModel(
-    private val contactsAccount: ContactsAccount,
-    val duplicateCriteria: DuplicateCriteria,
+class DuplicateContactViewModel @Inject constructor(
     private val contactsHelper: ContactsHelper
 ) : ViewModel() {
 
@@ -29,20 +28,23 @@ class DuplicateContactViewModel(
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    init {
-        getDuplicateContactsList()
-    }
 
-    private fun getDuplicateContactsList() {
+    private fun getDuplicateContactsList(
+        contactsAccount: ContactsAccount,
+        duplicateCriteria: DuplicateCriteria
+    ) {
         coroutineScope.launch {
             _status.value = LoadingStatus.LOADING
-            _duplicateContactSearchResult.value = getDuplicateContacts()
+            _duplicateContactSearchResult.value = getDuplicateContacts(contactsAccount, duplicateCriteria)
             _status.value = if (duplicateContactsSearchResults.value!!.first.isNotEmpty()) LoadingStatus.DONE
             else LoadingStatus.EMPTY
         }
     }
 
-    suspend fun getDuplicateContacts(): Pair<ArrayList<Any>, SparseBooleanArray> {
+    suspend fun getDuplicateContacts(
+        contactsAccount: ContactsAccount,
+        duplicateCriteria: DuplicateCriteria
+    ): Pair<ArrayList<Any>, SparseBooleanArray> {
         return withContext(Dispatchers.Default) {
             contactsHelper.getDuplicateContactsWithLabels(contactsAccount, duplicateCriteria)
         }

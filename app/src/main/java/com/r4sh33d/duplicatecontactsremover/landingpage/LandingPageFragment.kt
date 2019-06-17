@@ -13,23 +13,24 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
+import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApplication
 import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.dialogs.about.AboutDialog
 import com.r4sh33d.duplicatecontactsremover.dialogs.licences.LicencesDialog
 import com.r4sh33d.duplicatecontactsremover.util.*
 import kotlinx.android.synthetic.main.fragment_landing_page.*
+import javax.inject.Inject
 
 class LandingPageFragment : Fragment() {
-    private lateinit var urlLauncher: RealUrlLauncher
+    @Inject lateinit var urlLauncher: RealUrlLauncher
+    private val requestAppSettings = 600
+    private val permissionCode = 500
 
     private val mainActivity: MainActivity
         get() {
             return activity as? MainActivity ?: throw IllegalStateException("Not attached!")
         }
-
-    private val requestAppSettings = 600
-    private val permissionCode = 500
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,9 +49,10 @@ class LandingPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+        (mainActivity.applicationContext as DuplicateContactsApplication).component.inject(this)
+
         mainActivity.setUpToolBar("Duplicate Contacts", true)
         mainActivity.invalidateToolbarElevation(0)
-        urlLauncher = RealUrlLauncher(mainActivity)
         checkPermissions()
     }
 
