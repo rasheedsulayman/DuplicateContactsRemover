@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
-import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApplication
+import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
 import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.dialogs.about.AboutDialog
@@ -49,7 +49,7 @@ class LandingPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        (mainActivity.applicationContext as DuplicateContactsApplication).component.inject(this)
+        (mainActivity.applicationContext as DuplicateContactsApp).component.inject(this)
 
         mainActivity.setUpToolBar("Duplicate Contacts", true)
         mainActivity.invalidateToolbarElevation(0)

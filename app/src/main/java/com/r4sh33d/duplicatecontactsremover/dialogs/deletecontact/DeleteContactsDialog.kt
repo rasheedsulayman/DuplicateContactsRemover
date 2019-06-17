@@ -3,18 +3,18 @@ package com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.r4sh33d.duplicatecontactsremover.DeleteContactsViewModelFactory
+import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
 import com.r4sh33d.duplicatecontactsremover.dialogs.BaseProgressDialog
 import com.r4sh33d.duplicatecontactsremover.model.Contact
-import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
+import javax.inject.Inject
 
 class DeleteContactsDialog : BaseProgressDialog() {
 
-    override fun getTitle(): String {
-        return "Remove Duplicates"
-    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     companion object {
         private const val CONTACTS_KEY = "contacts_key"
@@ -36,14 +36,17 @@ class DeleteContactsDialog : BaseProgressDialog() {
         }
     }
 
+    override fun getTitle(): String {
+        return "Remove Duplicates"
+    }
+
     override fun setUpDialogDetails() {
+        (context!!.applicationContext as DuplicateContactsApp).component.inject(this)
         val contacts = arguments!!.getParcelableArrayList<Contact>(CONTACTS_KEY)
         val backUpFileName = arguments!!.getString(BACKUP_FILE_NAME_KEY)
-        val viewModelFactory = DeleteContactsViewModelFactory(ContactsHelper(context!!), contacts)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DeleteContactsViewModel::class.java)
         val callback = parentFragment as? DeleteContactsOperationsCallback
             ?: throw IllegalArgumentException("Parent Fragment must implement DeleteContactsDialog")
-
         viewModel.status.observe(this, Observer {
             when (it) {
                 LoadingStatus.LOADING -> statusTextView.text = "Removing duplicate contacts, please wait. . ."
@@ -63,14 +66,13 @@ class DeleteContactsDialog : BaseProgressDialog() {
                 }
             }
         })
-
         viewModel.progress.observe(this, Observer {
             progressBar.progress = it
         })
-
         finishButton.setOnClickListener {
             callback.onDeleteOperationFinished(this)
         }
+        viewModel.deleteContacts(contacts)
     }
 }
 

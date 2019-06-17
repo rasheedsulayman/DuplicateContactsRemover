@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
-import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApplication
+import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
 import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.databinding.FragmentDuplicateContactFixConstaraintLayoutBinding
@@ -26,9 +26,9 @@ import java.io.File
 import javax.inject.Inject
 
 class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback, DeleteContactsOperationsCallback {
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private lateinit var contactsToDelete: HashSet<Contact>
     private val mainActivity: MainActivity
         get() {
@@ -39,14 +39,18 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (mainActivity.applicationContext as DuplicateContactsApp).component.inject(this)
         val binding = FragmentDuplicateContactFixConstaraintLayoutBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        (mainActivity.applicationContext as DuplicateContactsApplication).component.inject(this)
         val fragmentArgs = DuplicateContactFixFragmentArgs.fromBundle(arguments!!)
 
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DuplicateContactViewModel::class.java)
         binding.viewModel = viewModel
+
+        viewModel.getDuplicateContactsList(fragmentArgs.contactsAccount, fragmentArgs.duplicateCriteria)
+
         mainActivity.setUpToolBar(fragmentArgs.contactsAccount.getDisplayName())
+
         binding.contactsListRecyclerView.adapter = DuplicateContactsAdapter {
             binding.removeDuplicates.text = mainActivity.getQuantityString(R.plurals.remove_n_contacts, it.size)
             contactsToDelete = it
@@ -63,8 +67,8 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
             MaterialDialog(mainActivity).show {
                 title(text = "Remove Contacts?")
                 message(
-                    text = "This operation will remove ${contactsToDelete.size} contacts from your phone. Don't worry, the contacts " +
-                            "will be backed up to your phone storage. In case you change your mind, you can restore backed up contacts with any " +
+                    text = "This operation will remove ${contactsToDelete.size} contacts from your phone. The contacts " +
+                            "will be backed-up to your phone storage. In case you change your mind, you can restore backed-up contacts with any " +
                             "contacts manager app"
                 ) { lineSpacing(1.2f) }
                 positiveButton(text = "Okay") {

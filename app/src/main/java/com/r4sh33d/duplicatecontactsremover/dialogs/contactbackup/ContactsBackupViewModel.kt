@@ -15,10 +15,10 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.util.*
+import javax.inject.Inject
 
-class ContactsBackupViewModel(
-    private val vcfExporter: VcfExporter, val contacts: ArrayList<Contact>
-) : ViewModel() {
+class ContactsBackupViewModel @Inject constructor(
+    private val vcfExporter: VcfExporter) : ViewModel() {
 
     private val _status = MutableLiveData<LoadingStatus>()
 
@@ -36,11 +36,7 @@ class ContactsBackupViewModel(
 
     var backupFile: File? = null
 
-    init {
-        backupAndContacts()
-    }
-
-    private  fun backupAndContacts() {
+    fun backupContacts(contacts: ArrayList<Contact>) {
         coroutineScope.launch {
             try {
                 _status.postValue(LOADING)

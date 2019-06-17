@@ -29,7 +29,7 @@ class DuplicateContactViewModel @Inject constructor(
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
 
-    private fun getDuplicateContactsList(
+     fun getDuplicateContactsList(
         contactsAccount: ContactsAccount,
         duplicateCriteria: DuplicateCriteria
     ) {
@@ -41,7 +41,7 @@ class DuplicateContactViewModel @Inject constructor(
         }
     }
 
-    suspend fun getDuplicateContacts(
+    private suspend fun getDuplicateContacts(
         contactsAccount: ContactsAccount,
         duplicateCriteria: DuplicateCriteria
     ): Pair<ArrayList<Any>, SparseBooleanArray> {

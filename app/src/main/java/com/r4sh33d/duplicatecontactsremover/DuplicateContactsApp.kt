@@ -6,7 +6,7 @@ import com.r4sh33d.duplicatecontactsremover.di.ContextModule
 import com.r4sh33d.duplicatecontactsremover.di.DaggerAppComponent
 import timber.log.Timber
 
-class DuplicateContactsApplication : Application() {
+class DuplicateContactsApp : Application() {
 
     lateinit var component: AppComponent
 
@@ -15,10 +15,8 @@ class DuplicateContactsApplication : Application() {
         component = DaggerAppComponent.builder()
             .contextModule(ContextModule(this))
             .build()
-
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-
     }
 }

@@ -32,8 +32,7 @@ class ContactSourcesViewModel @Inject constructor(private val contactsHelper: Co
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-
-    private fun getContactsAccountsList(duplicateCriteria: DuplicateCriteria) {
+     fun getContactsAccountsList(duplicateCriteria: DuplicateCriteria) {
         coroutineScope.launch {
             _status.value = LoadingStatus.LOADING
             _contactsAccountList.value = getContactsWithAccounts(duplicateCriteria)
@@ -42,7 +41,7 @@ class ContactSourcesViewModel @Inject constructor(private val contactsHelper: Co
         }
     }
 
-    suspend fun getContactsWithAccounts(duplicateCriteria: DuplicateCriteria): List<ContactsAccount> {
+    private suspend fun getContactsWithAccounts(duplicateCriteria: DuplicateCriteria): List<ContactsAccount> {
         return withContext(Dispatchers.IO) {
             contactsHelper.getContactsWithAccounts(duplicateCriteria)
         }

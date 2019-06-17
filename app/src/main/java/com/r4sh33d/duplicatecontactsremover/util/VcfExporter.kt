@@ -12,11 +12,13 @@ import ezvcard.property.*
 import ezvcard.util.PartialDate
 import java.io.File
 import java.util.*
+import javax.inject.Inject
 
-class VcfExporter(val context: Context) {
+class VcfExporter @Inject constructor(val context: Context) {
     private var contactsExported = 0
 
-    fun exportContacts(file: File,
+    fun exportContacts(
+        file: File,
         contacts: ArrayList<Contact>,
         progressCallback: (percentage: Int) -> Unit
     ) {

@@ -3,19 +3,19 @@ package com.r4sh33d.duplicatecontactsremover.dialogs.contactbackup
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.r4sh33d.duplicatecontactsremover.ContactsBackupViewModelFactory
+import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
 import com.r4sh33d.duplicatecontactsremover.dialogs.BaseProgressDialog
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
-import com.r4sh33d.duplicatecontactsremover.util.VcfExporter
 import java.io.File
+import javax.inject.Inject
 
 class ContactBackupDialog : BaseProgressDialog() {
 
-    override fun getTitle(): String {
-        return "Contacts Backup"
-    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     companion object {
         private const val CONTACTS_KEY = "contacts_key"
@@ -34,9 +34,13 @@ class ContactBackupDialog : BaseProgressDialog() {
         }
     }
 
+    override fun getTitle(): String {
+        return "Contacts Backup"
+    }
+
     override fun setUpDialogDetails() {
+        (context!!.applicationContext as DuplicateContactsApp).component.inject(this)
         val contacts = arguments!!.getParcelableArrayList<Contact>(CONTACTS_KEY)
-        val viewModelFactory = ContactsBackupViewModelFactory(VcfExporter(context!!), contacts)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(ContactsBackupViewModel::class.java)
         val callback = parentFragment as? ContactsBackupOperationsCallback
             ?: throw IllegalArgumentException("Parent Fragment must implement BackupOperationsCallback")
@@ -65,6 +69,7 @@ class ContactBackupDialog : BaseProgressDialog() {
         finishButton.setOnClickListener {
             callback.onFinishButtonClicked(this)
         }
+        viewModel.backupContacts(contacts)
     }
 }
 

@@ -1,4 +1,4 @@
-package com.r4sh33d.duplicatecontactsremover
+package com.r4sh33d.duplicatecontactsremover.util
 
 import android.util.SparseBooleanArray
 import android.view.View
@@ -10,7 +10,6 @@ import com.google.android.material.button.MaterialButton
 import com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesAdapter
 import com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactsAdapter
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
-import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 
 // -- Start ContactsAccounts Fragment
 

@@ -12,7 +12,7 @@ import com.r4sh33d.duplicatecontactsremover.databinding.ItemContactGroupLabelBin
 import com.r4sh33d.duplicatecontactsremover.databinding.ItemContactListBinding
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 
-class DuplicateContactsAdapter(val contactsToRemoveCallback: (HashSet<Contact>) -> Unit /*TODO use to an observable pattern?*/) :
+class DuplicateContactsAdapter(val contactsToRemoveCallback: (HashSet<Contact>) -> Unit /*TODO use to an observer pattern?*/) :
     ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
 
     var checkedPositionMarker = SparseBooleanArray()
