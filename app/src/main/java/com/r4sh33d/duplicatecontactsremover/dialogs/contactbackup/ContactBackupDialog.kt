@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
+import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.dialogs.BaseProgressDialog
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
@@ -35,7 +36,7 @@ class ContactBackupDialog : BaseProgressDialog() {
     }
 
     override fun getTitle(): String {
-        return "Contacts Backup"
+        return getString(R.string.contacts_backup)
     }
 
     override fun setUpDialogDetails() {
@@ -47,14 +48,14 @@ class ContactBackupDialog : BaseProgressDialog() {
 
         viewModel.status.observe(this, Observer {
             when (it) {
-                LoadingStatus.LOADING -> statusTextView.text = "Backing up your contacts, Please wait. . ."
+                LoadingStatus.LOADING -> statusTextView.text = getString(R.string.contact_backup_progress_message)
                 LoadingStatus.DONE -> {
-                    statusTextView.text = "Contacts successfully backed up."
+                    statusTextView.text = getString(R.string.contacts_backup_success_message)
                     finishButton.isEnabled = true
                     callback.onBackupFinished(this, viewModel.backupFile)
                 }
                 LoadingStatus.FAILED -> {
-                    statusTextView.text = "Contact backup failed."
+                    statusTextView.text = getString(R.string.contacts_backup_failure_message)
                     callback.onBackupFinished(this, viewModel.backupFile)
                 }
                 else -> {/*Nothing.*/

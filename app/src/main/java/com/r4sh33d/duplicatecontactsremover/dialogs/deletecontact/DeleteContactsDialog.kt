@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
+import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.dialogs.BaseProgressDialog
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
@@ -37,7 +38,7 @@ class DeleteContactsDialog : BaseProgressDialog() {
     }
 
     override fun getTitle(): String {
-        return "Remove Duplicates"
+        return getString(R.string.remove_duplicates)
     }
 
     override fun setUpDialogDetails() {
@@ -49,17 +50,17 @@ class DeleteContactsDialog : BaseProgressDialog() {
             ?: throw IllegalArgumentException("Parent Fragment must implement DeleteContactsDialog")
         viewModel.status.observe(this, Observer {
             when (it) {
-                LoadingStatus.LOADING -> statusTextView.text = "Removing duplicate contacts, please wait. . ."
+                LoadingStatus.LOADING -> statusTextView.text = getString(R.string.remove_contacts_progress_message)
                 LoadingStatus.DONE -> {
-                    var successMessage = "Contacts successfully removed. "
+                    var successMessage = getString(R.string.remove_contacts_success_message)
                     backUpFileName?.run {
-                        successMessage += "The deleted contacts is backed up to the location: $this"
+                        successMessage += getString(R.string.backup_location_message, this)
                     }
                     statusTextView.text = successMessage
                     finishButton.isEnabled = true
                 }
                 LoadingStatus.FAILED -> {
-                    statusTextView.text = "Contacts removal failed"
+                    statusTextView.text = getString(R.string.remove_contacts_failure_message)
                     finishButton.isEnabled = true
                 }
                 else -> { /*Nothing.*/

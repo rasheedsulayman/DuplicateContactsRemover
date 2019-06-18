@@ -6,4 +6,9 @@
         <item quantity="other">Remove %d contacts</item>
     </plurals>
 
+    <plurals name="remove_n_duplicate_contacts_confirmation_message">
+        <item quantity="one">This operation will remove %d contact from your phone.\u0020</item>
+        <item quantity="other">This operation will remove %d contacts from your phone.\u0020</item>
+    </plurals>
+
 </resources>

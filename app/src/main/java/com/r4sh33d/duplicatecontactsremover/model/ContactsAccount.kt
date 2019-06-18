@@ -12,8 +12,6 @@ data class ContactsAccount(val accountKey: String, val contacts: ArrayList<Conta
         const val PHONE_DISPLAY_NAME = "Phone"
         const val SIM_CARD_DISPLAY_NAME = "Sim Card"
         const val TELEGRAM_PACKAGE = "org.telegram.messenger"
-        const val SIGNAL_PACKAGE = "org.thoughtcrime.securesms"
-        const val WHATSAPP_PACKAGE = "com.whatsapp"
         const val SAMSUNG_SIM_CONTACTS_PACKAGE_NAME = "vnd.sec.contact.sim"
         const val SAMSUNG_PHONE_CONTACTS_PACKAGE_NAME = "vnd.sec.contact.phone"
     }

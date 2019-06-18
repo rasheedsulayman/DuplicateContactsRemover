@@ -48,10 +48,9 @@ class LandingPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
         (mainActivity.applicationContext as DuplicateContactsApp).component.inject(this)
-
-        mainActivity.setUpToolBar("Duplicate Contacts", true)
+        setHasOptionsMenu(true)
+        mainActivity.setUpToolBar(getString(R.string.duplicate_contacts), true)
         mainActivity.invalidateToolbarElevation(0)
         checkPermissions()
     }
@@ -117,10 +116,10 @@ class LandingPageFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun shouldShowPermissionExplanation(permissionString: String): Boolean =
+    private fun shouldShowPermissionExplanation(permissionString: String): Boolean =
         ActivityCompat.shouldShowRequestPermissionRationale(mainActivity, permissionString)
 
-    fun openAppSettings() {
+    private fun openAppSettings() {
         val appSettingsIntent = Intent(
             Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
             Uri.parse("package:${mainActivity.packageName}")
@@ -131,15 +130,15 @@ class LandingPageFragment : Fragment() {
         startActivityForResult(appSettingsIntent, requestAppSettings)
     }
 
-    fun checkPermissions() {
+    private fun checkPermissions() {
         if (!mainActivity.hasPermissions(requiredPermissionMap.keys)) {
-            requestPermissions(requiredPermissions, permissionCode)
+            requestPermissions(requiredPermissionMap.keys.toTypedArray(), permissionCode)
         } else {
             onStoragePermissionGranted()
         }
     }
 
-    fun onStoragePermissionGranted() {
+    private fun onStoragePermissionGranted() {
         findDuplicateNamesButton.run {
             setOnClickListener(onButtonOnClickListener)
             isEnabled = true

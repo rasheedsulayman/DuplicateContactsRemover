@@ -10,6 +10,7 @@ import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
+
 class ContactSourcesViewModel @Inject constructor(private val contactsHelper: ContactsHelper) :
     ViewModel() {
 

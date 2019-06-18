@@ -13,7 +13,9 @@ import ezvcard.util.PartialDate
 import java.io.File
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class VcfExporter @Inject constructor(val context: Context) {
     private var contactsExported = 0
 

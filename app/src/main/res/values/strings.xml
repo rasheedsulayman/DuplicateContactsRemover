@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">DuplicateContactsRemover</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="start">Start</string>
     <string name="telegram">Telegram</string>
@@ -15,6 +14,40 @@
     <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
     <string name="operation_failed">Operation Failed</string>
+    <string name="contact_sources">Contact Sources</string>
+    <string name="contacts_backup">Contacts Backup</string>
+    <string name="contact_backup_progress_message">Backing up your contacts, Please wait. . .</string>
+    <string name="contacts_backup_success_message">Contacts successfully backed up.</string>
+    <string name="contacts_backup_failure_message">Contact backup failed.</string>
+    <string name="remove_duplicates">Remove Duplicates</string>
+    <string name="remove_contacts_progress_message">Removing duplicate contacts, please wait. . .</string>
+    <string name="remove_contacts_success_message">Contacts successfully removed.</string>
+    <string name="backup_location_message">The deleted contacts is backed up to the location: %s</string>
+    <string name="remove_contacts_failure_message">Contacts removal failed</string>
+    <string name="licences">Licences</string>
+    <string name="select_contacts_to_delete">Please select contacts to delete in order to proceed</string>
+    <string name="remove_contacts_question">Remove Contacts?</string>
+    <string name="contacts_backup_and_restore_information">The contacts will be backed-up to your phone storage. In case
+        you change your mind, you can restore backed-up contacts with any contacts manager app
+    </string>
+    <string name="okay">Okay</string>
+    <string name="cancel">Cancel</string>
+    <string name="duplicate_contacts">Duplicate Contacts</string>
+    <string name="loading_contacts_progress_message">Loading your contacts with phone numbers. Please wait while we
+        group them in to their associated accounts.
+    </string>
+    <string name="loading_contacts_error_message">No Account found with more than one contacts found</string>
+    <string name="finding_duplicate_contacts_loading_message">Finding duplicate contacts. Please wait . . .</string>
+    <string name="finding_duplicate_contacts_failure_message">No duplicate contacts found</string>
+    <string name="read_contacts_permissions_explanation">Permission to read contacts is needed to find duplicate
+        contacts
+    </string>
+    <string name="write_contacts_permissions_explanation">Permission to write contacts is needed to remove duplicate
+        contacts
+    </string>
+    <string name="external_storage_permissions_explanation">We need permission to access your storage to create contact
+        backups
+    </string>
 
 
 </resources>

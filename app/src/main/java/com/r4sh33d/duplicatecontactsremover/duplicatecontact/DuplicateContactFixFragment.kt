@@ -60,21 +60,18 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
 
         binding.removeDuplicates.setOnClickListener {
             if (contactsToDelete.isEmpty()) {
-                Toast.makeText(activity, "Please select contacts to delete in order to proceed", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(activity, R.string.select_contacts_to_delete, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             MaterialDialog(mainActivity).show {
-                title(text = "Remove Contacts?")
-                message(
-                    text = "This operation will remove ${contactsToDelete.size} contacts from your phone. The contacts " +
-                            "will be backed-up to your phone storage. In case you change your mind, you can restore backed-up contacts with any " +
-                            "contacts manager app"
+                title(R.string.remove_contacts_question)
+                message(text = mainActivity.getQuantityString(R.plurals.remove_n_duplicate_contacts_confirmation_message,
+                        contactsToDelete.size) + getString(R.string.contacts_backup_and_restore_information)
                 ) { lineSpacing(1.2f) }
-                positiveButton(text = "Okay") {
+                positiveButton(R.string.okay) {
                     ContactBackupDialog.show(this@DuplicateContactFixFragment, ArrayList(contactsToDelete))
                 }
-                negativeButton(text = "Cancel")
+                negativeButton(R.string.cancel)
             }
         }
         return binding.root

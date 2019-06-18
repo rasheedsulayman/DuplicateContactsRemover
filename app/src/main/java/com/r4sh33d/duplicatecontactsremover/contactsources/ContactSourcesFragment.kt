@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
 import com.r4sh33d.duplicatecontactsremover.MainActivity
+import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.databinding.FragmentContactSourcesConstaraintLayoutBinding
 import javax.inject.Inject
 
@@ -54,7 +55,7 @@ class ContactSourcesFragment : Fragment() {
     }
 
     private fun setUpToolbar () = mainActivity.run {
-        setUpToolBar("Contact Sources")
+        setUpToolBar(getString(R.string.contact_sources))
         invalidateToolbarElevation(0)
     }
 }

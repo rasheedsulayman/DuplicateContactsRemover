@@ -1,6 +1,7 @@
 package com.r4sh33d.duplicatecontactsremover.di
 
 import com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment
+import com.r4sh33d.duplicatecontactsremover.dialogs.about.AboutDialog
 import com.r4sh33d.duplicatecontactsremover.dialogs.contactbackup.ContactBackupDialog
 import com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact.DeleteContactsDialog
 import com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactFixFragment
@@ -25,5 +26,7 @@ interface AppComponent {
     fun inject(target: ContactBackupDialog)
 
     fun inject(target: DeleteContactsDialog)
+
+    fun inject(target: AboutDialog)
 
 }

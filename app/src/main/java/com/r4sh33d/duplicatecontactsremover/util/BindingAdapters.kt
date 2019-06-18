@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesAdapter
 import com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactsAdapter
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
@@ -17,11 +18,10 @@ import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 fun bindAccountsLoadingStatus(statusTextView: TextView, status: LoadingStatus?) {
     when (status) {
         LoadingStatus.LOADING -> {
-            statusTextView.text =
-                "Loading your contacts with phone numbers. Please wait while we group them in to their associated accounts."
-        }
+            statusTextView.setText(R.string.loading_contacts_progress_message)
+        } 
         LoadingStatus.EMPTY -> {
-            statusTextView.text = "No Account found with more than one contacts found"
+            statusTextView.setText(R.string.loading_contacts_error_message)
         }
         LoadingStatus.DONE -> {
             statusTextView.visibility = View.GONE
@@ -59,10 +59,10 @@ fun bindAccountsRecyclerView(recyclerView: RecyclerView, data: List<ContactsAcco
 fun bindDuplicatesLoadingStatus(statusTextView: TextView, status: LoadingStatus?) {
     when (status) {
         LoadingStatus.LOADING -> {
-            statusTextView.text = "Finding duplicate contacts. Please wait . . ."
+            statusTextView.setText(R.string.finding_duplicate_contacts_loading_message)
         }
         LoadingStatus.EMPTY -> {
-            statusTextView.text = "No duplicate contacts found"
+            statusTextView.setText(R.string.finding_duplicate_contacts_failure_message)
         }
         LoadingStatus.DONE -> {
             statusTextView.visibility = View.GONE

@@ -21,7 +21,7 @@ class LicencesDialog : DialogFragment() {
         val view = LayoutInflater.from(context!!).inflate(R.layout.licences_dialog, null)
         view.findViewById<WebView>(R.id.licences_webview).loadUrl("file:///android_asset/licences.html")
         return MaterialDialog(context!!)
-            .title(text = "Licences")
+            .title(R.string.licences)
             .customView( view = view, noVerticalPadding = true, dialogWrapContent = true)
             .positiveButton(R.string.dismiss)
     }
