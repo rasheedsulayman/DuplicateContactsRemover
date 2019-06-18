@@ -7,6 +7,7 @@ import com.r4sh33d.duplicatecontactsremover.R
 const val HANGOUTS = "Hangouts"
 const val QQ = "QQ"
 const val JABBER = "Jabber"
+const val TELEGRAM = "Telegram"
 
 const val TELEGRAM_PACKAGE = "org.telegram.messenger"
 const val CONTACTS_BACKUP_FILE_PREFIX = "duplicate_contacts_"

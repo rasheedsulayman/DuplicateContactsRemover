@@ -17,7 +17,7 @@
                 android:textSize="18sp"
                 app:contactAccountsList="@{viewModel.contactsAccountList}"
                 android:textColor="@android:color/black"
-                android:text="Please select an account to remove duplicates"
+                android:text="@string/select_account_to_remove_duplicates"
                 android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" android:id="@+id/header_message"
@@ -26,7 +26,7 @@
                 android:layout_marginStart="20dp" android:layout_marginTop="20dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-                tools:listitem="@layout/item_contact_source_constraint_layout"
+                tools:listitem="@layout/item_contact_source"
                 app:contactAccountsList="@{viewModel.contactsAccountList}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="0dp"

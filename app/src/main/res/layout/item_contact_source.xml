@@ -53,12 +53,12 @@
                             android:id="@+id/accountInfo"/>
 
                     <TextView
-                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
                             android:layout_gravity="center"
                             android:maxLines="1"
                             android:textSize="16sp"
                             android:textColor="?android:textColorSecondary"
-                            android:text="contacts"
+                            android:text="@string/contacts"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView4"/>

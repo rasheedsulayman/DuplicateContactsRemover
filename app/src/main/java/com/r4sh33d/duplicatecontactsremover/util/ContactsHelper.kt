@@ -545,7 +545,7 @@ class ContactsHelper @Inject constructor(val context: Context) {
             if (ContentResolver.getIsSyncable(it, ContactsContract.AUTHORITY) == 1) {
                 var publicName = it.name
                 if (it.type == TELEGRAM_PACKAGE) {
-                    publicName += " (${context.getString(R.string.telegram)})"
+                    publicName += " ($TELEGRAM)"
                 }
                 val contactSource = ContactSource(
                     it.name,

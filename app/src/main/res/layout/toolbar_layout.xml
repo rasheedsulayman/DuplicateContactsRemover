@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:gravity="center"
-            android:text="Remove Duplicates"
+            android:text="@string/remove_duplicates"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:fontFamily="@font/lato_bold"/>
 

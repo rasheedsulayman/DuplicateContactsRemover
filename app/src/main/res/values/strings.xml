@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">DuplicateContactsRemover</string>
 
-    <string name="telegram">Telegram</string>
-
-    <string name="manual_permission_grant_instruction"><![CDATA[Go to settings -> Permissions to grant access to the required permissions]]></string>
+    <string name="manual_permission_grant_instruction">Go to settings -> Permissions to grant access to the required permissions</string>
     <string name="permission_denied">Permission denied</string>
     <string name="enable_permission">Enable Permission</string>
     <string name="grant">Grant</string>
@@ -42,6 +40,12 @@
     <string name="external_storage_permissions_explanation">We need permission to access your storage to create contact
         backups
     </string>
+    <string name="select_account_to_remove_duplicates">Please select an account to remove duplicates</string>
+    <string name="duplicate_names">Duplicate Names</string>
+    <string name="duplicate_numbers">Duplicate Numbers</string>
+    <string name="duplicates_criteria_question">Welcome, How do you want to find duplicates contacts?</string>
+    <string name="contacts">contacts</string>
+    <string name="finish">Finish</string>
 
 
 </resources>

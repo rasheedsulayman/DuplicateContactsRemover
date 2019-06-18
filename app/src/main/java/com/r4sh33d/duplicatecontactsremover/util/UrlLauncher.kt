@@ -12,6 +12,8 @@ import com.r4sh33d.duplicatecontactsremover.R
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** @author Aidan Follestad (@afollestad), r4sh33d */
+
 @Singleton
 class RealUrlLauncher @Inject constructor(private val context: Context) {
 
