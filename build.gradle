@@ -1,31 +1,17 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: './dependencies.gradle'
 
 buildscript {
-    ext {
-        version_android_gradle_plugin = "3.3.2"
-        version_core = "1.0.1"
-        version_constraint_layout = "1.1.3"
-        version_glide = "4.8.0"
-        version_kotlin = "1.3.21"
-        version_kotlin_coroutines = "1.1.0"
-        version_lifecycle_extensions = "2.0.0"
-        version_moshi = "1.8.0"
-        version_navigation = "1.0.0"
-        version_retrofit = "2.5.0"
-        version_retrofit_coroutines_adapter = "0.9.2"
-        version_recyclerview = "1.0.0"
-    }
+    apply from: './dependencies.gradle'
 
-    ext.kotlin_version = '1.3.31'
     repositories {
         google()
         jcenter()
-        
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
+        classpath 'com.android.tools.build:gradle:' + versions.gradlePlugin
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:' + versions.kotlin
+        classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:' + versions.navigation
     }
 }
 
@@ -33,7 +19,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 

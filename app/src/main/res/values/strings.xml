@@ -43,7 +43,7 @@
     <string name="select_account_to_remove_duplicates">Please select an account to remove duplicates</string>
     <string name="duplicate_names">Duplicate Names</string>
     <string name="duplicate_numbers">Duplicate Numbers</string>
-    <string name="duplicates_criteria_question">Welcome, How do you want to find duplicates contacts?</string>
+    <string name="duplicates_criteria_question">Welcome, how do you want to find duplicates contacts?</string>
     <string name="contacts">contacts</string>
     <string name="finish">Finish</string>
 

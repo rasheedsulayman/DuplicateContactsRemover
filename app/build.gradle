@@ -1,3 +1,4 @@
+apply from: '../dependencies.gradle'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -11,10 +12,10 @@ android {
     }
     defaultConfig {
         applicationId "com.r4sh33d.duplicatecontactsremover"
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
+        versionCode versions.publishVersionCode
+        versionName versions.publishVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -23,6 +24,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
     androidExtensions {
         experimental = true
     }
@@ -30,40 +35,40 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
 
     // Constraint Layout
-    implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
+    implementation 'androidx.constraintlayout:constraintlayout:' + versions.constraintLayout
 
     // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+    implementation 'androidx.lifecycle:lifecycle-extensions:' + versions.lifecycle
 
     // Navigation
-    implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
-    implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
+    implementation 'android.arch.navigation:navigation-fragment-ktx:' + versions.navigation
+    implementation 'android.arch.navigation:navigation-ui-ktx:' + versions.navigation
 
-    // Core with Ktx
-    implementation "androidx.core:core-ktx:$version_core"
+    // Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:' + versions.coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:' + versions.coroutines
 
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
+    // Android X
+    implementation 'androidx.core:core-ktx:' + versions.androidxCore
+    implementation 'androidx.recyclerview:recyclerview:' + versions.androidxRecyclerView
+    implementation 'androidx.browser:browser:' + versions.androidxBrowser
 
-    // RecyclerView
-    implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    // implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    
+    //Dagger 2
+    kapt 'com.google.dagger:dagger-compiler:' + versions.dagger
+    implementation 'com.google.dagger:dagger:' + versions.dagger
+    compileOnly 'org.glassfish:javax.annotation:' + versions.glassfish
 
-    implementation 'com.jakewharton.timber:timber:4.7.1'
-
-    implementation 'androidx.browser:browser:1.0.0'
-
-    implementation 'com.afollestad.material-dialogs:core:3.0.0-rc1'
-    implementation 'joda-time:joda-time:2.10.1'
-    implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
-
-    kapt 'com.google.dagger:dagger-compiler:2.21'
-    implementation 'com.google.dagger:dagger:2.21'
-    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
+    api 'com.google.android.material:material:' + versions.androidxMaterial
+    implementation 'com.jakewharton.timber:timber:' + versions.timber
+    implementation 'com.afollestad.material-dialogs:core:' + versions.materialDialogs
+    implementation 'joda-time:joda-time:' + versions.jodaTime
+    implementation 'com.googlecode.ez-vcard:ez-vcard:' + versions.ezVcard
 
 }

@@ -13,17 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
-import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
 import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.dialogs.about.AboutDialog
 import com.r4sh33d.duplicatecontactsremover.dialogs.licences.LicencesDialog
 import com.r4sh33d.duplicatecontactsremover.util.*
 import kotlinx.android.synthetic.main.fragment_landing_page.*
-import javax.inject.Inject
 
 class LandingPageFragment : Fragment() {
-    @Inject lateinit var urlLauncher: RealUrlLauncher
     private val requestAppSettings = 600
     private val permissionCode = 500
 
@@ -48,7 +45,6 @@ class LandingPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (mainActivity.applicationContext as DuplicateContactsApp).component.inject(this)
         setHasOptionsMenu(true)
         mainActivity.setUpToolBar(getString(R.string.duplicate_contacts), true)
         mainActivity.invalidateToolbarElevation(0)
@@ -110,8 +106,8 @@ class LandingPageFragment : Fragment() {
         when (item!!.itemId) {
             R.id.menu_about -> AboutDialog.show(this)
             R.id.menu_licences -> LicencesDialog.show(this)
-            R.id.menu_rate -> urlLauncher.launchPlayStore()
-            R.id.menu_feedback -> urlLauncher.viewUrl("https://github.com/r4sh33d/DuplicateContactsRemover/issues/new/")
+            R.id.menu_rate -> mainActivity.launchPlayStore()
+            R.id.menu_feedback -> mainActivity.viewUrl("https://github.com/r4sh33d/DuplicateContactsRemover/issues/new/")
         }
         return super.onOptionsItemSelected(item)
     }

@@ -9,11 +9,10 @@ import com.r4sh33d.duplicatecontactsremover.BuildConfig
 import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.util.RealUrlLauncher
+import com.r4sh33d.duplicatecontactsremover.util.viewUrl
 import javax.inject.Inject
 
 class AboutDialog : DialogFragment() {
-    @Inject
-    lateinit var urlLauncher: RealUrlLauncher
 
     companion object {
         private const val TAG = "AboutDialog"
@@ -25,7 +24,7 @@ class AboutDialog : DialogFragment() {
         return MaterialDialog(context!!)
             .title(text = getString(R.string.about_dialog_title, BuildConfig.VERSION_NAME))
             .message(res = R.string.about_body) {
-                html { urlLauncher.viewUrl(it) }
+                html { activity!!.viewUrl(it) }
                 lineSpacing(1.4f)
             }
             .positiveButton(R.string.dismiss)

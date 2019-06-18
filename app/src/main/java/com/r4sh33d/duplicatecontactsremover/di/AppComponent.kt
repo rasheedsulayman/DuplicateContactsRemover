@@ -17,8 +17,6 @@ import javax.inject.Singleton
 )
 interface AppComponent {
 
-    fun inject(target: LandingPageFragment)
-
     fun inject(target: ContactSourcesFragment)
 
     fun inject(target: DuplicateContactFixFragment)
