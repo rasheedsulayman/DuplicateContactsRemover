@@ -7,6 +7,7 @@ import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesAdapter.ContactSourceViewHolder
 import com.r4sh33d.duplicatecontactsremover.databinding.ItemContactSourceBinding
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
+import timber.log.Timber
 
 class ContactSourcesAdapter(
     var contactsAccounts: List<ContactsAccount>,
@@ -43,6 +44,7 @@ class ContactSourcesAdapter(
         }
 
         fun bind(contactsAccount: ContactsAccount) {
+            Timber.d("The account at $adapterPosition is ${contactsAccount.accountKey}")
             binding.account = contactsAccount
             binding.executePendingBindings()
         }

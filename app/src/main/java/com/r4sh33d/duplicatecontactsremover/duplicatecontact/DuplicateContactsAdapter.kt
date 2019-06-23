@@ -69,7 +69,6 @@ class DuplicateContactsAdapter(val contactsToRemoveCallback: (HashSet<Contact>) 
 
     inner class ContactViewHolder(private val binding: ItemContactListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         init {
             binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
                 checkedPositionMarker.put(adapterPosition, isChecked)

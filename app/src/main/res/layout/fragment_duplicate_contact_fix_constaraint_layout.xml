@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="@string/remove_duplicates"
+                tools:text="@string/remove_duplicates"
                 app:cornerRadius="24dp"
                 style="@style/Widget.MaterialComponents.Button.Icon"
                 android:layout_marginEnd="20dp" app:layout_constraintEnd_toEndOf="parent"

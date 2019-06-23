@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorAccent">#D81B60</color>
-
     <color name="colorPrimary_lightTheme">#FFFFFF</color>
     <color name="colorPrimaryDark_lightTheme">#F5F5F5</color>
     <color name="line_separator_color">#a7d4d3d3</color>

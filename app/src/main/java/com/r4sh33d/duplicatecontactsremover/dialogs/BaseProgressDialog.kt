@@ -23,7 +23,6 @@ abstract class BaseProgressDialog : DialogFragment() {
             .title(text =  getTitle())
             .noAutoDismiss()
         val view = dialog.getCustomView()
-
         statusTextView = view.findViewById(R.id.status_textview)
         progressBar = view.findViewById(R.id.status_progress_bar)
         finishButton = view.findViewById(R.id.finish_button)

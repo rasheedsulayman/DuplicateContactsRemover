@@ -38,8 +38,8 @@ class ContactSourcesFragment : Fragment() {
         binding.contactSourcesRecyclerView.adapter = ContactSourcesAdapter(ArrayList()) {
             viewModel.displayContactAccountDetails(it)
         }
-        viewModel.getContactsAccountsList(fragmentArgs.duplicateCriteria)
 
+        viewModel.getContactsAccountsList(fragmentArgs.duplicateCriteria)
         viewModel.navigateToSelectedContactsAccount.observe(this, Observer {
             if (it != null) {
                 this.findNavController().navigate(

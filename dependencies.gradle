@@ -27,6 +27,7 @@ ext.versions = [
         glassfish           : '10.0-b28',
 
         // Others
+        fabric              : '2.10.0@aar',
         materialDialogs     : '3.0.0-rc1',
         jodaTime            : '2.10.1',
         ezVcard             : '0.10.5',

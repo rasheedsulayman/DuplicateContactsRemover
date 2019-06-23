@@ -1,7 +1,7 @@
 <resources>
     <style name="AppTheme" parent="AppThemeParent">
         <item name="android:windowBackground">@color/colorPrimary_lightTheme</item>
-        <item name="android:statusBarColor">#2A050000</item>
+        <item name="android:statusBarColor">#0D050000</item>
     </style>
 
 </resources>

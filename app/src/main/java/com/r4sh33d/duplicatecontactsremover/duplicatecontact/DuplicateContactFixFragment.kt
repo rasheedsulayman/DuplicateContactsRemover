@@ -50,6 +50,7 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
         viewModel.getDuplicateContactsList(fragmentArgs.contactsAccount, fragmentArgs.duplicateCriteria)
 
         mainActivity.setUpToolBar(fragmentArgs.contactsAccount.getDisplayName())
+        binding.removeDuplicates.text = mainActivity.getQuantityString(R.plurals.remove_n_contacts, 0)
 
         binding.contactsListRecyclerView.adapter = DuplicateContactsAdapter {
             binding.removeDuplicates.text = mainActivity.getQuantityString(R.plurals.remove_n_contacts, it.size)

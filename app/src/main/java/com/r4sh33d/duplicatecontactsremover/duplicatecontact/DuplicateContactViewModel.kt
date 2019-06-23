@@ -9,6 +9,7 @@ import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import kotlinx.coroutines.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class DuplicateContactViewModel @Inject constructor(
@@ -28,12 +29,9 @@ class DuplicateContactViewModel @Inject constructor(
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-
-     fun getDuplicateContactsList(
-        contactsAccount: ContactsAccount,
-        duplicateCriteria: DuplicateCriteria
-    ) {
-        coroutineScope.launch {
+     fun getDuplicateContactsList(contactsAccount: ContactsAccount, duplicateCriteria: DuplicateCriteria) {
+         Timber.d("Contacts: ${contactsAccount.contacts}")
+         coroutineScope.launch {
             _status.value = LoadingStatus.LOADING
             _duplicateContactSearchResult.value = getDuplicateContacts(contactsAccount, duplicateCriteria)
             _status.value = if (duplicateContactsSearchResults.value!!.first.isNotEmpty()) LoadingStatus.DONE

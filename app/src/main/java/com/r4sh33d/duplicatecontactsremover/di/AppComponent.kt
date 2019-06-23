@@ -15,6 +15,7 @@ import javax.inject.Singleton
         ContextModule::class, ViewModelModule::class
     ]
 )
+
 interface AppComponent {
 
     fun inject(target: ContactSourcesFragment)

@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -36,6 +37,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation('com.crashlytics.sdk.android:crashlytics:' + versions.fabric) {
+        transitive = true
+    }
+
     // Kotlin
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
 
@@ -58,8 +63,6 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:' + versions.androidxRecyclerView
     implementation 'androidx.browser:browser:' + versions.androidxBrowser
 
-    // implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    
     //Dagger 2
     kapt 'com.google.dagger:dagger-compiler:' + versions.dagger
     implementation 'com.google.dagger:dagger:' + versions.dagger

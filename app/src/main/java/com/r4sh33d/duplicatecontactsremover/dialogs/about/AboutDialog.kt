@@ -8,9 +8,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.r4sh33d.duplicatecontactsremover.BuildConfig
 import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
 import com.r4sh33d.duplicatecontactsremover.R
-import com.r4sh33d.duplicatecontactsremover.util.RealUrlLauncher
 import com.r4sh33d.duplicatecontactsremover.util.viewUrl
-import javax.inject.Inject
 
 class AboutDialog : DialogFragment() {
 
