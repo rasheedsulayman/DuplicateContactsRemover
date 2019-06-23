@@ -1,6 +1,6 @@
 ## Privacy Policy
 
-Rasheed Sulayman built the DuplicateContactsRemover app as an Open Source app. This SERVICE is provided by Rasheed Sulayman at no cost and is intended for use as is.
+DuplicateContactsRemover was built as an Open Source app. This SERVICE is provided by Rasheed Sulayman at no cost and is intended for use as is.
 
 This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.
 
