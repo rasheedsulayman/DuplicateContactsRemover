@@ -7,7 +7,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion versions.compileSdkVersion
     dataBinding {
         enabled = true
     }
@@ -21,7 +21,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -68,7 +69,7 @@ dependencies {
     implementation 'com.google.dagger:dagger:' + versions.dagger
     compileOnly 'org.glassfish:javax.annotation:' + versions.glassfish
 
-    api 'com.google.android.material:material:' + versions.androidxMaterial
+    implementation 'com.google.android.material:material:' + versions.androidxMaterial
     implementation 'com.jakewharton.timber:timber:' + versions.timber
     implementation 'com.afollestad.material-dialogs:core:' + versions.materialDialogs
     implementation 'joda-time:joda-time:' + versions.jodaTime

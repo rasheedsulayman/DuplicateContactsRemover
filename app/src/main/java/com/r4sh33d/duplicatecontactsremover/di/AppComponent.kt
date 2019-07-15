@@ -25,7 +25,4 @@ interface AppComponent {
     fun inject(target: ContactBackupDialog)
 
     fun inject(target: DeleteContactsDialog)
-
-    fun inject(target: AboutDialog)
-
 }

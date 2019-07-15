@@ -2,6 +2,7 @@ ext.versions = [
         // Properties
         minSdkVersion       : 21,
         targetSdkVersion    : 28,
+        compileSdkVersion   : 28,
         publishVersionName  : '1.0.0',
         publishVersionCode  : 1,
 

@@ -12,7 +12,7 @@
                 app:destination="@id/contactSourcesFragment"
                 app:launchSingleTop="false"/>
     </fragment>
-    <fragment tools:layout="@layout/fragment_contact_sources"
+    <fragment tools:layout="@layout/fragment_contact_sources_constaraint_layout"
               android:id="@+id/contactSourcesFragment"
               android:name="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment"
               android:label="Contact Sources">

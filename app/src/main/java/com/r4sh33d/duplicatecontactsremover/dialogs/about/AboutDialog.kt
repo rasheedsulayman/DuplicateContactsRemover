@@ -6,7 +6,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.r4sh33d.duplicatecontactsremover.BuildConfig
-import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.util.viewUrl
 
@@ -18,7 +17,6 @@ class AboutDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        (context!!.applicationContext as DuplicateContactsApp).component.inject(this)
         return MaterialDialog(context!!)
             .title(text = getString(R.string.about_dialog_title, BuildConfig.VERSION_NAME))
             .message(res = R.string.about_body) {
