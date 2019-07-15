@@ -1,7 +1,7 @@
 # Duplicate Contacts Remover
 
 Duplicate Contacts Remover allows users to scan their address book for duplicates using mobile numbers or contact names. 
-After contacts scan, users can select from list accounts to remove duplicate contacts. The deleted contacts will be exported to a .vcf file on your phone storage, in case they need to restore it. 
+After contacts scan, users can select from list accounts to remove duplicate contacts. The deleted contacts will be exported to a .vcf file on the user's phone storage, in case they need to restore it. 
 <br/>
 <br/>
 
