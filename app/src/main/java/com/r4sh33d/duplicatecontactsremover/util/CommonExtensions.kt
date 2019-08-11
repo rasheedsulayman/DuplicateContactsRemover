@@ -92,4 +92,3 @@ fun Activity.launchPlayStore() {
         viewUrl("http://play.google.com/store/apps/details?id=$packageName")
     }
 }
-

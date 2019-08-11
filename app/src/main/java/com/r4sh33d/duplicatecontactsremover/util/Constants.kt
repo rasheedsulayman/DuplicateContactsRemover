@@ -3,7 +3,6 @@ package com.r4sh33d.duplicatecontactsremover.util
 import android.Manifest
 import com.r4sh33d.duplicatecontactsremover.R
 
-
 const val HANGOUTS = "Hangouts"
 const val QQ = "QQ"
 const val JABBER = "Jabber"

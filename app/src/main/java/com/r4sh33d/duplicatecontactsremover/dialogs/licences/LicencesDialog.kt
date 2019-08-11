@@ -22,7 +22,7 @@ class LicencesDialog : DialogFragment() {
         view.findViewById<WebView>(R.id.licences_webview).loadUrl("file:///android_asset/licences.html")
         return MaterialDialog(context!!)
             .title(R.string.licences)
-            .customView( view = view, noVerticalPadding = true, dialogWrapContent = true)
+            .customView(view = view, noVerticalPadding = true, dialogWrapContent = true)
             .positiveButton(R.string.dismiss)
     }
 }

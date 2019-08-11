@@ -19,7 +19,7 @@ fun bindAccountsLoadingStatus(statusTextView: TextView, status: LoadingStatus?) 
     when (status) {
         LoadingStatus.LOADING -> {
             statusTextView.setText(R.string.loading_contacts_progress_message)
-        } 
+        }
         LoadingStatus.EMPTY -> {
             statusTextView.setText(R.string.loading_contacts_error_message)
         }

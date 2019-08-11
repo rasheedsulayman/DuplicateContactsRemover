@@ -9,9 +9,10 @@ ext.versions = [
         // Plugins
         gradlePlugin        : '3.3.2',
         fabricPlugin        : '1.+',
+        spotlessPlugin      : '3.23.1',
 
         // Kotlin
-        kotlin              : '1.3.31',
+        kotlin              : '1.3.41',
         coroutines          : '1.1.0',
 
         // AndroidX

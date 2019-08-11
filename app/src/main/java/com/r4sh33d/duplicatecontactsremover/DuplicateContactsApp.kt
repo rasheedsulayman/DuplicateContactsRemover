@@ -2,7 +2,6 @@ package com.r4sh33d.duplicatecontactsremover
 
 import android.app.Application
 import com.crashlytics.android.Crashlytics
-import com.gu.toolargetool.TooLargeTool
 import com.r4sh33d.duplicatecontactsremover.di.AppComponent
 import com.r4sh33d.duplicatecontactsremover.di.ContextModule
 import com.r4sh33d.duplicatecontactsremover.di.DaggerAppComponent
@@ -22,6 +21,5 @@ class DuplicateContactsApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-        TooLargeTool.startLogging(this)
     }
 }

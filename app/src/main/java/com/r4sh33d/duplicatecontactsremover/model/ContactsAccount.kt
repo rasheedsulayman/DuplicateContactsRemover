@@ -7,9 +7,9 @@ import kotlinx.android.parcel.Parcelize
 data class ContactsAccount(val accountKey: String, val contacts: ArrayList<Contact>) : Parcelable {
 
     companion object {
-        //some device manufacturers do not use regular name for phone and sim accounts. Also happens with some popular account providers.
-        //We try to correct it here, where possible.
-        //TODO find smarter way to do this without the manual checking.
+        // some device manufacturers do not use regular name for phone and sim accounts. Also happens with some popular account providers.
+        // We try to correct it here, where possible.
+        // TODO find smarter way to do this without the manual checking.
         const val ACCOUNT_KEY_SEPARATOR = "<-->"
         const val TELEGRAM_DISPLAY_NAME = "Telegram"
         const val PHONE_DISPLAY_NAME = "Phone"

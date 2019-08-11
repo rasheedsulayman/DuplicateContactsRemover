@@ -14,6 +14,7 @@ buildscript {
         classpath 'io.fabric.tools:gradle:' + versions.fabricPlugin
         classpath 'com.android.tools.build:gradle:' + versions.gradlePlugin
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:' + versions.kotlin
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:" + versions.spotlessPlugin
         classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:' + versions.navigation
     }
 }

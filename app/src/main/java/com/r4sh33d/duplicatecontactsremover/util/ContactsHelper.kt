@@ -13,13 +13,11 @@ import android.telephony.PhoneNumberUtils
 import android.text.TextUtils
 import android.util.SparseArray
 import android.util.SparseBooleanArray
-import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.model.*
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.NAME
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria.PHONE_NUMBER
 import timber.log.Timber
-import java.util.HashSet
-import java.util.LinkedHashSet
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.collections.ArrayList
@@ -131,7 +129,6 @@ class ContactsHelper @Inject constructor(val context: Context) {
                     }
 
                     contactsMap[accountNameIdentifier]!!.add(contact)
-
                 } while (cursor.moveToNext())
             }
         } catch (e: Exception) {
@@ -182,7 +179,6 @@ class ContactsHelper @Inject constructor(val context: Context) {
         }
         return phoneNumbers
     }
-
 
     private fun getNicknames(contactId: Int? = null): SparseArray<String> {
         val nicknames = SparseArray<String>()
@@ -604,21 +600,21 @@ class ContactsHelper @Inject constructor(val context: Context) {
     ): Pair<ArrayList<Any>, SparseBooleanArray> {
         val listToReturn = ArrayList<Any>()
         val sparseBooleanArray = SparseBooleanArray()
-        //Group the contacts by duplication criteria
+        // Group the contacts by duplication criteria
         val contactsMap = contactsAccount.contacts.groupBy {
             it.getDuplicateCriteriaString(duplicateCriteria)
         }.filter {
-            //If the contact size is less than one, there's no duplicate.
+            // If the contact size is less than one, there's no duplicate.
             it.value.size > 1
         }
-        //Build the list to return
+        // Build the list to return
         contactsMap.values.forEachIndexed { index, list ->
-            //Add labels
+            // Add labels
             listToReturn.add("Group ${index + 1}")
             list.first().isChecked = true
             listToReturn.addAll(list)
         }
-        //Pre-select some of the contacts for deletion.
+        // Pre-select some of the contacts for deletion.
         listToReturn.forEachIndexed { index, any ->
             sparseBooleanArray.put(index, if (any is Contact) any.isChecked else false)
         }

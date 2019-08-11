@@ -26,7 +26,8 @@ class ContactSourcesFragment : Fragment() {
         }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         (mainActivity.applicationContext as DuplicateContactsApp).component.inject(this)

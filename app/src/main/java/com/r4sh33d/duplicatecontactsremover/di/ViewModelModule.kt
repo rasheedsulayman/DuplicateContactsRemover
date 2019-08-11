@@ -30,7 +30,6 @@ abstract class ViewModelModule {
     @ViewModelKey(ContactsBackupViewModel::class)
     abstract fun bindRepoViewModel(viewModel: ContactsBackupViewModel): ViewModel
 
-
     @Binds
     @IntoMap
     @ViewModelKey(DeleteContactsViewModel::class)

@@ -19,5 +19,4 @@ class ContactsOperationSharedViewModel @Inject constructor() : ViewModel() {
     fun selectContactsAccount(contactsAccount: ContactsAccount) {
         _selectedAccount.value = contactsAccount
     }
-
 }

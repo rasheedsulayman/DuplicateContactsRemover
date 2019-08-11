@@ -83,7 +83,6 @@ data class Contact(
         }
     }
 
-
     fun getDuplicateCriteriaString(duplicateCriteria: DuplicateCriteria): String {
         return when (duplicateCriteria) {
             PHONE_NUMBER -> normalizedNumberConcat

@@ -1,6 +1,5 @@
 package com.r4sh33d.duplicatecontactsremover.duplicatecontact
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +23,6 @@ import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.shared.ContactsOperationSharedViewModel
 import com.r4sh33d.duplicatecontactsremover.util.getQuantityString
 import com.r4sh33d.duplicatecontactsremover.util.onScrollChanged
-import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -42,7 +40,8 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
         }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         (mainActivity.applicationContext as DuplicateContactsApp).component.inject(this)

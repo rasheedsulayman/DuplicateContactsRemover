@@ -9,8 +9,9 @@ import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
-import kotlinx.coroutines.*
-import timber.log.Timber
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DuplicateContactViewModel @Inject constructor(
@@ -22,17 +23,23 @@ class DuplicateContactViewModel @Inject constructor(
     val status: LiveData<LoadingStatus>
         get() = _status
 
-    private val _duplicateContactSearchResult = MutableLiveData<Pair<List<Any>, SparseBooleanArray>>()
+    private val _duplicateContactSearchResult =
+        MutableLiveData<Pair<List<Any>, SparseBooleanArray>>()
 
     val duplicateContactsSearchResults: LiveData<Pair<List<Any>, SparseBooleanArray>>
         get() = _duplicateContactSearchResult
 
-     fun getDuplicateContactsList(contactsAccount: ContactsAccount, duplicateCriteria: DuplicateCriteria) {
-         viewModelScope.launch {
+    fun getDuplicateContactsList(
+        contactsAccount: ContactsAccount,
+        duplicateCriteria: DuplicateCriteria
+    ) {
+        viewModelScope.launch {
             _status.value = LoadingStatus.LOADING
-            _duplicateContactSearchResult.value = getDuplicateContacts(contactsAccount, duplicateCriteria)
-            _status.value = if (duplicateContactsSearchResults.value!!.first.isNotEmpty()) LoadingStatus.DONE
-            else LoadingStatus.EMPTY
+            _duplicateContactSearchResult.value =
+                getDuplicateContacts(contactsAccount, duplicateCriteria)
+            _status.value =
+                if (duplicateContactsSearchResults.value!!.first.isNotEmpty()) LoadingStatus.DONE
+                else LoadingStatus.EMPTY
         }
     }
 
@@ -44,5 +51,4 @@ class DuplicateContactViewModel @Inject constructor(
             contactsHelper.getDuplicateContactsWithLabels(contactsAccount, duplicateCriteria)
         }
     }
-
 }

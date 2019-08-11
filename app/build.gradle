@@ -76,7 +76,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:' + versions.materialDialogs
     implementation 'joda-time:joda-time:' + versions.jodaTime
     implementation 'com.googlecode.ez-vcard:ez-vcard:' + versions.ezVcard
-
-    implementation 'com.gu.android:toolargetool:0.2.1@aar'
-
 }
+
+apply from: '../spotless.gradle'
+

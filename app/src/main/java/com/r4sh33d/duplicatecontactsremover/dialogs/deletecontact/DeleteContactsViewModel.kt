@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 
 class DeleteContactsViewModel @Inject constructor(
@@ -33,7 +33,7 @@ class DeleteContactsViewModel @Inject constructor(
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
 
-     fun deleteContacts(contacts: ArrayList<Contact>) {
+    fun deleteContacts(contacts: ArrayList<Contact>) {
         coroutineScope.launch {
             try {
                 _status.postValue(LOADING)

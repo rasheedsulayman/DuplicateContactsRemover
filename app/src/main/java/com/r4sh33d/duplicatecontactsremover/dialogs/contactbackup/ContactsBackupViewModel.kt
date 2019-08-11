@@ -18,7 +18,8 @@ import java.util.*
 import javax.inject.Inject
 
 class ContactsBackupViewModel @Inject constructor(
-    private val vcfExporter: VcfExporter) : ViewModel() {
+    private val vcfExporter: VcfExporter
+) : ViewModel() {
 
     private val _status = MutableLiveData<LoadingStatus>()
 

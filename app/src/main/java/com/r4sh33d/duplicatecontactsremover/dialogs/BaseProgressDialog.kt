@@ -20,7 +20,7 @@ abstract class BaseProgressDialog : DialogFragment() {
         isCancelable = false
         val dialog = MaterialDialog(context!!)
             .customView(R.layout.progress_dialog_layout, noVerticalPadding = true, dialogWrapContent = true)
-            .title(text =  getTitle())
+            .title(text = getTitle())
             .noAutoDismiss()
         val view = dialog.getCustomView()
         statusTextView = view.findViewById(R.id.status_textview)

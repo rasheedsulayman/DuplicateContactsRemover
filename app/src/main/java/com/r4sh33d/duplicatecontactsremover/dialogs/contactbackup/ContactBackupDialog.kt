@@ -59,7 +59,7 @@ class ContactBackupDialog : BaseProgressDialog() {
                     statusTextView.text = getString(R.string.contacts_backup_failure_message)
                     callback.onBackupFinished(this, viewModel.backupFile)
                 }
-                else -> {/*Nothing.*/
+                else -> { /*Nothing.*/
                 }
             }
         })
