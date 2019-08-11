@@ -537,7 +537,6 @@ class ContactsHelper @Inject constructor(val context: Context) {
         progressCallback(100)
     }
 
-
     fun getDeviceContactSources(): List<ContactSource> {
         val sources = LinkedHashSet<ContactSource>()
         val accounts = AccountManager.get(context).accounts

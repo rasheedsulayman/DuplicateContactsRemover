@@ -50,6 +50,8 @@ dependencies {
 
     // ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-extensions:' + versions.lifecycle
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:' + versions.lifecycle
+
 
     // Navigation
     implementation 'android.arch.navigation:navigation-fragment-ktx:' + versions.navigation
@@ -74,5 +76,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:' + versions.materialDialogs
     implementation 'joda-time:joda-time:' + versions.jodaTime
     implementation 'com.googlecode.ez-vcard:ez-vcard:' + versions.ezVcard
+
+    implementation 'com.gu.android:toolargetool:0.2.1@aar'
 
 }

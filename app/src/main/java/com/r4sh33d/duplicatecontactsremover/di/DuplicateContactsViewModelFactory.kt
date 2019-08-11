@@ -1,4 +1,4 @@
-package com.r4sh33d.duplicatecontactsremover.util
+package com.r4sh33d.duplicatecontactsremover.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

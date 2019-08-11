@@ -3,6 +3,7 @@ package com.r4sh33d.duplicatecontactsremover.contactsources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
@@ -14,11 +15,6 @@ import javax.inject.Inject
 class ContactSourcesViewModel @Inject constructor(private val contactsHelper: ContactsHelper) :
     ViewModel() {
 
-    private val _navigateToSelectedContactsAccount = MutableLiveData<ContactsAccount>()
-
-    val navigateToSelectedContactsAccount: LiveData<ContactsAccount>
-        get() = _navigateToSelectedContactsAccount
-
     private val _status = MutableLiveData<LoadingStatus>()
 
     val status: LiveData<LoadingStatus>
@@ -29,12 +25,8 @@ class ContactSourcesViewModel @Inject constructor(private val contactsHelper: Co
     val contactsAccountList: LiveData<List<ContactsAccount>>
         get() = _contactsAccountList
 
-    private var viewModelJob = Job()
-
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
-     fun getContactsAccountsList(duplicateCriteria: DuplicateCriteria) {
-        coroutineScope.launch {
+    fun getContactsAccountsList(duplicateCriteria: DuplicateCriteria) {
+        viewModelScope.launch {
             _status.value = LoadingStatus.LOADING
             _contactsAccountList.value = getContactsWithAccounts(duplicateCriteria)
             _status.value = if (contactsAccountList.value!!.isNotEmpty()) LoadingStatus.DONE
@@ -46,18 +38,5 @@ class ContactSourcesViewModel @Inject constructor(private val contactsHelper: Co
         return withContext(Dispatchers.IO) {
             contactsHelper.getContactsWithAccounts(duplicateCriteria)
         }
-    }
-
-    fun displayContactAccountDetails(contactsAccount: ContactsAccount) {
-        _navigateToSelectedContactsAccount.value = contactsAccount
-    }
-
-    fun displayContactAccountDetailsComplete() {
-        _navigateToSelectedContactsAccount.value = null
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
     }
 }

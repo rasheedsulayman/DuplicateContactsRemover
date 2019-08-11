@@ -12,7 +12,7 @@
                 app:destination="@id/contactSourcesFragment"
                 app:launchSingleTop="false"/>
     </fragment>
-    <fragment tools:layout="@layout/fragment_contact_sources_constaraint_layout"
+    <fragment tools:layout="@layout/fragment_contact_sources"
               android:id="@+id/contactSourcesFragment"
               android:name="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment"
               android:label="Contact Sources">
@@ -22,11 +22,9 @@
                   app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria"/>
     </fragment>
     <fragment android:id="@+id/duplicateContactFixFragment"
-              tools:layout="@layout/fragment_duplicate_contact_fix_constaraint_layout"
+              tools:layout="@layout/fragment_duplicate_contact_fix"
               android:name="com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactFixFragment"
               android:label="Remove Duplicates">
-        <argument android:name="contactsAccount"
-                  app:argType="com.r4sh33d.duplicatecontactsremover.model.ContactsAccount"/>
         <argument android:name="duplicateCriteria"
                   app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria"
         />

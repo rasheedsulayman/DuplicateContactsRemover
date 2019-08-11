@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -14,22 +15,27 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.r4sh33d.duplicatecontactsremover.DuplicateContactsApp
 import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.R
-import com.r4sh33d.duplicatecontactsremover.databinding.FragmentDuplicateContactFixConstaraintLayoutBinding
+import com.r4sh33d.duplicatecontactsremover.databinding.FragmentDuplicateContactFixBinding
 import com.r4sh33d.duplicatecontactsremover.dialogs.contactbackup.ContactBackupDialog
 import com.r4sh33d.duplicatecontactsremover.dialogs.contactbackup.ContactsBackupOperationsCallback
 import com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact.DeleteContactsDialog
 import com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact.DeleteContactsOperationsCallback
 import com.r4sh33d.duplicatecontactsremover.model.Contact
+import com.r4sh33d.duplicatecontactsremover.shared.ContactsOperationSharedViewModel
 import com.r4sh33d.duplicatecontactsremover.util.getQuantityString
 import com.r4sh33d.duplicatecontactsremover.util.onScrollChanged
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
-class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback, DeleteContactsOperationsCallback {
+class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback,
+    DeleteContactsOperationsCallback {
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var contactsToDelete: HashSet<Contact>
+
     private val mainActivity: MainActivity
         get() {
             return activity as? MainActivity ?: throw IllegalStateException("Not attached!")
@@ -40,20 +46,29 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
         savedInstanceState: Bundle?
     ): View? {
         (mainActivity.applicationContext as DuplicateContactsApp).component.inject(this)
-        val binding = FragmentDuplicateContactFixConstaraintLayoutBinding.inflate(inflater)
+        val binding = FragmentDuplicateContactFixBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        val duplicateContactsViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(DuplicateContactViewModel::class.java)
+
+        val sharedViewModel = mainActivity.run {
+            ViewModelProviders.of(this, viewModelFactory)
+                .get(ContactsOperationSharedViewModel::class.java)
+        }
+
+        binding.viewModel = duplicateContactsViewModel
         val fragmentArgs = DuplicateContactFixFragmentArgs.fromBundle(arguments!!)
 
-        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DuplicateContactViewModel::class.java)
-        binding.viewModel = viewModel
+        sharedViewModel.selectedAccount.observe(this, Observer {
+            duplicateContactsViewModel.getDuplicateContactsList(it, fragmentArgs.duplicateCriteria)
+            mainActivity.setUpToolBar(it.getDisplayName())
+        })
 
-        viewModel.getDuplicateContactsList(fragmentArgs.contactsAccount, fragmentArgs.duplicateCriteria)
-
-        mainActivity.setUpToolBar(fragmentArgs.contactsAccount.getDisplayName())
         binding.removeDuplicates.text = mainActivity.getQuantityString(R.plurals.remove_n_contacts, 0)
 
         binding.contactsListRecyclerView.adapter = DuplicateContactsAdapter {
-            binding.removeDuplicates.text = mainActivity.getQuantityString(R.plurals.remove_n_contacts, it.size)
+            binding.removeDuplicates.text =
+                mainActivity.getQuantityString(R.plurals.remove_n_contacts, it.size)
             contactsToDelete = it
         }
 
@@ -61,16 +76,23 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
 
         binding.removeDuplicates.setOnClickListener {
             if (contactsToDelete.isEmpty()) {
-                Toast.makeText(activity, R.string.select_contacts_to_delete, Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.select_contacts_to_delete, Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
             MaterialDialog(mainActivity).show {
                 title(R.string.remove_contacts_question)
-                message(text = mainActivity.getQuantityString(R.plurals.remove_n_duplicate_contacts_confirmation_message,
-                        contactsToDelete.size) + getString(R.string.contacts_backup_and_restore_information)
+                message(
+                    text = mainActivity.getQuantityString(
+                        R.plurals.remove_n_duplicate_contacts_confirmation_message,
+                        contactsToDelete.size
+                    ) + getString(R.string.contacts_backup_and_restore_information)
                 ) { lineSpacing(1.2f) }
                 positiveButton(R.string.okay) {
-                    ContactBackupDialog.show(this@DuplicateContactFixFragment, ArrayList(contactsToDelete))
+                    ContactBackupDialog.show(
+                        this@DuplicateContactFixFragment,
+                        ArrayList(contactsToDelete)
+                    )
                 }
                 negativeButton(R.string.cancel)
             }

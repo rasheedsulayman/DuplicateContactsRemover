@@ -4,6 +4,7 @@ import android.util.SparseBooleanArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.r4sh33d.duplicatecontactsremover.model.ContactsAccount
 import com.r4sh33d.duplicatecontactsremover.util.ContactsHelper
 import com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria
@@ -26,12 +27,8 @@ class DuplicateContactViewModel @Inject constructor(
     val duplicateContactsSearchResults: LiveData<Pair<List<Any>, SparseBooleanArray>>
         get() = _duplicateContactSearchResult
 
-    private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
      fun getDuplicateContactsList(contactsAccount: ContactsAccount, duplicateCriteria: DuplicateCriteria) {
-         Timber.d("Contacts: ${contactsAccount.contacts}")
-         coroutineScope.launch {
+         viewModelScope.launch {
             _status.value = LoadingStatus.LOADING
             _duplicateContactSearchResult.value = getDuplicateContacts(contactsAccount, duplicateCriteria)
             _status.value = if (duplicateContactsSearchResults.value!!.first.isNotEmpty()) LoadingStatus.DONE
@@ -48,8 +45,4 @@ class DuplicateContactViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
 }

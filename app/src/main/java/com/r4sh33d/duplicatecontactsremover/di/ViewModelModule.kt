@@ -1,13 +1,12 @@
-
 package com.r4sh33d.duplicatecontactsremover.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.r4sh33d.duplicatecontactsremover.util.DuplicateContactsViewModelFactory
 import com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesViewModel
 import com.r4sh33d.duplicatecontactsremover.dialogs.contactbackup.ContactsBackupViewModel
 import com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact.DeleteContactsViewModel
 import com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactViewModel
+import com.r4sh33d.duplicatecontactsremover.shared.ContactsOperationSharedViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -35,7 +34,12 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(DeleteContactsViewModel::class)
-    abstract fun deleteContactsViewModel(viewModel: DeleteContactsViewModel): ViewModel
+    abstract fun bindDeleteContactsViewModel(viewModel: DeleteContactsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ContactsOperationSharedViewModel::class)
+    abstract fun bindContactsOperationSharedViewModel(viewModel: ContactsOperationSharedViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: DuplicateContactsViewModelFactory): ViewModelProvider.Factory
