@@ -94,7 +94,10 @@ class ContactsHelper @Inject constructor(val context: Context) {
                     val contactId = cursor.getIntValue(ContactsContract.Data.CONTACT_ID)
                     val photoUri = cursor.getStringValue(CommonDataKinds.StructuredName.PHOTO_URI) ?: ""
                     val starred = cursor.getIntValue(CommonDataKinds.StructuredName.STARRED)
-                    val thumbnailUri = cursor.getStringValue(CommonDataKinds.StructuredName.PHOTO_THUMBNAIL_URI) ?: ""
+
+                    // Disabling thumbnail loading for now. It's causing OOM and TransactionTooLargeException when dealing with huge amount of contacts
+                   // val thumbnailUri = cursor.getStringValue(CommonDataKinds.StructuredName.PHOTO_THUMBNAIL_URI) ?: ""
+                    val thumbnailUri = ""
 
                     contactNumbers = contactNumbers ?: ArrayList()
                     val contactNickName = nicknames.get(id)

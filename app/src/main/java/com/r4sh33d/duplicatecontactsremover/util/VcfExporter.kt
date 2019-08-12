@@ -10,6 +10,7 @@ import ezvcard.VCard
 import ezvcard.parameter.ImageType
 import ezvcard.property.*
 import ezvcard.util.PartialDate
+import timber.log.Timber
 import java.io.File
 import java.util.*
 import javax.inject.Inject
