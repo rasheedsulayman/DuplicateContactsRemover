@@ -17,8 +17,10 @@ import com.r4sh33d.duplicatecontactsremover.MainActivity
 import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.dialogs.about.AboutDialog
 import com.r4sh33d.duplicatecontactsremover.dialogs.licences.LicencesDialog
+import com.r4sh33d.duplicatecontactsremover.dialogs.rateus.RateUsDialog
 import com.r4sh33d.duplicatecontactsremover.util.*
 import kotlinx.android.synthetic.main.fragment_landing_page.*
+import timber.log.Timber
 
 class LandingPageFragment : Fragment() {
     private val requestAppSettings = 600
@@ -50,6 +52,13 @@ class LandingPageFragment : Fragment() {
         mainActivity.setUpToolBar(getString(R.string.duplicate_contacts), true)
         mainActivity.invalidateToolbarElevation(0)
         checkPermissions()
+        Timber.d("View created again")
+        arguments?.let {
+            val fragmentArgs = LandingPageFragmentArgs.fromBundle(it)
+            if (fragmentArgs.showRateUsDialog) {
+                RateUsDialog.show(this)
+            }
+        }
     }
 
     private fun checkPermissionResults(results: IntArray): Boolean {

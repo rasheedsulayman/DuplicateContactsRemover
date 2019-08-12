@@ -19,6 +19,6 @@
             android:gravity="center"
             android:text="@string/remove_duplicates"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            android:fontFamily="@font/lato"/>
+            android:fontFamily="@font/lato_bold"/>
 
 </FrameLayout>

@@ -46,5 +46,10 @@
     <string name="duplicates_criteria_question">Welcome, how do you want to find duplicates contacts?</string>
     <string name="contacts">contacts</string>
     <string name="finish">Finish</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="rate_us_message">If you enjoy using this app, could you take a moment to rate it? Your feedback is very important to us. Thank you for your support!</string>
+    <string name="rate_now">Rate Now</string>
+    <string name="later">Later</string>
+    <string name="no_thanks">No thanks</string>
 
 </resources>

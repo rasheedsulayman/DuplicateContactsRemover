@@ -10,12 +10,16 @@ import com.r4sh33d.duplicatecontactsremover.R
 import com.r4sh33d.duplicatecontactsremover.dialogs.BaseProgressDialog
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
+import com.r4sh33d.duplicatecontactsremover.util.PrefsUtils
 import javax.inject.Inject
 
 class DeleteContactsDialog : BaseProgressDialog() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var prefsUtils: PrefsUtils
 
     companion object {
         private const val CONTACTS_KEY = "contacts_key"
@@ -57,6 +61,7 @@ class DeleteContactsDialog : BaseProgressDialog() {
                         successMessage += getString(R.string.backup_location_message, this)
                     }
                     statusTextView.text = successMessage
+                    prefsUtils.incrementNoOfSuccessfulContactsOperations()
                     finishButton.isEnabled = true
                 }
                 LoadingStatus.FAILED -> {

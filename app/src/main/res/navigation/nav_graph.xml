@@ -1,34 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph" app:startDestination="@id/landingPageFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/landingPageFragment">
 
     <fragment
-            tools:layout="@layout/fragment_landing_page"
-            android:id="@+id/landingPageFragment"
-            android:name="com.r4sh33d.duplicatecontactsremover.landingpage.LandingPageFragment"
-            android:label="Duplicate Contacts">
-        <action android:id="@+id/action_landingPageFragment_to_contactSourcesFragment"
-                app:destination="@id/contactSourcesFragment"
-                app:launchSingleTop="false"/>
+        android:id="@+id/landingPageFragment"
+        android:name="com.r4sh33d.duplicatecontactsremover.landingpage.LandingPageFragment"
+        android:label="Duplicate Contacts"
+        tools:layout="@layout/fragment_landing_page">
+        <action
+            android:id="@+id/action_landingPageFragment_to_contactSourcesFragment"
+            app:destination="@id/contactSourcesFragment"
+            app:launchSingleTop="false" />
+        <argument
+            android:name="showRateUsDialog"
+            app:argType="boolean" />
     </fragment>
-    <fragment tools:layout="@layout/fragment_contact_sources"
-              android:id="@+id/contactSourcesFragment"
-              android:name="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment"
-              android:label="Contact Sources">
-        <action android:id="@+id/action_contactSourcesFragment_to_duplicateContactFixFragment"
-                app:destination="@id/duplicateContactFixFragment"/>
-        <argument android:name="duplicateCriteria"
-                  app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria"/>
+    <fragment
+        android:id="@+id/contactSourcesFragment"
+        android:name="com.r4sh33d.duplicatecontactsremover.contactsources.ContactSourcesFragment"
+        android:label="Contact Sources"
+        tools:layout="@layout/fragment_contact_sources">
+        <action
+            android:id="@+id/action_contactSourcesFragment_to_duplicateContactFixFragment"
+            app:destination="@id/duplicateContactFixFragment" />
+        <argument
+            android:name="duplicateCriteria"
+            app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria" />
     </fragment>
-    <fragment android:id="@+id/duplicateContactFixFragment"
-              tools:layout="@layout/fragment_duplicate_contact_fix"
-              android:name="com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactFixFragment"
-              android:label="Remove Duplicates">
-        <argument android:name="duplicateCriteria"
-                  app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria"
-        />
-        <action android:id="@+id/action_duplicateContactFixFragment_to_landingPageFragment"
-                app:destination="@id/landingPageFragment" app:popUpTo="@+id/landingPageFragment"/>
+    <fragment
+        android:id="@+id/duplicateContactFixFragment"
+        android:name="com.r4sh33d.duplicatecontactsremover.duplicatecontact.DuplicateContactFixFragment"
+        android:label="Remove Duplicates"
+        tools:layout="@layout/fragment_duplicate_contact_fix">
+
+        <action
+            android:id="@+id/action_duplicateContactFixFragment_to_landingPageFragment"
+            app:destination="@id/landingPageFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_graph" />
+
+        <argument
+            android:name="duplicateCriteria"
+            app:argType="com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria" />
     </fragment>
 </navigation>

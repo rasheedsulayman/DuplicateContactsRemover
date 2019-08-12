@@ -16,14 +16,20 @@ const val WORK = "WORK"
 const val HOME = "HOME"
 const val OTHER = "OTHER"
 const val PREF = "PREF"
-const val MAIN = "MAIN"
-const val FAX = "FAX"
 const val WORK_FAX = "WORK;FAX"
 const val HOME_FAX = "HOME;FAX"
 const val PAGER = "PAGER"
 const val MOBILE = "MOBILE"
+const val RATE_US_THRESHOLD = 2
 
 val requiredPermissionMap = mapOf(
     Pair(Manifest.permission.READ_CONTACTS, R.string.read_contacts_permissions_explanation),
     Pair(Manifest.permission.WRITE_CONTACTS, R.string.write_contacts_permissions_explanation),
     Pair(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.external_storage_permissions_explanation))
+
+class PrefsKeys {
+    companion object {
+        const val NO_OF_SUCCESSFUL_OPERATIONS = "no_of_successful_operation"
+        const val DO_NOT_DISTURB_FOR_RATING = "do_not_disturb_for_rating"
+    }
+}

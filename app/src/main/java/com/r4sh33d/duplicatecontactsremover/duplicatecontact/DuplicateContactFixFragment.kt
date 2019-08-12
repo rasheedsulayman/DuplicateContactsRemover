@@ -21,8 +21,11 @@ import com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact.DeleteContacts
 import com.r4sh33d.duplicatecontactsremover.dialogs.deletecontact.DeleteContactsOperationsCallback
 import com.r4sh33d.duplicatecontactsremover.model.Contact
 import com.r4sh33d.duplicatecontactsremover.shared.ContactsOperationSharedViewModel
+import com.r4sh33d.duplicatecontactsremover.util.PrefsUtils
+import com.r4sh33d.duplicatecontactsremover.util.RATE_US_THRESHOLD
 import com.r4sh33d.duplicatecontactsremover.util.getQuantityString
 import com.r4sh33d.duplicatecontactsremover.util.onScrollChanged
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -31,6 +34,9 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var prefsUtils: PrefsUtils
 
     private lateinit var contactsToDelete: HashSet<Contact>
 
@@ -63,7 +69,8 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
             mainActivity.setUpToolBar(it.getDisplayName())
         })
 
-        binding.removeDuplicates.text = mainActivity.getQuantityString(R.plurals.remove_n_contacts, 0)
+        binding.removeDuplicates.text =
+            mainActivity.getQuantityString(R.plurals.remove_n_contacts, 0)
 
         binding.contactsListRecyclerView.adapter = DuplicateContactsAdapter {
             binding.removeDuplicates.text =
@@ -71,7 +78,11 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
             contactsToDelete = it
         }
 
-        binding.contactsListRecyclerView.onScrollChanged { mainActivity.invalidateToolbarElevation(it) }
+        binding.contactsListRecyclerView.onScrollChanged {
+            mainActivity.invalidateToolbarElevation(
+                it
+            )
+        }
 
         binding.removeDuplicates.setOnClickListener {
             if (contactsToDelete.isEmpty()) {
@@ -85,7 +96,8 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
                     text = mainActivity.getQuantityString(
                         R.plurals.remove_n_duplicate_contacts_confirmation_message,
                         contactsToDelete.size
-                    ) + getString(R.string.contacts_backup_and_restore_information)
+                    ) +
+                            getString(R.string.contacts_backup_and_restore_information)
                 ) { lineSpacing(1.2f) }
                 positiveButton(R.string.okay) {
                     ContactBackupDialog.show(
@@ -117,7 +129,11 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
 
     private fun goToLandingPage() {
         findNavController().navigate(
-            DuplicateContactFixFragmentDirections.actionDuplicateContactFixFragmentToLandingPageFragment()
+            DuplicateContactFixFragmentDirections.actionDuplicateContactFixFragmentToLandingPageFragment(canShowRateAppDialog())
         )
     }
+
+    private fun canShowRateAppDialog(): Boolean =
+        !prefsUtils.getNoDisturbStatusForStatusForRatings() &&
+                (prefsUtils.getNoOfSuccessfulContactsOperations() == RATE_US_THRESHOLD)
 }
