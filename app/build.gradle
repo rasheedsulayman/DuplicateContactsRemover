@@ -19,18 +19,30 @@ android {
         versionName versions.publishVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            versionNameSuffix "-debug"
         }
     }
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+
     androidExtensions {
         experimental = true
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = new File("DuplicateContactsRemover-" + variant.versionName + ".apk")
+        }
     }
 }
 
@@ -73,8 +85,8 @@ dependencies {
     implementation 'com.google.android.material:material:' + versions.androidxMaterial
     implementation 'com.jakewharton.timber:timber:' + versions.timber
     implementation 'com.afollestad.material-dialogs:core:' + versions.materialDialogs
-    implementation 'joda-time:joda-time:' + versions.jodaTime
     implementation 'com.googlecode.ez-vcard:ez-vcard:' + versions.ezVcard
+    implementation 'net.danlew:android.joda:' + versions.jodaTimeAndroid
 }
 
 apply from: '../spotless.gradle'

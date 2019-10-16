@@ -11,6 +11,7 @@ import com.r4sh33d.duplicatecontactsremover.util.LoadingStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class ContactSourcesViewModel @Inject constructor(private val contactsHelper: ContactsHelper) :
@@ -39,5 +40,10 @@ class ContactSourcesViewModel @Inject constructor(private val contactsHelper: Co
         return withContext(Dispatchers.IO) {
             contactsHelper.getContactsWithAccounts(duplicateCriteria)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Timber.d("Oncleared called")
     }
 }
