@@ -41,7 +41,7 @@ class ContactBackupDialog : BaseProgressDialog() {
 
     override fun setUpDialogDetails() {
         (context!!.applicationContext as DuplicateContactsApp).component.inject(this)
-        val contacts = arguments!!.getParcelableArrayList<Contact>(CONTACTS_KEY)
+        val contacts = arguments!!.getParcelableArrayList<Contact>(CONTACTS_KEY)!!
         val viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(ContactsBackupViewModel::class.java)
         val callback = parentFragment as? ContactsBackupOperationsCallback

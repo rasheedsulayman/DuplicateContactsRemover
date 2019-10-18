@@ -47,7 +47,7 @@ class DeleteContactsDialog : BaseProgressDialog() {
 
     override fun setUpDialogDetails() {
         (context!!.applicationContext as DuplicateContactsApp).component.inject(this)
-        val contacts = arguments!!.getParcelableArrayList<Contact>(CONTACTS_KEY)
+        val contacts = arguments!!.getParcelableArrayList<Contact>(CONTACTS_KEY)!!
         val backUpFileName = arguments!!.getString(BACKUP_FILE_NAME_KEY)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DeleteContactsViewModel::class.java)
         val callback = parentFragment as? DeleteContactsOperationsCallback

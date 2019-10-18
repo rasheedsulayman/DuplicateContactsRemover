@@ -25,7 +25,6 @@ import com.r4sh33d.duplicatecontactsremover.util.PrefsUtils
 import com.r4sh33d.duplicatecontactsremover.util.RATE_US_THRESHOLD
 import com.r4sh33d.duplicatecontactsremover.util.getQuantityString
 import com.r4sh33d.duplicatecontactsremover.util.onScrollChanged
-import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 

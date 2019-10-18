@@ -21,16 +21,15 @@
 #-renamesourcefileattribute SourceFile
 
 # ez-vcard
--dontwarn ezvcard.io.json.**            # JSON serializer (for jCards) not used
--dontwarn freemarker.**                 # freemarker templating library (for creating hCards) not used
--dontwarn org.jsoup.**                  # jsoup library (for hCard parsing) not used
--keep class ezvcard.property.** { *; }  # keep all vCard properties (created at runtime)
+-dontwarn ezvcard.io.json.**
+-dontwarn freemarker.**
+-dontwarn org.jsoup.**
+-keep class ezvcard.property.** { *; }
 
-
-#-dontwarn org.joda.convert.**
-#-dontwarn org.joda.time.**
-#-keep class org.joda.time.** { *; }
-#-keep interface org.joda.time.** { *; }
-
+# crashlytics
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
+
+# enums
+-keep public class com.r4sh33d.duplicatecontactsremover.util.LoadingStatus { *; }
+-keep public class com.r4sh33d.duplicatecontactsremover.util.DuplicateCriteria { *; }

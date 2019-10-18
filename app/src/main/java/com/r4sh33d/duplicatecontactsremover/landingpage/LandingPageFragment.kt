@@ -68,20 +68,25 @@ class LandingPageFragment : Fragment() {
         return true
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         if (permissionCode == requestCode) {
             if (checkPermissionResults(grantResults)) {
                 onStoragePermissionGranted()
             } else {
                 for (permission in permissions) {
-                    if (mainActivity.hasPermision(permission)) continue
+                    if (mainActivity.hasPermission(permission)) continue
                     if (shouldShowPermissionExplanation(permission)) {
                         Snackbar.make(
                             mainActivity.window.decorView.rootView,
                             requiredPermissionMap[permission]!!, Snackbar.LENGTH_INDEFINITE
                         ).apply {
                             setAction(R.string.grant) { checkPermissions() }
-                            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 5
+                            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+                                .maxLines = 5
                             show()
                         }
                     } else {
@@ -117,7 +122,7 @@ class LandingPageFragment : Fragment() {
             R.id.menu_about -> AboutDialog.show(this)
             R.id.menu_licences -> LicencesDialog.show(this)
             R.id.menu_rate -> mainActivity.launchPlayStore()
-            R.id.menu_feedback -> mainActivity.viewUrl("https://github.com/r4sh33d/DuplicateContactsRemover/issues/new/")
+            R.id.menu_feedback -> mainActivity.viewUrl(ISSUE_URL)
         }
         return super.onOptionsItemSelected(item)
     }

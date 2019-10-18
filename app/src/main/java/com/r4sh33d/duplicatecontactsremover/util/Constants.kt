@@ -21,6 +21,7 @@ const val HOME_FAX = "HOME;FAX"
 const val PAGER = "PAGER"
 const val MOBILE = "MOBILE"
 const val RATE_US_THRESHOLD = 2
+const val ISSUE_URL = "https://github.com/r4sh33d/DuplicateContactsRemover/issues/new/"
 
 val requiredPermissionMap = mapOf(
     Pair(Manifest.permission.READ_CONTACTS, R.string.read_contacts_permissions_explanation),

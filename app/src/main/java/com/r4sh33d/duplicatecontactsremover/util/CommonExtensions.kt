@@ -41,14 +41,18 @@ fun Cursor.getIntValue(key: String) = getInt(getColumnIndex(key))
 
 fun Context.hasPermissions(permissionList: Set<String>): Boolean {
     for (permission in permissionList) {
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             return false
         }
     }
     return true
 }
 
-fun Context.hasPermision(permission: String): Boolean =
+fun Context.hasPermission(permission: String): Boolean =
     ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
 fun Context.getQuantityString(@PluralsRes plural: Int, quantity: Int): String {
@@ -81,13 +85,13 @@ private fun Activity.resolveColor(@AttrRes attr: Int): Int {
 
 fun Activity.launchPlayStore() {
     val uri = Uri.parse("market://details?id=$packageName")
-    val goToMarket = Intent(Intent.ACTION_VIEW, uri).apply {
+    val marketIntent = Intent(Intent.ACTION_VIEW, uri).apply {
         Intent.FLAG_ACTIVITY_NO_HISTORY or
                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK
     }
     try {
-        startActivity(goToMarket)
+        startActivity(marketIntent)
     } catch (_: ActivityNotFoundException) {
         viewUrl("http://play.google.com/store/apps/details?id=$packageName")
     }
