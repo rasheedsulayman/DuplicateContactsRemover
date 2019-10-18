@@ -49,7 +49,8 @@ class ContactsHelper @Inject constructor(val context: Context) {
     )
 
     fun getContactsWithAccounts(duplicateCriteria: DuplicateCriteria): List<ContactsAccount> {
-        displayContactSources = getDeviceContactSources().map { it.name }.toMutableList() as ArrayList
+        displayContactSources =
+            getDeviceContactSources().map { it.name }.toMutableList() as ArrayList
         return getDeviceContacts(duplicateCriteria).map { ContactsAccount(it.key, it.value) }
     }
 
@@ -72,14 +73,23 @@ class ContactsHelper @Inject constructor(val context: Context) {
         val sortOrder = null
         var cursor: Cursor? = null
         try {
-            cursor = context.contentResolver.query(uri, contactsProjection, selection, selectionArgs, sortOrder)
+            cursor = context.contentResolver.query(
+                uri,
+                contactsProjection,
+                selection,
+                selectionArgs,
+                sortOrder
+            )
             if (cursor?.moveToFirst() == true) {
                 loop@ do {
                     val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
                     var contactNumbers = devicePhoneNumbers.get(id)
-                    val firstName = cursor.getStringValue(CommonDataKinds.StructuredName.GIVEN_NAME) ?: ""
-                    val middleName = cursor.getStringValue(CommonDataKinds.StructuredName.MIDDLE_NAME) ?: ""
-                    val surname = cursor.getStringValue(CommonDataKinds.StructuredName.FAMILY_NAME) ?: ""
+                    val firstName =
+                        cursor.getStringValue(CommonDataKinds.StructuredName.GIVEN_NAME) ?: ""
+                    val middleName =
+                        cursor.getStringValue(CommonDataKinds.StructuredName.MIDDLE_NAME) ?: ""
+                    val surname =
+                        cursor.getStringValue(CommonDataKinds.StructuredName.FAMILY_NAME) ?: ""
 
                     when (duplicateCriteria) {
                         PHONE_NUMBER -> if (contactNumbers == null) continue@loop
@@ -88,15 +98,19 @@ class ContactsHelper @Inject constructor(val context: Context) {
 
                     val prefix = cursor.getStringValue(CommonDataKinds.StructuredName.PREFIX) ?: ""
                     val suffix = cursor.getStringValue(CommonDataKinds.StructuredName.SUFFIX) ?: ""
-                    val accountName = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
-                    val accountType = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
-                    val accountNameIdentifier = "$accountName${ContactsAccount.ACCOUNT_KEY_SEPARATOR}$accountType"
+                    val accountName =
+                        cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
+                    val accountType =
+                        cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
+                    val accountNameIdentifier =
+                        "$accountName${ContactsAccount.ACCOUNT_KEY_SEPARATOR}$accountType"
                     val contactId = cursor.getIntValue(ContactsContract.Data.CONTACT_ID)
-                    val photoUri = cursor.getStringValue(CommonDataKinds.StructuredName.PHOTO_URI) ?: ""
+                    val photoUri =
+                        cursor.getStringValue(CommonDataKinds.StructuredName.PHOTO_URI) ?: ""
                     val starred = cursor.getIntValue(CommonDataKinds.StructuredName.STARRED)
 
                     // Disabling thumbnail loading for now. It's causing OOM and TransactionTooLargeException when dealing with huge amount of contacts
-                   // val thumbnailUri = cursor.getStringValue(CommonDataKinds.StructuredName.PHOTO_THUMBNAIL_URI) ?: ""
+                    // val thumbnailUri = cursor.getStringValue(CommonDataKinds.StructuredName.PHOTO_THUMBNAIL_URI) ?: ""
                     val thumbnailUri = ""
 
                     contactNumbers = contactNumbers ?: ArrayList()
@@ -152,8 +166,10 @@ class ContactsHelper @Inject constructor(val context: Context) {
             CommonDataKinds.Phone.TYPE,
             CommonDataKinds.Phone.LABEL
         )
-        val selection = if (contactId == null) getSourcesSelection() else "${ContactsContract.Data.RAW_CONTACT_ID} = ?"
-        val selectionArgs = if (contactId == null) getSourcesSelectionArgs() else arrayOf(contactId.toString())
+        val selection =
+            if (contactId == null) getSourcesSelection() else "${ContactsContract.Data.RAW_CONTACT_ID} = ?"
+        val selectionArgs =
+            if (contactId == null) getSourcesSelectionArgs() else arrayOf(contactId.toString())
         var cursor: Cursor? = null
         try {
             cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
@@ -192,7 +208,8 @@ class ContactsHelper @Inject constructor(val context: Context) {
         )
 
         val selection = getSourcesSelection(true, contactId != null)
-        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Nickname.CONTENT_ITEM_TYPE, contactId)
+        val selectionArgs =
+            getSourcesSelectionArgs(CommonDataKinds.Nickname.CONTENT_ITEM_TYPE, contactId)
 
         var cursor: Cursor? = null
         try {
@@ -223,8 +240,10 @@ class ContactsHelper @Inject constructor(val context: Context) {
             CommonDataKinds.Email.LABEL
         )
 
-        val selection = if (contactId == null) getSourcesSelection() else "${ContactsContract.Data.RAW_CONTACT_ID} = ?"
-        val selectionArgs = if (contactId == null) getSourcesSelectionArgs() else arrayOf(contactId.toString())
+        val selection =
+            if (contactId == null) getSourcesSelection() else "${ContactsContract.Data.RAW_CONTACT_ID} = ?"
+        val selectionArgs =
+            if (contactId == null) getSourcesSelectionArgs() else arrayOf(contactId.toString())
 
         var cursor: Cursor? = null
         try {
@@ -262,8 +281,10 @@ class ContactsHelper @Inject constructor(val context: Context) {
             CommonDataKinds.StructuredPostal.LABEL
         )
 
-        val selection = if (contactId == null) getSourcesSelection() else "${ContactsContract.Data.RAW_CONTACT_ID} = ?"
-        val selectionArgs = if (contactId == null) getSourcesSelectionArgs() else arrayOf(contactId.toString())
+        val selection =
+            if (contactId == null) getSourcesSelection() else "${ContactsContract.Data.RAW_CONTACT_ID} = ?"
+        val selectionArgs =
+            if (contactId == null) getSourcesSelectionArgs() else arrayOf(contactId.toString())
 
         var cursor: Cursor? = null
         try {
@@ -271,8 +292,9 @@ class ContactsHelper @Inject constructor(val context: Context) {
             if (cursor?.moveToFirst() == true) {
                 do {
                     val id = cursor.getIntValue(ContactsContract.Data.RAW_CONTACT_ID)
-                    val address = cursor.getStringValue(CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS)
-                        ?: continue
+                    val address =
+                        cursor.getStringValue(CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS)
+                            ?: continue
                     val type = cursor.getIntValue(CommonDataKinds.StructuredPostal.TYPE)
                     val label = cursor.getStringValue(CommonDataKinds.StructuredPostal.LABEL) ?: ""
 
@@ -340,7 +362,8 @@ class ContactsHelper @Inject constructor(val context: Context) {
         )
 
         val selection = getSourcesSelection(true, contactId != null)
-        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Event.CONTENT_ITEM_TYPE, contactId)
+        val selectionArgs =
+            getSourcesSelectionArgs(CommonDataKinds.Event.CONTENT_ITEM_TYPE, contactId)
 
         var cursor: Cursor? = null
         try {
@@ -377,7 +400,8 @@ class ContactsHelper @Inject constructor(val context: Context) {
         )
 
         val selection = getSourcesSelection(true, contactId != null)
-        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Note.CONTENT_ITEM_TYPE, contactId)
+        val selectionArgs =
+            getSourcesSelectionArgs(CommonDataKinds.Note.CONTENT_ITEM_TYPE, contactId)
 
         var cursor: Cursor? = null
         try {
@@ -408,7 +432,8 @@ class ContactsHelper @Inject constructor(val context: Context) {
         )
 
         val selection = getSourcesSelection(true, contactId != null)
-        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Organization.CONTENT_ITEM_TYPE, contactId)
+        val selectionArgs =
+            getSourcesSelectionArgs(CommonDataKinds.Organization.CONTENT_ITEM_TYPE, contactId)
 
         var cursor: Cursor? = null
         try {
@@ -444,7 +469,8 @@ class ContactsHelper @Inject constructor(val context: Context) {
         )
 
         val selection = getSourcesSelection(true, contactId != null)
-        val selectionArgs = getSourcesSelectionArgs(CommonDataKinds.Website.CONTENT_ITEM_TYPE, contactId)
+        val selectionArgs =
+            getSourcesSelectionArgs(CommonDataKinds.Website.CONTENT_ITEM_TYPE, contactId)
 
         var cursor: Cursor? = null
         try {
@@ -470,7 +496,8 @@ class ContactsHelper @Inject constructor(val context: Context) {
         return websites
     }
 
-    private fun getQuestionMarks() = "?,".times(displayContactSources.filter { it.isNotEmpty() }.size).trimEnd(',')
+    private fun getQuestionMarks() =
+        "?,".times(displayContactSources.filter { it.isNotEmpty() }.size).trimEnd(',')
 
     private fun getSourcesSelection(
         addMimeType: Boolean = false,
@@ -500,7 +527,10 @@ class ContactsHelper @Inject constructor(val context: Context) {
         return TextUtils.join(" AND ", strings)
     }
 
-    private fun getSourcesSelectionArgs(mimetype: String? = null, contactId: Int? = null): Array<String> {
+    private fun getSourcesSelectionArgs(
+        mimetype: String? = null,
+        contactId: Int? = null
+    ): Array<String> {
         val args = ArrayList<String>()
 
         if (mimetype != null) {
@@ -554,7 +584,12 @@ class ContactsHelper @Inject constructor(val context: Context) {
         }
 
         val contentResolverAccounts = getContentResolverAccounts().filter {
-            it.name.isNotEmpty() && it.type.isNotEmpty() && !accounts.contains(Account(it.name, it.type))
+            it.name.isNotEmpty() && it.type.isNotEmpty() && !accounts.contains(
+                Account(
+                    it.name,
+                    it.type
+                )
+            )
         }
         sources.addAll(contentResolverAccounts)
         return sources.toMutableList()
@@ -581,8 +616,10 @@ class ContactsHelper @Inject constructor(val context: Context) {
             cursor = context.contentResolver.query(uri, projection, null, null, null)
             if (cursor?.moveToFirst() == true) {
                 do {
-                    val name = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
-                    val type = cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
+                    val name =
+                        cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_NAME) ?: ""
+                    val type =
+                        cursor.getStringValue(ContactsContract.RawContacts.ACCOUNT_TYPE) ?: ""
 
                     val source = ContactSource(
                         name,

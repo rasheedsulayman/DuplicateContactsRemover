@@ -37,6 +37,5 @@ class RateUsDialog : DialogFragment() {
             .negativeButton(R.string.later, click = {
                 prefsUtils.resetNoOfSuccessfulContactsOperations()
             })
-
     }
 }
