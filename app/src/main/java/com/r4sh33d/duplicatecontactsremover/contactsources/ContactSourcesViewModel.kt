@@ -33,6 +33,7 @@ class ContactSourcesViewModel @Inject constructor(private val contactsHelper: Co
             _contactsAccountList.value = getContactsWithAccounts(duplicateCriteria)
             _status.value = if (contactsAccountList.value!!.isNotEmpty()) LoadingStatus.DONE
             else LoadingStatus.EMPTY
+
         }
     }
 

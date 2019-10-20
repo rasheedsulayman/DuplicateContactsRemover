@@ -36,6 +36,7 @@ class VcfExporter @Inject constructor(val context: Context) {
                 card.structuredName = this
             }
 
+
             if (!contact.nickname.isNullOrEmpty()) {
                 card.setNickname(contact.nickname)
             }

@@ -25,6 +25,9 @@
 -dontwarn freemarker.**
 -dontwarn org.jsoup.**
 -keep class ezvcard.property.** { *; }
+-keep class ezvcard.VCardVersion { *; }
+-keep class com.github.mangstadt.vinnie.SyntaxStyle { *; }
+#-keep class ezvcard.** { *; }
 
 # crashlytics
 -keep class com.crashlytics.** { *; }
