@@ -76,6 +76,9 @@ class DuplicateContactsAdapter(val contactsToRemoveCallback: (HashSet<Contact>) 
                 if (isChecked) contactToRemove.add(contact) else contactToRemove.remove(contact)
                 contactsToRemoveCallback(contactToRemove)
             }
+            itemView.setOnClickListener {
+                binding.checkBox.isChecked = !binding.checkBox.isChecked
+            }
         }
 
         fun bind(contact: Contact) {

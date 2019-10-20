@@ -16,6 +16,14 @@ buildscript {
         classpath "com.diffplug.spotless:spotless-plugin-gradle:" + versions.spotlessPlugin
         classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:' + versions.navigation
     }
+
+    configurations.all {
+        resolutionStrategy {
+            // Coroutines and obfuscation.
+            // For more information: https://github.com/Kotlin/kotlinx.coroutines/issues/1035
+            force 'net.sf.proguard:proguard-gradle:' + versions.proguardGradle
+        }
+    }
 }
 
 allprojects {
