@@ -1,7 +1,6 @@
 package com.r4sh33d.duplicatecontactsremover.landingpage
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -61,12 +60,6 @@ class LandingPageFragment : Fragment() {
         }
     }
 
-    private fun checkPermissionResults(results: IntArray): Boolean {
-        results.forEach {
-            if (it != PackageManager.PERMISSION_GRANTED) return false
-        }
-        return true
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -74,7 +67,7 @@ class LandingPageFragment : Fragment() {
         grantResults: IntArray
     ) {
         if (permissionCode == requestCode) {
-            if (checkPermissionResults(grantResults)) {
+            if (mainActivity.confirmPermissionResults(grantResults)) {
                 onStoragePermissionGranted()
             } else {
                 for (permission in permissions) {

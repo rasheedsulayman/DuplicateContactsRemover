@@ -41,13 +41,7 @@ fun Cursor.getIntValue(key: String) = getInt(getColumnIndex(key))
 
 fun Context.hasPermissions(permissionList: Set<String>): Boolean {
     for (permission in permissionList) {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                permission
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return false
-        }
+        if (!hasPermission(permission)) return false
     }
     return true
 }
@@ -57,6 +51,13 @@ fun Context.hasPermission(permission: String): Boolean =
 
 fun Context.getQuantityString(@PluralsRes plural: Int, quantity: Int): String {
     return resources.getQuantityString(plural, quantity, quantity)
+}
+
+fun Context.confirmPermissionResults(results: IntArray): Boolean {
+    results.forEach {
+        if (it != PackageManager.PERMISSION_GRANTED) return false
+    }
+    return true
 }
 
 fun Activity.viewUrl(url: String) {
