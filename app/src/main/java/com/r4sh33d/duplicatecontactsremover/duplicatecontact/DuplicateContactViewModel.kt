@@ -43,6 +43,16 @@ class DuplicateContactViewModel @Inject constructor(
         }
     }
 
+    fun selectAll(isSelectAll: Boolean) {
+        viewModelScope.launch {
+            duplicateContactsSearchResults.value?.first?.let { contacts ->
+                _duplicateContactSearchResult.value = withContext(Dispatchers.Default) {
+                    contactsHelper.generateCheckedPositions(contacts, isSelectAll)
+                }
+            }
+        }
+    }
+
     private suspend fun getDuplicateContacts(
         contactsAccount: ContactsAccount,
         duplicateCriteria: DuplicateCriteria

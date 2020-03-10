@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/quadriy/Documents/Personal/DuplicateContactsRemover/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ka-rGE/values-ka-rGE.xml",
+            "map": [
+                {
+                    "source": "/Users/quadriy/.gradle/caches/transforms-2/files-2.1/ed99fd8f3cec43ca735872373cdffbb5/res/values-ka-rGE/values-ka-rGE.xml",
+                    "from": {
+                        "startLines": "2,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62,66,70,74,78,79,80",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,352,605,857,1114,1366,1628,1889,2149,2396,2642,2888,3128,3373,3619,3865,4109,4364,4620,4875,5008,5136",
+                        "endLines": "5,9,13,17,21,25,29,33,37,41,45,49,53,57,61,65,69,73,77,78,79,80",
+                        "endColumns": "14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,132,127,150",
+                        "endOffsets": "347,600,852,1109,1361,1623,1884,2144,2391,2637,2883,3123,3368,3614,3860,4104,4359,4615,4870,5003,5131,5282"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -52,7 +52,8 @@ data class Contact(
         get() {
             var phoneNumbersString = ""
             phoneNumbers.forEach {
-                val phoneNumberKey = if (!it.normalizedNumber.isNullOrBlank()) it.normalizedNumber else it.value
+                val phoneNumberKey =
+                    if (!it.normalizedNumber.isNullOrBlank()) it.normalizedNumber else it.value
                 phoneNumbersString = phoneNumbersString.plus("$phoneNumberKey::")
             }
             return phoneNumbersString
@@ -73,10 +74,15 @@ data class Contact(
         if (thisNomalizedNumber.isBlank() || normaLizedNumber.isBlank()) {
             return false
         }
-        return thisNomalizedNumber.contains(normaLizedNumber) || normaLizedNumber.contains(thisNomalizedNumber)
+        return thisNomalizedNumber.contains(normaLizedNumber) || normaLizedNumber.contains(
+            thisNomalizedNumber
+        )
     }
 
-    fun isDuplicateOf(contact: Contact, duplicateCriteria: DuplicateCriteria = PHONE_NUMBER): Boolean {
+    fun isDuplicateOf(
+        contact: Contact,
+        duplicateCriteria: DuplicateCriteria = PHONE_NUMBER
+    ): Boolean {
         return when (duplicateCriteria) {
             PHONE_NUMBER -> containEqualPhoneNumbers(contact)
             NAME -> containEqualNames(contact)

@@ -1,0 +1,1 @@
+[{"outputType":{"type":"INSTANT_RUN_MERGED_MANIFESTS"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":5,"versionName":"1.0.5-debug","enabled":true,"outputFile":"DuplicateContactsRemover-1.0.5-debug.apk","fullName":"debug","baseName":"debug"},"path":"AndroidManifest.xml","properties":{"packageId":"com.r4sh33d.duplicatecontactsremover","split":"","minSdkVersion":"21"}}]

@@ -93,6 +93,7 @@ fun bindDuplicateContactsRecyclerView(recyclerView: RecyclerView, pair: Pair<Lis
         val adapter = recyclerView.adapter as DuplicateContactsAdapter
         adapter.updateCheckedPositionMarker(pair.second)
         adapter.submitList(pair.first)
+        adapter.notifyDataSetChanged()
     }
 }
 

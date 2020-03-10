@@ -1,9 +1,8 @@
 package com.r4sh33d.duplicatecontactsremover.duplicatecontact
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -44,16 +43,20 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
             return activity as? MainActivity ?: throw IllegalStateException("Not attached!")
         }
 
+    private val duplicateContactsViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(DuplicateContactViewModel::class.java)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         (mainActivity.applicationContext as DuplicateContactsApp).component.inject(this)
+
         val binding = FragmentDuplicateContactFixBinding.inflate(inflater)
+
         binding.lifecycleOwner = this
-        val duplicateContactsViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(DuplicateContactViewModel::class.java)
 
         val sharedViewModel = mainActivity.run {
             ViewModelProviders.of(this, viewModelFactory)
@@ -110,6 +113,22 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.duplicate_fix_menu, menu)
+
+        val checkBox = menu!!.findItem(R.id.menu_select_all).actionView as CheckBox
+
+        checkBox.setOnCheckedChangeListener { _, isChecked ->
+            duplicateContactsViewModel.selectAll(isChecked)
+        }
+    }
+
     override fun onDeleteOperationFinished(dialog: DeleteContactsDialog) {
         goToLandingPage()
     }
@@ -128,7 +147,9 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
 
     private fun goToLandingPage() {
         findNavController().navigate(
-            DuplicateContactFixFragmentDirections.actionDuplicateContactFixFragmentToLandingPageFragment(canShowRateAppDialog())
+            DuplicateContactFixFragmentDirections.actionDuplicateContactFixFragmentToLandingPageFragment(
+                canShowRateAppDialog()
+            )
         )
     }
 
