@@ -690,5 +690,6 @@ class ContactsHelper @Inject constructor(val context: Context) {
         }
 
         return Pair(contacts, sparseBooleanArray)
+
     }
 }
