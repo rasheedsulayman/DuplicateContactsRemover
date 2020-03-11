@@ -12,6 +12,7 @@ import com.google.android.material.button.MaterialButton
 import com.r4sh33d.duplicatecontactsremover.R
 
 abstract class BaseProgressDialog : DialogFragment() {
+
     protected lateinit var statusTextView: TextView
     protected lateinit var finishButton: MaterialButton
     protected lateinit var progressBar: ProgressBar

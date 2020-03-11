@@ -1276,6 +1276,7 @@ id menu_about
 id menu_feedback
 id menu_licences
 id menu_rate
+id menu_select_all
 id message
 id middle
 id mini
@@ -1490,6 +1491,7 @@ layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
 layout toolbar_layout
+menu duplicate_fix_menu
 menu landing_page_menu
 mipmap ic_launcher
 navigation nav_graph
@@ -2102,6 +2104,7 @@ string remove_contacts_success_message
 string remove_duplicates
 string search_menu_title
 string select_account_to_remove_duplicates
+string select_all
 string select_contacts_to_delete
 string settings
 string status_bar_notification_info_overflow

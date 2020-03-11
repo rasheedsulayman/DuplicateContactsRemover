@@ -51,5 +51,6 @@
     <string name="rate_now">Rate Now</string>
     <string name="later">Later</string>
     <string name="no_thanks">No thanks</string>
+    <string name="select_all">Select all</string>
 
 </resources>
