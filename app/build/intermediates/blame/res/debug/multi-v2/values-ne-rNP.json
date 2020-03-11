@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/quadriy/Documents/Personal/DuplicateContactsRemover/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ne-rNP/values-ne-rNP.xml",
+            "map": [
+                {
+                    "source": "/Users/quadriy/.gradle/caches/transforms-2/files-2.1/ed99fd8f3cec43ca735872373cdffbb5/res/values-ne-rNP/values-ne-rNP.xml",
+                    "from": {
+                        "startLines": "2,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62,66,70,74,78,79,80",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,352,607,863,1121,1371,1631,1892,2160,2406,2654,2906,3146,3393,3642,3896,4138,4391,4646,4905,5033,5161",
+                        "endLines": "5,9,13,17,21,25,29,33,37,41,45,49,53,57,61,65,69,73,77,78,79,80",
+                        "endColumns": "14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,127,127,150",
+                        "endOffsets": "347,602,858,1116,1366,1626,1887,2155,2401,2649,2901,3141,3388,3637,3891,4133,4386,4641,4900,5028,5156,5307"
+                    }
+                }
+            ]
+        }
+    ]
+}

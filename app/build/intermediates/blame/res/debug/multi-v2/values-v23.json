@@ -1,0 +1,58 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/quadriy/Documents/Personal/DuplicateContactsRemover/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v23/values-v23.xml",
+            "map": [
+                {
+                    "source": "/Users/quadriy/.gradle/caches/transforms-2/files-2.1/539c827223c939f53c8269ddb121a78c/res/values-v23/values-v23.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "200"
+                    },
+                    "to": {
+                        "startLines": "41",
+                        "startColumns": "4",
+                        "startOffsets": "2855",
+                        "endLines": "43",
+                        "endColumns": "12",
+                        "endOffsets": "3000"
+                    }
+                },
+                {
+                    "source": "/Users/quadriy/.gradle/caches/transforms-2/files-2.1/cfdd8a227a1621424fbc0d43c291c41e/res/values-v23/values-v23.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,19,32,33,34,35,36",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,190,325,400,487,1277,2079,2206,2311,2426,2533",
+                        "endLines": "2,3,4,5,18,31,32,33,34,35,36",
+                        "endColumns": "134,134,74,86,12,12,126,104,114,106,112",
+                        "endOffsets": "185,320,395,482,1272,2074,2201,2306,2421,2528,2641"
+                    },
+                    "to": {
+                        "startLines": "6,7,8,9,10,23,36,37,38,39,40",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "264,399,534,609,696,1486,2288,2415,2520,2635,2742",
+                        "endLines": "6,7,8,9,22,35,36,37,38,39,40",
+                        "endColumns": "134,134,74,86,12,12,126,104,114,106,112",
+                        "endOffsets": "394,529,604,691,1481,2283,2410,2515,2630,2737,2850"
+                    }
+                },
+                {
+                    "source": "/Users/quadriy/Documents/Personal/DuplicateContactsRemover/app/src/main/res/values-v23/styles.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "259"
+                    }
+                }
+            ]
+        }
+    ]
+}

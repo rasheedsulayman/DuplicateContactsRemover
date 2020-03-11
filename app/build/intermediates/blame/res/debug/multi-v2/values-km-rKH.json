@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/quadriy/Documents/Personal/DuplicateContactsRemover/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-km-rKH/values-km-rKH.xml",
+            "map": [
+                {
+                    "source": "/Users/quadriy/.gradle/caches/transforms-2/files-2.1/ed99fd8f3cec43ca735872373cdffbb5/res/values-km-rKH/values-km-rKH.xml",
+                    "from": {
+                        "startLines": "2,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62,66,70,74,78,79,80",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,370,647,917,1193,1449,1707,1967,2231,2475,2721,2971,3222,3477,3741,4017,4264,4515,4769,5026,5154,5287",
+                        "endLines": "5,9,13,17,21,25,29,33,37,41,45,49,53,57,61,65,69,73,77,78,79,80",
+                        "endColumns": "14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,127,132,150",
+                        "endOffsets": "365,642,912,1188,1444,1702,1962,2226,2470,2716,2966,3217,3472,3736,4012,4259,4510,4764,5021,5149,5282,5433"
+                    }
+                }
+            ]
+        }
+    ]
+}
