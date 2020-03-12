@@ -13,3 +13,4 @@
 .externalNativeBuild
 fabric.properties
 release/
+.idea
