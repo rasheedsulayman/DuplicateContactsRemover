@@ -660,4 +660,36 @@ class ContactsHelper @Inject constructor(val context: Context) {
         }
         return Pair(listToReturn, sparseBooleanArray)
     }
+
+    fun generateCheckedPositions(
+        contacts: List<Any>,
+        isSelectAll: Boolean
+    ): Pair<List<Any>, SparseBooleanArray> {
+        val sparseBooleanArray = SparseBooleanArray()
+
+        contacts.forEachIndexed { index, any ->
+            if (any !is String) {
+                any as Contact
+
+                if (isSelectAll) {
+                    if (index == contacts.lastIndex) {
+                        any.isChecked = false
+                    } else {
+                        // Only the last contact in a group is unchecked
+                        // The last contact in a group is followed by the next group's label which is a String
+                        any.isChecked = contacts[index + 1] !is String
+                    }
+                } else {
+                    // Only the first contact in a group is checked
+                    // The first contact in a group is preceded by the group's label which is a String
+                    any.isChecked = contacts[index - 1] is String
+                }
+            }
+
+            sparseBooleanArray.put(index, if (any is Contact) any.isChecked else false)
+        }
+
+        return Pair(contacts, sparseBooleanArray)
+
+    }
 }
