@@ -3,7 +3,8 @@
   <string name="about_dialog_title">Duplicate Contacts Remover v%s</string>
   <string name="about">About</string>
   <string name="dismiss">Dismiss</string>
-  <string name="about_body"><![CDATA[
+  <string name="about_body">Developed by Rasheed Sulayman</string>>
+  <!--<string name="about_body"><![CDATA[
         A simple App to cleanup and remove duplicate contacts from your address book.
         developed by <b>Rasheed Sulayman</b>.<br/>
         <a href=\'https://twitter.com/srasheed_\'>Twitter</a>&nbsp;&nbsp;
@@ -12,6 +13,6 @@
         This project is <a href=\'https://github.com/r4sh33d/DuplicateContactsRemover\'>open source</a>. Contributions are welcome.
         Check out my <a href="https://play.google.com/store/apps/dev?id=8761425764458284876">other apps</a>.
         <br/>View the <a href=\'https://github.com/r4sh33d/DuplicateContactsRemover/blob/master/privacy_policy.md'>Privacy Policy</a>.
-  ]]></string>
+  ]]></string>-->
 
 </resources>

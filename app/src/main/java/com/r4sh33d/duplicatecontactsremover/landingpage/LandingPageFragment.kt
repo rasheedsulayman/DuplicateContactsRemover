@@ -52,12 +52,12 @@ class LandingPageFragment : Fragment() {
         mainActivity.invalidateToolbarElevation(0)
         checkPermissions()
         Timber.d("View created again")
-        arguments?.let {
+        /*arguments?.let {
             val fragmentArgs = LandingPageFragmentArgs.fromBundle(it)
             if (fragmentArgs.showRateUsDialog) {
                 RateUsDialog.show(this)
             }
-        }
+        }*/
     }
 
 
@@ -105,13 +105,13 @@ class LandingPageFragment : Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.landing_page_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.menu_about -> AboutDialog.show(this)
             R.id.menu_licences -> LicencesDialog.show(this)
             R.id.menu_rate -> mainActivity.launchPlayStore()

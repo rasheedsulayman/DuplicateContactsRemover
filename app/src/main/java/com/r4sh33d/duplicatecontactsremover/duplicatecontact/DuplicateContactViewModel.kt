@@ -24,9 +24,9 @@ class DuplicateContactViewModel @Inject constructor(
         get() = _status
 
     private val _duplicateContactSearchResult =
-        MutableLiveData<Pair<List<Any>, SparseBooleanArray>>()
+        MutableLiveData<Pair<List<Any>, SparseBooleanArray>?>()
 
-    val duplicateContactsSearchResults: LiveData<Pair<List<Any>, SparseBooleanArray>>
+    val duplicateContactsSearchResults: MutableLiveData<Pair<List<Any>, SparseBooleanArray>?>
         get() = _duplicateContactSearchResult
 
     fun getDuplicateContactsList(

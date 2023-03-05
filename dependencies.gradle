@@ -1,19 +1,19 @@
 ext.versions = [
         // Properties
         minSdkVersion       : 21,
-        targetSdkVersion    : 29,
-        compileSdkVersion   : 29,
-        publishVersionName  : '1.0.5',
-        publishVersionCode  : 5,
+        targetSdkVersion    : 31,
+        compileSdkVersion   : 31,
+        publishVersionName  : '1.0.10 - App bundle internal',
+        publishVersionCode  : 10,
 
         // Plugins
-        gradlePlugin        : '3.3.2',
+        gradlePlugin        : '7.3.1',
         fabricPlugin        : '1.+',
         spotlessPlugin      : '3.23.1',
         proguardGradle      : '6.2.0',
 
         // Kotlin
-        kotlin              : '1.3.41',
+        kotlin              : '1.6.21',
         coroutines          : '1.1.0',
 
         // AndroidX
@@ -23,7 +23,7 @@ ext.versions = [
         androidxBrowser     : '1.0.0',
         constraintLayout    : '1.1.3',
         lifecycle           : '2.1.0-alpha01',
-        navigation          : '1.0.0',
+        navigation          : '2.5.3',
 
         //dagger
         dagger              : '2.21',

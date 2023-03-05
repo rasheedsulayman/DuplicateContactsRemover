@@ -118,11 +118,11 @@ class DuplicateContactFixFragment : Fragment(), ContactsBackupOperationsCallback
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.duplicate_fix_menu, menu)
+        inflater.inflate(R.menu.duplicate_fix_menu, menu)
 
-        val checkBox = menu!!.findItem(R.id.menu_select_all).actionView as CheckBox
+        val checkBox = menu.findItem(R.id.menu_select_all).actionView as CheckBox
 
         checkBox.setOnCheckedChangeListener { _, isChecked ->
             duplicateContactsViewModel.selectAll(isChecked)
